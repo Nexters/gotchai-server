@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.java.library)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.java.test.fixtures)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring) apply false
@@ -26,6 +27,7 @@ subprojects {
     apply(libs.plugins.java.library)
     apply(libs.plugins.java.test.fixtures)
     apply(libs.plugins.kotlin.jvm)
+    apply(libs.plugins.kotlin.kapt)
     apply(libs.plugins.kotlin.spring)
     apply(libs.plugins.spring.boot)
     apply(libs.plugins.spring.dependency.management)
@@ -42,7 +44,12 @@ subprojects {
     }
 
     dependencies {
+        implementation(libs.kotlin.reflect)
+        implementation(libs.jackson.kotlin)
         testImplementation(libs.bundles.test)
+
+        annotationProcessor(libs.spring.boot.configuration.processor)
+        kapt(libs.spring.boot.configuration.processor)
     }
 
     tasks {
