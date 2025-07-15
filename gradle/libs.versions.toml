@@ -2,10 +2,15 @@
 
 # Kotlin
 kotlin = "2.1.0"
+ktlint = "12.1.2"
+ktlint-version-set = "1.5.0"
 
 # Spring
 spring-boot = "3.5.3"
 spring-dependency-management = "1.1.7"
+
+# JDSL
+line-kotlin-jdsl = "3.4.1"
 
 # Kotest
 kotest = "5.9.1"
@@ -15,6 +20,14 @@ kotest-extension = "1.1.3"
 mockk = "1.14.4"
 spring-mockk = "4.0.2"
 
+jakartaAnnotation = "3.0.0"
+
+# DB version
+mysql = "8.2.0"
+
+# AWS version
+aws = "2.25.47"
+
 [plugins]
 
 # Java
@@ -23,27 +36,62 @@ java-test-fixtures = { id = "java-test-fixtures" }
 
 # Kotlin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 
 # Spring
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 
-[libraries]
+# Lint Plugins
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
+[libraries]
 # Spring
+spring-context = { module = "org.springframework:spring-context" }
+spring-tx = { module = "org.springframework:spring-tx" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-boot" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
+spring-boot-starter-aop = { module = "org.springframework.boot:spring-boot-starter-aop", version.ref = "spring-boot" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
+#
+# Jakarta Libraries
+jakarta-validation = { group = "jakarta.validation", name = "jakarta.validation-api" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakartaAnnotation" }
 
 # Kotest
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
 kotest-extensions-spring = { group = "io.kotest.extensions", name = "kotest-extensions-spring", version.ref = "kotest-extension" }
 
+slf4j = { module = "org.slf4j:slf4j-api", version = "2.0.9" }
+
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+
+# LINE Kotlin-JDSL Libraries
+line-kotlin-jdsl-jpql-dsl = { module = "com.linecorp.kotlin-jdsl:jpql-dsl", version.ref = "line-kotlin-jdsl" }
+line-kotlin-jdsl-jpql-render = { module = "com.linecorp.kotlin-jdsl:jpql-render", version.ref = "line-kotlin-jdsl" }
+line-kotlin-jdsl-spring-data-jpa-support = { module = "com.linecorp.kotlin-jdsl:spring-data-jpa-support", version.ref = "line-kotlin-jdsl" }
+
 # Mockk
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 spring-mockk = { group = "com.ninja-squad", name = "springmockk", version.ref = "spring-mockk" }
 
-[bundles]
+# DataBase
+mysql-connector = { module = "com.mysql:mysql-connector-j", version.ref = "mysql" }
+h2 = { module = "com.h2database:h2" }
 
+
+# AWS Libraries
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "aws" }
+
+[bundles]
+aws-client = ["aws-sdk-s3"]
+line-kotlin-jdsl = ["line-kotlin-jdsl-jpql-dsl", "line-kotlin-jdsl-jpql-render", "line-kotlin-jdsl-spring-data-jpa-support"]
 test = ["kotest-runner-junit5", "kotest-assertions-core", "mockk"]
 spring-test = ["spring-boot-starter-test", "kotest-extensions-spring", "spring-mockk"]
