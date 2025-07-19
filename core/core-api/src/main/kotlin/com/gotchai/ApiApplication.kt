@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
-class GotChaiApplication
+class ApiApplication
 
 fun main(args: Array<String>) {
-    runApplication<GotChaiApplication>(*args)
+    runApplication<ApiApplication>(*args)
 }
