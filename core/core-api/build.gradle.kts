@@ -28,5 +28,11 @@ tasks {
         enabled = false
     }
 
-
+    openapi3 {
+        title = "Gotchai API"
+        version = "v1"
+        format = "yml"
+        outputFileNamePrefix = "api"
+        outputDirectory = "src/main/resources/static/docs"
+    }
 }

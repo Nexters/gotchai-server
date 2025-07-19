@@ -56,7 +56,6 @@ subprojects {
         kapt(libs.spring.boot.configuration.processor)
     }
 
-    // ktlint 설정 추가
     configure<KtlintExtension> {
         version.set(libs.versions.ktlint.version.set)
     }

@@ -22,7 +22,7 @@ fun List<FieldDescriptor>.toListFields(): List<FieldDescriptor> =
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
-    init: DocumentDsl<T>.() -> Unit
+    init: DocumentDsl<T>.() -> Unit,
 ): BodySpec<T, *> =
     DocumentDsl(identifier, this)
         .apply(init)
@@ -30,7 +30,7 @@ fun <T> BodySpec<T, *>.document(
 
 class DocumentDsl<T>(
     private val identifier: String,
-    private val contentSpec: BodySpec<T, *>
+    private val contentSpec: BodySpec<T, *>,
 ) {
     private val snippets: MutableList<Snippet> = mutableListOf()
 
@@ -72,7 +72,7 @@ class DocumentDsl<T>(
                 identifier,
                 Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                 Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                *snippets.toTypedArray()
-            )
+                *snippets.toTypedArray(),
+            ),
         )
 }

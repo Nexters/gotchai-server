@@ -10,7 +10,8 @@ abstract class ControllerTest : DescribeSpec() {
     private val restDocumentation = ManualRestDocumentation()
 
     protected fun <T> createWebClient(controller: T): WebTestClient =
-        MockMvcWebTestClient.bindToController(controller)
+        MockMvcWebTestClient
+            .bindToController(controller)
             .configureClient()
             .filter(WebTestClientRestDocumentation.documentationConfiguration(restDocumentation))
             .build()
