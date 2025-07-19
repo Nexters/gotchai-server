@@ -1,9 +1,5 @@
-tasks.getByName("bootJar") {
-    enabled = true
-}
-
-tasks.getByName("jar") {
-    enabled = false
+plugins {
+    alias(libs.plugins.restdocs.api.spec)
 }
 
 dependencies {
@@ -16,6 +12,21 @@ dependencies {
     implementation(project(":core:core-utils"))
     runtimeOnly(project(":storage:rds"))
 
-    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.bundles.spring.test)
+    testImplementation(libs.bundles.spring.rest.docs)
     testImplementation(project(":storage:rds"))
+    testFixturesImplementation(libs.bundles.test)
+    testFixturesImplementation(libs.bundles.spring.rest.docs)
+}
+
+tasks {
+    bootJar {
+        enabled = true
+    }
+
+    jar {
+        enabled = false
+    }
+
+
 }
