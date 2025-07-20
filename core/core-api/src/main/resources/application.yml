@@ -1,6 +1,0 @@
-spring:
-  config:
-    import:
-      - rdb.yml
-  application:
-    name: gotchai-server

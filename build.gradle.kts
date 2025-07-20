@@ -3,12 +3,11 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
     alias(libs.plugins.java.library)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.java.test.fixtures)
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.jpa) apply false
-    alias(libs.plugins.ktlint) apply false
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.spring) apply false
+    alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.spring.boot) apply false
     alias(libs.plugins.spring.dependency.management)
 }
@@ -29,11 +28,10 @@ subprojects {
 
     apply(libs.plugins.java.library)
     apply(libs.plugins.java.test.fixtures)
-    apply(libs.plugins.ktlint)
     apply(libs.plugins.kotlin.jvm)
     apply(libs.plugins.kotlin.kapt)
     apply(libs.plugins.kotlin.spring)
-    apply(libs.plugins.kotlin.jpa)
+    apply(libs.plugins.ktlint)
     apply(libs.plugins.spring.boot)
     apply(libs.plugins.spring.dependency.management)
 
@@ -51,13 +49,12 @@ subprojects {
     dependencies {
         implementation(libs.kotlin.reflect)
         implementation(libs.jackson.kotlin)
-        testImplementation(libs.bundles.test)
-
         annotationProcessor(libs.spring.boot.configuration.processor)
         kapt(libs.spring.boot.configuration.processor)
+
+        testImplementation(libs.bundles.test)
     }
 
-    // ktlint 설정 추가
     configure<KtlintExtension> {
         version.set(libs.versions.ktlint.version.set)
     }
