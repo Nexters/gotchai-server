@@ -1,3 +1,10 @@
+import com.epages.restdocs.apispec.gradle.OpenApi3Task
+import org.gradle.internal.impldep.org.bouncycastle.asn1.x500.style.RFC4519Style.title
+
+plugins {
+    alias(libs.plugins.restdocs.api.spec)
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
@@ -9,6 +16,10 @@ dependencies {
     implementation(libs.jakarta.validation)
 
     testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.bundles.spring.rest.docs)
+    testFixturesImplementation(libs.bundles.test)
+    testFixturesImplementation(libs.bundles.spring.test)
+    testFixturesImplementation(libs.bundles.spring.rest.docs)
 }
 
 tasks {
@@ -18,5 +29,17 @@ tasks {
 
     jar {
         enabled = false
+    }
+
+    test {
+        finalizedBy(withType<OpenApi3Task>())
+    }
+
+    openapi3 {
+        title = "Gotchai API"
+        version = "v1"
+        format = "yml"
+        outputFileNamePrefix = "api"
+        outputDirectory = "src/main/resources/static/docs"
     }
 }

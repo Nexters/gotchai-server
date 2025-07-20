@@ -62,6 +62,7 @@ subprojects {
     tasks {
         test {
             useJUnitPlatform()
+            classpath += files(sourceSets.main.map { it.output })
         }
     }
 }

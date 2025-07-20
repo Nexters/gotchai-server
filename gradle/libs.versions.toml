@@ -29,6 +29,9 @@ mysql = "8.2.0"
 # AWS
 aws = "2.25.47"
 
+# OpenAPI
+restdocs-api-spec = "0.19.4"
+
 [plugins]
 
 # Java
@@ -48,6 +51,9 @@ spring-dependency-management = { id = "io.spring.dependency-management", version
 # Ktlint
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
+# OpenAPI
+restdocs-api-spec = { id = "com.epages.restdocs-api-spec", version.ref = "restdocs-api-spec" }
+
 [libraries]
 
 # Kotlin
@@ -63,6 +69,7 @@ spring-boot-starter-aop = { group = "org.springframework.boot", name = "spring-b
 spring-boot-starter-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
+spring-restdocs-webtestclient = { group = "org.springframework.restdocs", name = "spring-restdocs-webtestclient" }
 
 # Jakarta
 jakarta-validation = { group = "jakarta.validation", name = "jakarta.validation-api" }
@@ -95,8 +102,11 @@ h2 = { group = "com.h2database", name = "h2" }
 # AWS
 aws-sdk-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws" }
 
-[bundles]
+# OpenAPI
+restdocs-api-spec = { group = "com.epages", name = "restdocs-api-spec", version.ref = "restdocs-api-spec" }
+restdocs-api-spec-webtestclient = { group = "com.epages", name = "restdocs-api-spec-webtestclient", version.ref = "restdocs-api-spec" }
 
+[bundles]
 
 aws = ["aws-sdk-s3"]
 jdsl = [
@@ -113,4 +123,9 @@ spring-test = [
     "spring-boot-starter-test",
     "kotest-extensions-spring",
     "spring-mockk"
+]
+spring-rest-docs = [
+    "spring-restdocs-webtestclient",
+    "restdocs-api-spec",
+    "restdocs-api-spec-webtestclient"
 ]
