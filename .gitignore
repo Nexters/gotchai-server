@@ -22,3 +22,4 @@ out/
 .env
 *.log
 .DS_Store
+api.yml
