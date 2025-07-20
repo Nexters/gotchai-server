@@ -5,6 +5,10 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+}
+
 dependencyResolutionManagement {
     @Suppress("UnstableApiUsage")
     repositories {
@@ -15,17 +19,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "gotchai"
 
+include("api", "domain", "common")
+include("storage:rdb")
 include(
-    "core:core-api",
-    "core:core-domain",
-    "core:core-utils",
-)
-
-include(
-    "storage:rds",
-)
-
-include(
-    "external:aws",
-    "external:ncp",
+    "infrastructure:aws",
+    "infrastructure:ncp"
 )
