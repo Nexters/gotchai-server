@@ -20,6 +20,9 @@ kotest-extension = "1.1.3"
 mockk = "1.14.4"
 spring-mockk = "4.0.2"
 
+# JWT
+jwt = "0.12.6"
+
 # Jakarta
 jakarta-annotation = "3.0.0"
 
@@ -70,6 +73,15 @@ spring-boot-starter-validation = { group = "org.springframework.boot", name = "s
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
 spring-restdocs-webtestclient = { group = "org.springframework.restdocs", name = "spring-restdocs-webtestclient" }
+
+# Security
+spring_boot_starter_security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring_security_test = { module = "org.springframework.security:spring-security-test" }
+
+# JWT
+jjwt_api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jwt" }
+jjwt_impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jwt" }
+jjwt_jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }
 
 # Jakarta
 jakarta-validation = { group = "jakarta.validation", name = "jakarta.validation-api" }

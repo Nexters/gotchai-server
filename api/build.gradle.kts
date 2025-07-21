@@ -1,5 +1,4 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Task
-import org.gradle.internal.impldep.org.bouncycastle.asn1.x500.style.RFC4519Style.title
 
 plugins {
     alias(libs.plugins.restdocs.api.spec)
@@ -14,6 +13,13 @@ dependencies {
     implementation(libs.spring.boot.starter.aop)
     implementation(libs.spring.boot.starter.validation)
     implementation(libs.jakarta.validation)
+
+    // Security
+    implementation(libs.spring.boot.starter.security)
+    testImplementation(libs.spring.security.test)
+    implementation(libs.jjwt.api)
+    runtimeOnly(libs.jjwt.jackson)
+    runtimeOnly(libs.jjwt.impl)
 
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.bundles.spring.rest.docs)
