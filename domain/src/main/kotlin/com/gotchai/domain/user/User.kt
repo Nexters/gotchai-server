@@ -7,8 +7,9 @@ class User {
     data class Create(
         val name: String,
         val email: String,
-        val socialType: SocialType
+        val socialType: SocialType,
     )
+
     data class Info(
         val id: Long,
         val name: String,

@@ -1,6 +1,7 @@
 package com.gotchai.storage.rdb.user
 
 import com.gotchai.common.enum.user.SocialType
+import com.gotchai.domain.user.User
 import com.gotchai.storage.rdb.global.common.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -16,7 +17,21 @@ class UserEntity(
     @Column(length = 50)
     val email: String,
     @Enumerated(value = EnumType.STRING)
-    @Column(name= "provider", columnDefinition = "varchar(50)")
+    @Column(name = "provider", columnDefinition = "varchar(50)")
     private val socialType: SocialType,
-): BaseEntity() {
+) : BaseEntity() {
+    constructor(create: User.Create) : this(
+        name = create.name,
+        email = create.email,
+        socialType = create.socialType,
+    )
+
+    fun toUserInfo(): User.Info =
+        User.Info(
+            id = id!!,
+            name = name,
+            email = email,
+            socialType = socialType,
+            createdAt = createdAt,
+        )
 }

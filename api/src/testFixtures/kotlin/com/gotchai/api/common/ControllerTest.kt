@@ -23,7 +23,8 @@ abstract class ControllerTest : DescribeSpec() {
     private lateinit var restDocumentationContextProvider: RestDocumentationContextProvider
 
     protected val webClient by lazy {
-        MockMvcWebTestClient.bindToApplicationContext(webApplicationContext)
+        MockMvcWebTestClient
+            .bindToApplicationContext(webApplicationContext)
             .configureClient()
             .filter(WebTestClientRestDocumentation.documentationConfiguration(restDocumentationContextProvider))
             .build()
