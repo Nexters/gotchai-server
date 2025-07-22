@@ -10,7 +10,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 
 @Table
-@Entity(name = "users")
+@Entity(name = "user")
 class UserEntity(
     @Column(length = 20)
     val name: String,
@@ -20,7 +20,7 @@ class UserEntity(
     @Column(name = "provider", columnDefinition = "varchar(50)")
     private val socialType: SocialType,
 ) : BaseEntity() {
-    constructor(create: User.Create) : this(
+    constructor(create: User.Creation) : this(
         name = create.name,
         email = create.email,
         socialType = create.socialType,
