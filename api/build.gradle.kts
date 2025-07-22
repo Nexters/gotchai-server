@@ -16,6 +16,7 @@ dependencies {
 
     // Security
     implementation(libs.spring.boot.starter.security)
+//    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     testImplementation(libs.spring.security.test)
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.jackson)

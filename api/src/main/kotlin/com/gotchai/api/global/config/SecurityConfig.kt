@@ -1,27 +1,38 @@
 package com.gotchai.api.global.config
 
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.core.convert.converter.Converter
-import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.core.GrantedAuthorityDefaults
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.factory.PasswordEncoderFactories
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.filter.OncePerRequestFilter
 
+@Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(RsaKeyProperties::class)
 class SecurityConfig {
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
 
+    @Bean
+    fun grantedAuthorityDefaults(): GrantedAuthorityDefaults = GrantedAuthorityDefaults("")
+
+    @Bean
+    fun jwtAuthenticationFilter(rsaKeyProperties: RsaKeyProperties): JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(rsaKeyProperties)
+    }
 
     @Bean
     fun securityFilterChain(
         http: HttpSecurity,
-        jwtConverter: Converter<OAuth2ResourceServerProperties.Jwt, out AbstractAuthenticationToken>,
+        jwtAuthenticationFilter: JwtAuthenticationFilter
     ): SecurityFilterChain {
+        http.addFilterBefore(jwtAuthenticationFilter, OncePerRequestFilter::class.java)
 
         http
             .cors { }
