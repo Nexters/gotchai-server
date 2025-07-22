@@ -32,6 +32,9 @@ aws = "2.25.47"
 # OpenAPI
 restdocs-api-spec = "0.19.4"
 
+# Jib
+jib = "3.4.0"
+
 [plugins]
 
 # Java
@@ -53,6 +56,9 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 
 # OpenAPI
 restdocs-api-spec = { id = "com.epages.restdocs-api-spec", version.ref = "restdocs-api-spec" }
+
+# Jib
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
 
 [libraries]
 

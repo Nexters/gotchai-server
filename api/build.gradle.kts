@@ -1,8 +1,8 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Task
-import org.gradle.internal.impldep.org.bouncycastle.asn1.x500.style.RFC4519Style.title
 
 plugins {
     alias(libs.plugins.restdocs.api.spec)
+    alias(libs.plugins.jib)
 }
 
 dependencies {
@@ -33,6 +33,12 @@ tasks {
 
     test {
         finalizedBy(withType<OpenApi3Task>())
+    }
+
+    jib {
+        from {
+            image = "openjdk:21-oracle"
+        }
     }
 
     openapi3 {
