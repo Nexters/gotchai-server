@@ -59,6 +59,14 @@ subprojects {
         version.set(libs.versions.ktlint.version.set)
     }
 
+    tasks.getByName("bootJar") {
+        enabled = false
+    }
+
+    tasks.getByName("jar") {
+        enabled = true
+    }
+
     tasks {
         test {
             useJUnitPlatform()
