@@ -118,8 +118,7 @@ jobs:
                   "value": "[${{ github.actor }}](${{ github.event.sender.html_url }})",
                   "inline": true
                 } 
-              ],
-              "timestamp": "${{ github.event.workflow_run.updated_at }}"
+              ]
             }
           ]
         }' ${{ secrets.DISCORD_WEBHOOK_URL }}
