@@ -1,0 +1,14 @@
+services:
+  rdb:
+    image: mysql:8.4.3
+    container_name: gotchai-local-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: gotchai
+      MYSQL_USER: gotchai
+      MYSQL_PASSWORD: nexters
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Seoul
+    command: [ "mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_general_ci" ]

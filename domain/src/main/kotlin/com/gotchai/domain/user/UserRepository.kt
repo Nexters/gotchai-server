@@ -1,3 +1,5 @@
 package com.gotchai.domain.user
 
-interface UserRepository
+interface UserRepository {
+    fun readBy(userId: Long): User.Issue
+}

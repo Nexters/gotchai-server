@@ -18,7 +18,7 @@ import org.springframework.web.context.request.WebRequest
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
-@RestControllerAdvice(basePackages = ["com.gotchai.api"])
+@RestControllerAdvice(basePackages = ["com.gotchai"])
 class ApiExceptionAdvice : ResponseEntityExceptionHandler() {
     companion object {
         private val log by logger()

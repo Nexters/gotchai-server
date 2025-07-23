@@ -20,7 +20,7 @@ dependencyResolutionManagement {
 rootProject.name = "gotchai"
 
 include("api", "domain", "common")
-include("storage:rdb")
+include("storage:rdb", "storage:redis")
 include(
     "infrastructure:aws",
     "infrastructure:ncp"
