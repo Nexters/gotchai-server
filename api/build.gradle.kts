@@ -2,6 +2,7 @@ import com.epages.restdocs.apispec.gradle.OpenApi3Task
 
 plugins {
     alias(libs.plugins.restdocs.api.spec)
+    alias(libs.plugins.jib)
 }
 
 dependencies {
@@ -41,6 +42,12 @@ tasks {
 
     test {
         finalizedBy(withType<OpenApi3Task>())
+    }
+
+    jib {
+        from {
+            image = "amazoncorretto:21-alpine"
+        }
     }
 
     openapi3 {
