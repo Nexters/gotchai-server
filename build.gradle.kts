@@ -47,8 +47,10 @@ subprojects {
     }
 
     dependencies {
+        api(libs.spring.boot.starter.oauth2.resource.server)
         implementation(libs.kotlin.reflect)
         implementation(libs.jackson.kotlin)
+
         annotationProcessor(libs.spring.boot.configuration.processor)
         kapt(libs.spring.boot.configuration.processor)
 

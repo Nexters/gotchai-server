@@ -12,7 +12,7 @@ import org.springframework.http.server.ServletServerHttpResponse
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
 
-@RestControllerAdvice(basePackages = ["com.gotchai.api"])
+@RestControllerAdvice(basePackages = ["com.gotchai"])
 class ApiResponseAdvice : ResponseBodyAdvice<Any> {
     companion object {
         private val excludeUrls = listOf("/actuator/prometheus")

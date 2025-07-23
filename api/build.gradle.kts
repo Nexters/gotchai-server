@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
     runtimeOnly(project(":storage:rdb"))
+    runtimeOnly(project(":storage:redis"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.aop)
@@ -16,7 +17,6 @@ dependencies {
 
     // Security
     implementation(libs.spring.boot.starter.security)
-//    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     testImplementation(libs.spring.security.test)
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.jackson)
@@ -27,6 +27,7 @@ dependencies {
     testFixturesImplementation(libs.bundles.test)
     testFixturesImplementation(libs.bundles.spring.test)
     testFixturesImplementation(libs.bundles.spring.rest.docs)
+    testImplementation(project(":storage:redis"))
 }
 
 tasks {

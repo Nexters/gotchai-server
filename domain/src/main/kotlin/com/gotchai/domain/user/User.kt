@@ -4,6 +4,10 @@ import com.gotchai.common.enum.user.SocialType
 import java.time.LocalDateTime
 
 class User {
+    data class Issue(
+        val id: Long,
+    )
+
     data class Creation(
         val name: String,
         val email: String,

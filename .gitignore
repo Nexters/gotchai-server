@@ -23,3 +23,5 @@ out/
 *.log
 .DS_Store
 api.yml
+**/.jqwik-database
+*.pem

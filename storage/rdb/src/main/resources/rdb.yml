@@ -19,20 +19,19 @@ spring:
         show_log: true
         format_sql: true
 datasource:
-  db:
-    core:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: ${DATASOURCE_DB_CORE_JDBC_URL}
-      username: ${DATASOURCE_DB_CORE_USERNAME}
-      password: ${DATASOURCE_DB_CORE_PASSWORD}
-      pool-name: core-db-pool
-      maximum-pool-size: 10
-      connection-timeout: 1500
-      keepalive-time: 30000
-      validation-timeout: 1000
-      max-lifetime: 600000
-      data-source-properties:
-        rewriteBatchedStatements: true
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/gotchai?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DATASOURCE_DB_CORE_USERNAME:gotchai}
+    password: ${DATASOURCE_DB_CORE_PASSWORD:nexters}
+    pool-name: core-db-pool
+    maximum-pool-size: 10
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true
 ---
 spring:
   config:
@@ -46,20 +45,19 @@ spring:
         show_log: true
         format_sql: true
 datasource:
-  db:
-    core:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: ${DATASOURCE_DB_CORE_JDBC_URL}
-      username: ${DATASOURCE_DB_CORE_USERNAME}
-      password: ${DATASOURCE_DB_CORE_PASSWORD}
-      pool-name: core-db-pool
-      maximum-pool-size: 5
-      connection-timeout: 1500
-      keepalive-time: 30000
-      validation-timeout: 1000
-      max-lifetime: 600000
-      data-source-properties:
-        rewriteBatchedStatements: true
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: ${DATASOURCE_DB_CORE_JDBC_URL}
+    username: ${DATASOURCE_DB_CORE_USERNAME}
+    password: ${DATASOURCE_DB_CORE_PASSWORD}
+    pool-name: core-db-pool
+    maximum-pool-size: 5
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true
 ---
 spring:
   config:
@@ -72,17 +70,16 @@ spring:
       hibernate:
         show_log: true
 datasource:
-  db:
-    core:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: ${DATASOURCE_DB_CORE_JDBC_URL}
-      username: ${DATASOURCE_DB_CORE_USERNAME}
-      password: ${DATASOURCE_DB_CORE_PASSWORD}
-      pool-name: core-db-pool
-      maximum-pool-size: 10
-      connection-timeout: 1500
-      keepalive-time: 30000
-      validation-timeout: 1000
-      max-lifetime: 600000
-      data-source-properties:
-        rewriteBatchedStatements: true
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: ${DATASOURCE_DB_CORE_JDBC_URL}
+    username: ${DATASOURCE_DB_CORE_USERNAME}
+    password: ${DATASOURCE_DB_CORE_PASSWORD}
+    pool-name: core-db-pool
+    maximum-pool-size: 10
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true

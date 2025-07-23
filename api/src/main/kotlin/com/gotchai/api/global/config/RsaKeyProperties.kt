@@ -7,5 +7,5 @@ import java.security.interfaces.RSAPublicKey
 @ConfigurationProperties(prefix = "rsa")
 data class RsaKeyProperties(
     val publicKey: RSAPublicKey,
-    val privateKey: RSAPrivateKey
+    val privateKey: RSAPrivateKey,
 )

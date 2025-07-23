@@ -34,4 +34,9 @@ class UserEntity(
             socialType = socialType,
             createdAt = createdAt,
         )
+
+    fun toIssue(): User.Issue =
+        User.Issue(
+            id = id!!,
+        )
 }
