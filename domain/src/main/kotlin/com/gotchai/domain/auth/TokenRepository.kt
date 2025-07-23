@@ -1,6 +1,5 @@
-package com.gotchai.domain.auth.token
+package com.gotchai.domain.auth
 
-import com.gotchai.domain.auth.Provider
 import com.gotchai.domain.user.SocialUser
 import com.gotchai.domain.user.User
 

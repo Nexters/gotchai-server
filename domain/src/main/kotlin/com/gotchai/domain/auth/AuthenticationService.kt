@@ -1,7 +1,5 @@
 package com.gotchai.domain.auth
 
-import com.gotchai.domain.auth.token.RefreshToken
-import com.gotchai.domain.auth.token.Token
 import com.gotchai.domain.user.SocialUser
 import org.springframework.stereotype.Service
 
@@ -18,7 +16,7 @@ class AuthenticationService(
             socialUser = socialUser,
         )
 
-    fun renew(refreshToken: RefreshToken): Token = authenticationProcessor.renew(refreshToken.token)
+    fun renew(refreshToken: String): Token = authenticationProcessor.renew(refreshToken)
 
     fun logout(token: String): String = authenticationProcessor.remove(token)
 

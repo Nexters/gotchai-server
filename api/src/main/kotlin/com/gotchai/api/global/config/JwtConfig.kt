@@ -1,5 +1,7 @@
 package com.gotchai.api.global.config
 
+import com.gotchai.api.global.jwt.JwtConverter
+import com.gotchai.domain.auth.RedisTokenRepository
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
@@ -7,6 +9,9 @@ import com.nimbusds.jose.jwk.source.JWKSource
 import com.nimbusds.jose.proc.SecurityContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.convert.converter.Converter
+import org.springframework.security.authentication.AbstractAuthenticationToken
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
@@ -47,5 +52,12 @@ class JwtConfig(
                 .build()
         val jwkSet = JWKSet(rsaKey)
         return ImmutableJWKSet(jwkSet)
+    }
+
+    @Bean
+    fun jwtConverter(redisTokenRepository: RedisTokenRepository): Converter<Jwt, out AbstractAuthenticationToken> {
+        val jwtConverter = JwtConverter(redisTokenRepository)
+        jwtConverter.setPrincipalClaimName("jti")
+        return jwtConverter
     }
 }

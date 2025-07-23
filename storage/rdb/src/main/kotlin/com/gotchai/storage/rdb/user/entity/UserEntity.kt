@@ -1,4 +1,4 @@
-package com.gotchai.storage.rdb.user
+package com.gotchai.storage.rdb.user.entity
 
 import com.gotchai.common.enum.user.SocialType
 import com.gotchai.domain.user.User

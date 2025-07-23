@@ -1,4 +1,4 @@
-package com.gotchai.storage.rdb.auth
+package com.gotchai.common.enum.auth
 
 enum class AuthenticationEntityStatus {
     ACTIVE,

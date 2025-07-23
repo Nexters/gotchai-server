@@ -3,7 +3,7 @@ package com.gotchai.domain.auth
 import org.springframework.stereotype.Component
 
 @Component
-class AuthenticationHistoryWriter(
+class AuthenticationHistoryAppender(
     private val authenticationHistoryRepository: AuthenticationHistoryRepository,
 ) {
     fun write(newAuthenticationHistory: AuthenticationHistory.Creation) {

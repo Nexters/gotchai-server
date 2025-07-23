@@ -1,8 +1,9 @@
-package com.gotchai.storage.rdb.auth
+package com.gotchai.storage.rdb.auth.entity
 
+import com.gotchai.common.enum.auth.AuthenticationEntityStatus
+import com.gotchai.common.enum.auth.TokenStatus
 import com.gotchai.domain.auth.AuthenticationHistory
-import com.gotchai.domain.auth.token.Token
-import com.gotchai.domain.auth.token.TokenStatus
+import com.gotchai.domain.auth.Token
 import com.gotchai.storage.rdb.global.common.AuthenticationBaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -23,8 +24,8 @@ class AuthenticationHistoryEntity(
     ) : this(
         userId = newAuthenticationHistory.userId,
         deviceId = newAuthenticationHistory.deviceId,
-        accessToken = newAuthenticationHistory.newToken.token.accessToken,
-        refreshToken = newAuthenticationHistory.newToken.token.refreshToken,
+        accessToken = newAuthenticationHistory.token.accessToken,
+        refreshToken = newAuthenticationHistory.token.refreshToken,
     )
 
     fun toAuthenticationHistory(): AuthenticationHistory.Info =

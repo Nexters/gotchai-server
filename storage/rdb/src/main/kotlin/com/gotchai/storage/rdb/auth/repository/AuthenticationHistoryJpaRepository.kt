@@ -1,4 +1,6 @@
-package com.gotchai.storage.rdb.auth
+package com.gotchai.storage.rdb.auth.repository
+import com.gotchai.common.enum.auth.AuthenticationEntityStatus
+import com.gotchai.storage.rdb.auth.entity.AuthenticationHistoryEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AuthenticationHistoryJpaRepository : JpaRepository<AuthenticationHistoryEntity, Long> {

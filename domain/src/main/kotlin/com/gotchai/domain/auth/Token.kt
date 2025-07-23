@@ -1,4 +1,4 @@
-package com.gotchai.domain.auth.token
+package com.gotchai.domain.auth
 
 data class Token(
     val accessToken: String,

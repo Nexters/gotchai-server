@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.jwt.Jwt
 
 class CustomJwtGrantedAuthoritiesConverter : Converter<Jwt, Collection<GrantedAuthority>> {
     override fun convert(jwt: Jwt): Collection<GrantedAuthority> {
-        val getClaim = jwt.getClaim<List<String>>("ROLE") ?: return emptyList()
-        return getClaim.map { role -> SimpleGrantedAuthority(role) }
+        val roles: List<String> = jwt.getClaim("ROLE") ?: emptyList()
+        return roles.map { role -> SimpleGrantedAuthority(role) }
     }
 }

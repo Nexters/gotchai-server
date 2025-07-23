@@ -1,4 +1,4 @@
-package com.gotchai.storage.rdb.user
+package com.gotchai.storage.rdb.user.repository
 
 import com.gotchai.domain.user.User
 import com.gotchai.domain.user.UserRepository

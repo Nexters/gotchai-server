@@ -1,32 +1,27 @@
 package com.gotchai.domain.auth
 
-import com.gotchai.domain.auth.token.NewToken
-import com.gotchai.domain.auth.token.Token
-import com.gotchai.domain.auth.token.TokenRepository
-import com.gotchai.domain.auth.token.TokenStatus
+import com.gotchai.common.enum.auth.TokenStatus
 import com.gotchai.domain.user.SocialUser
 import org.springframework.stereotype.Component
 
 @Component
 class AuthenticationProcessor(
     private val tokenRepository: TokenRepository,
-    private val authenticationHistoryWriter: AuthenticationHistoryWriter,
+    private val authenticationHistoryAppender: AuthenticationHistoryAppender,
 ) {
     fun login(
         deviceId: String,
         socialUser: SocialUser,
     ): Token =
         tokenRepository.create(deviceId, socialUser).apply {
-            authenticationHistoryWriter.write(
+            authenticationHistoryAppender.write(
                 AuthenticationHistory.Creation(
                     userId = socialUser.id,
                     deviceId = deviceId,
-                    newToken =
-                        NewToken(
-                            Token(
-                                accessToken = this.accessToken,
-                                refreshToken = this.refreshToken,
-                            ),
+                    token =
+                        Token(
+                            accessToken = this.accessToken,
+                            refreshToken = this.refreshToken,
                         ),
                     status = TokenStatus.ACTIVE,
                 ),

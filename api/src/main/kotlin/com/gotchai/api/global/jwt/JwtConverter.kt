@@ -46,7 +46,6 @@ class JwtConverter(
         )
     }
 
-    @Throws(AuthenticationErrorException::class)
     private fun Jwt.validateByCachedToken(token: String) {
         if (this.tokenValue == token) {
             return

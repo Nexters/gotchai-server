@@ -1,9 +1,11 @@
-package com.gotchai.storage.rdb.auth
+package com.gotchai.storage.rdb.auth.repository
 
+import com.gotchai.common.enum.auth.AuthenticationEntityStatus
 import com.gotchai.domain.auth.AuthenticationHistory
 import com.gotchai.domain.auth.AuthenticationHistoryRepository
 import com.gotchai.domain.global.exception.AuthenticationErrorException
 import com.gotchai.domain.global.exception.AuthenticationErrorType
+import com.gotchai.storage.rdb.auth.entity.AuthenticationHistoryEntity
 import com.gotchai.storage.rdb.global.common.ReadOnlyTransactional
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -41,7 +43,7 @@ class AuthenticationHistoryCoreRepository(
         return histories
             .find {
                 it.refreshToken == updateAuthenticationHistory.refreshToken
-            }?.updateRefreshToken(updateAuthenticationHistory.newToken.token)
+            }?.updateRefreshToken(updateAuthenticationHistory.token)
     }
 
     @Transactional
