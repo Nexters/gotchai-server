@@ -37,7 +37,7 @@ tasks {
 
     jib {
         from {
-            image = "openjdk:21-oracle"
+            image = "amazoncorretto:21-alpine"
         }
     }
 
