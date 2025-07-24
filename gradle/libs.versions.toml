@@ -12,6 +12,10 @@ spring-dependency-management = "1.1.7"
 # JDSL
 line-kotlin-jdsl = "3.4.1"
 
+# OpenFeign
+spring-cloud-openfeign = "4.3.0"
+openfeign-micrometer = "13.6"
+
 # Kotest
 kotest = "5.9.1"
 kotest-extension = "1.1.3"
@@ -98,6 +102,10 @@ jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }
 jakarta-validation = { group = "jakarta.validation", name = "jakarta.validation-api" }
 jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation" }
 
+# OpenFeign Libraries
+spring-cloud-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
+openfeign-micrometer = { module = "io.github.openfeign:feign-micrometer", version.ref = "openfeign-micrometer" }
+
 # Kotest
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
@@ -133,7 +141,7 @@ restdocs-api-spec = { group = "com.epages", name = "restdocs-api-spec", version.
 restdocs-api-spec-webtestclient = { group = "com.epages", name = "restdocs-api-spec-webtestclient", version.ref = "restdocs-api-spec" }
 
 [bundles]
-
+openfeign = ["spring-cloud-openfeign", "openfeign-micrometer"]
 aws = ["aws-sdk-s3"]
 jdsl = [
     "line-kotlin-jdsl-jpql-dsl",
