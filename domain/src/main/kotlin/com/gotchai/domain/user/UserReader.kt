@@ -6,5 +6,7 @@ import org.springframework.stereotype.Component
 class UserReader(
     private val userRepository: UserRepository,
 ) {
-    fun readUserIssue(userId: Long): User.Issue = userRepository.readBy(userId)
+    fun readUserIssue(userId: Long): User.Issue = userRepository.findBy(userId)
+
+    fun readCredentialByEmail(email: String): User.Credential = userRepository.findCredentialByEmail(email)
 }

@@ -16,14 +16,23 @@ class UserEntity(
     val name: String,
     @Column(length = 50)
     val email: String,
+    val password: String,
     @Enumerated(value = EnumType.STRING)
     @Column(name = "provider", columnDefinition = "varchar(50)")
     private val socialType: SocialType,
 ) : BaseEntity() {
-    constructor(create: User.Creation) : this(
+    constructor(create: User.SocialCreation) : this(
         name = create.name,
         email = create.email,
+        password = "",
         socialType = create.socialType,
+    )
+
+    constructor(create: User.GotchaiCreation) : this(
+        name = create.name,
+        email = create.email,
+        password = create.password,
+        socialType = SocialType.GOTCHAI,
     )
 
     fun toUserInfo(): User.Info =
@@ -33,6 +42,21 @@ class UserEntity(
             email = email,
             socialType = socialType,
             createdAt = createdAt,
+        )
+
+    fun toCredential(): User.Credential =
+        User.Credential(
+            id = id!!,
+            email = email,
+            password = password,
+            socialType = socialType,
+        )
+
+    fun toProfile(): User.Profile =
+        User.Profile(
+            name = name,
+            email = email,
+            socialType = socialType,
         )
 
     fun toIssue(): User.Issue =
