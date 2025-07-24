@@ -17,6 +17,7 @@ class UserEntity(
     @Column(length = 50)
     val email: String,
     val password: String,
+    val socialId: String?,
     @Enumerated(value = EnumType.STRING)
     @Column(name = "provider", columnDefinition = "varchar(50)")
     private val socialType: SocialType,
@@ -25,6 +26,7 @@ class UserEntity(
         name = create.name,
         email = create.email,
         password = "",
+        socialId = create.socialId,
         socialType = create.socialType,
     )
 
@@ -32,6 +34,7 @@ class UserEntity(
         name = create.name,
         email = create.email,
         password = create.password,
+        socialId = null,
         socialType = SocialType.GOTCHAI,
     )
 
@@ -40,6 +43,7 @@ class UserEntity(
             id = id!!,
             name = name,
             email = email,
+            socialId = socialId,
             socialType = socialType,
             createdAt = createdAt,
         )

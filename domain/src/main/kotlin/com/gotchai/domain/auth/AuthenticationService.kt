@@ -18,7 +18,9 @@ class AuthenticationService(
         email: String,
         password: String,
     ): Token {
-        val user = userService.getUserCredentialByEmail(email)
+        val user =
+            userService.getUserCredentialByEmail(email)
+                ?: throw ErrorException(ErrorType.NOT_FOUND_USER)
 
         if (!passwordEncoder.matches(password, user.password)) {
             throw ErrorException(ErrorType.INVALID_PASSWORD)
@@ -36,7 +38,7 @@ class AuthenticationService(
     }
 
     fun socialLogin(
-        deviceId: String,
+        deviceId: String?,
         socialUser: SocialUser,
     ): Token =
         authenticationProcessor.login(

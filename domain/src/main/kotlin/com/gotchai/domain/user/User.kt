@@ -17,6 +17,7 @@ class User {
     data class SocialCreation(
         val name: String,
         val email: String,
+        val socialId: String,
         val socialType: SocialType,
     )
 
@@ -24,6 +25,7 @@ class User {
         val id: Long,
         val name: String,
         val email: String,
+        val socialId: String?,
         val socialType: SocialType,
         val createdAt: LocalDateTime,
     )

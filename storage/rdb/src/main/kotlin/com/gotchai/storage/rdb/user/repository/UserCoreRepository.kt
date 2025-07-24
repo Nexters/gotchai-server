@@ -13,16 +13,30 @@ import org.springframework.stereotype.Repository
 class UserCoreRepository(
     private val userJpaRepository: UserJpaRepository,
 ) : UserRepository {
-    override fun save(gotchaiCreation: User.GotchaiCreation) {
-        userJpaRepository.save(
-            UserEntity(
-                gotchaiCreation,
-            ),
-        )
-    }
+    override fun save(gotchaiCreation: User.GotchaiCreation): User.Info =
+        userJpaRepository
+            .save(
+                UserEntity(
+                    gotchaiCreation,
+                ),
+            ).toUserInfo()
+
+    override fun save(socialCreation: User.SocialCreation): User.Info =
+        userJpaRepository
+            .save(
+                UserEntity(
+                    socialCreation,
+                ),
+            ).toUserInfo()
+
+    @ReadOnlyTransactional
+    override fun findAll(): List<User.Profile> = userJpaRepository.findAllByDeletedAtIsNull().map { it.toProfile() }
 
     @ReadOnlyTransactional
     override fun findBy(userId: Long): User.Issue = userJpaRepository.findByIdOrElseThrow(userId).toIssue()
+
+    @ReadOnlyTransactional
+    override fun findBySocialId(socialId: String): User.Info? = userJpaRepository.findBySocialIdAndDeletedAtIsNull(socialId)?.toUserInfo()
 
     @ReadOnlyTransactional
     override fun findCredentialByEmail(email: String): User.Credential {

@@ -9,15 +9,21 @@ import com.gotchai.api.presentation.v1.auth.request.RefreshTokenRequest
 import com.gotchai.api.presentation.v1.auth.request.SignUpRequest
 import com.gotchai.api.presentation.v1.auth.response.SignUpResponse
 import com.gotchai.api.presentation.v1.auth.response.TokenResponse
+import com.gotchai.common.enum.user.SocialType
+import com.gotchai.domain.auth.AuthenticationFacade
 import com.gotchai.domain.auth.AuthenticationService
 import com.gotchai.domain.user.User
+import com.gotchai.infrastructure.oauth.OAuthService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 
 @ApiV1Controller
 class AuthController(
     private val authenticationService: AuthenticationService,
+    private val authenticationFacade: AuthenticationFacade,
+    private val oauthService: OAuthService,
 ) {
     @PostMapping("/auth/test-login")
     fun testLogin(
@@ -44,14 +50,36 @@ class AuthController(
 
     @PostMapping("/auth/login/apple")
     fun appleLogin(
+        @RequestHeader(value = "X-DEVICE-ID") deviceId: String?,
         @RequestBody request: AppleLoginRequest,
-    ) {
+    ): TokenResponse {
+        val appleUserInfo = oauthService.getAppleUserInfo(request.idToken)
+
+        return TokenResponse.of(
+            authenticationFacade.socialLogin(
+                deviceId = deviceId,
+                email = appleUserInfo.email,
+                socialId = appleUserInfo.id,
+                socialType = SocialType.APPLE,
+            ),
+        )
     }
 
     @PostMapping("/auth/login/kakao")
     fun kakaoLogin(
+        @RequestHeader(value = "X-DEVICE-ID") deviceId: String?,
         @RequestBody request: KakaoLoginRequest,
-    ) {
+    ): TokenResponse {
+        val kakaoUserInfo = oauthService.getKaKaoUserInfo(request.accessToken)
+
+        return TokenResponse.of(
+            authenticationFacade.socialLogin(
+                deviceId = deviceId,
+                email = kakaoUserInfo.email,
+                socialId = kakaoUserInfo.id,
+                socialType = SocialType.KAKAO,
+            ),
+        )
     }
 
     @PostMapping("/auth/logout")

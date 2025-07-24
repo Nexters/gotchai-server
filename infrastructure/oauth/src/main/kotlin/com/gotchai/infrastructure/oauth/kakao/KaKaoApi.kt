@@ -1,6 +1,6 @@
 package com.gotchai.infrastructure.oauth.kakao
 
-import com.gotchai.infrastructure.oauth.kakao.response.KaKaoUserResponse
+import com.gotchai.infrastructure.oauth.kakao.response.KaKaoUserInfoResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestHeader
@@ -17,5 +17,5 @@ internal interface KaKaoApi {
     )
     fun getKaKaoUserInfo(
         @RequestHeader(name = "Authorization") authorization: String,
-    ): KaKaoUserResponse
+    ): KaKaoUserInfoResponse
 }

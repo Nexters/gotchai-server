@@ -27,7 +27,7 @@ class AuthenticationProcessor(
         }
 
     fun login(
-        deviceId: String,
+        deviceId: String?,
         socialUser: SocialUser,
     ): Token =
         tokenRepository.create(deviceId, socialUser).apply {

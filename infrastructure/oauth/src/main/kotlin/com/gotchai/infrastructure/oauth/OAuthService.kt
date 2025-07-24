@@ -14,9 +14,9 @@ class OAuthService(
     private val kaKaoClient: KaKaoClient,
     private val appleClient: AppleClient,
 ) {
-    fun getKaKaoUserInfo(token: String): KaKaoClientResult =
+    fun getKaKaoUserInfo(accessToken: String): KaKaoClientResult =
         try {
-            kaKaoClient.getUserInfo(token)
+            kaKaoClient.getUserInfo(accessToken)
         } catch (e: FeignException) {
             if (e.status() == 401) {
                 throw AuthenticationErrorException(AuthenticationErrorType.INVALID_KAKAO_TOKEN)
@@ -25,8 +25,8 @@ class OAuthService(
             }
         }
 
-    fun getAppleUserInfo(token: String): AppleClientResult {
-        if (!appleClient.verify(token)) throw AuthenticationErrorException(AuthenticationErrorType.INVALID_APPLE_TOKEN)
-        return appleClient.getUserInfo(token)
+    fun getAppleUserInfo(idToken: String): AppleClientResult {
+        if (!appleClient.verify(idToken)) throw AuthenticationErrorException(AuthenticationErrorType.INVALID_APPLE_TOKEN)
+        return appleClient.getUserInfo(idToken)
     }
 }

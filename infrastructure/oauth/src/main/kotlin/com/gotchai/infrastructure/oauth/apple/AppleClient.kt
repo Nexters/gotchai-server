@@ -8,13 +8,11 @@ import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component
 import java.text.ParseException
 import java.util.Date
 
 @Component
-@EnableConfigurationProperties(AppleProperties::class)
 class AppleClient internal constructor(
     private val appleApi: AppleApi,
     private val appleProperties: AppleProperties,

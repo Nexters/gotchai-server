@@ -8,6 +8,7 @@ plugins {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
+    implementation(project(":infrastructure:oauth"))
     runtimeOnly(project(":storage:rdb"))
     runtimeOnly(project(":storage:redis"))
 
