@@ -23,5 +23,6 @@ include("api", "domain", "common")
 include("storage:rdb", "storage:redis")
 include(
     "infrastructure:aws",
-    "infrastructure:ncp"
+    "infrastructure:ncp",
+    "infrastructure:oauth"
 )
