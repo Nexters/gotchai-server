@@ -7,6 +7,7 @@ spring:
       - redis.yml
       - rdb.yml
       - authentication.yml
+      - oauth.yml
   web.resources.add-mappings: false
 
 server:

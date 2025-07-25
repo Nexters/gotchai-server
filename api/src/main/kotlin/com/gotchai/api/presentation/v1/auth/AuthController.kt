@@ -7,8 +7,10 @@ import com.gotchai.api.presentation.v1.auth.request.LoginRequest
 import com.gotchai.api.presentation.v1.auth.request.LogoutRequest
 import com.gotchai.api.presentation.v1.auth.request.RefreshTokenRequest
 import com.gotchai.api.presentation.v1.auth.request.SignUpRequest
+import com.gotchai.api.presentation.v1.auth.response.LogoutResponse
 import com.gotchai.api.presentation.v1.auth.response.SignUpResponse
 import com.gotchai.api.presentation.v1.auth.response.TokenResponse
+import com.gotchai.api.presentation.v1.auth.response.WithdrawalResponse
 import com.gotchai.common.enum.user.SocialType
 import com.gotchai.domain.auth.AuthenticationFacade
 import com.gotchai.domain.auth.AuthenticationService
@@ -85,16 +87,22 @@ class AuthController(
     @PostMapping("/auth/logout")
     fun logout(
         @RequestBody request: LogoutRequest,
-    ) {
+    ): LogoutResponse {
+        val logout = authenticationService.logout(request.accessToken)
+        return LogoutResponse("로그아웃 되었습니다. userId=$logout")
+    }
+
+    @DeleteMapping("/auth/withdrawal")
+    fun withdrawal(user: User.Issue): WithdrawalResponse {
+        authenticationService.withdrawUser(user.id)
+        return WithdrawalResponse("회원탈퇴가 완료되었습니다.")
     }
 
     @PostMapping("/auth/refresh")
     fun refresh(
         @RequestBody request: RefreshTokenRequest,
-    ) {
-    }
-
-    @DeleteMapping("/auth/withdrawal")
-    fun withdrawal(user: User.Issue) {
+    ): TokenResponse {
+        val token = authenticationService.renew(request.refreshToken)
+        return TokenResponse.of(token)
     }
 }

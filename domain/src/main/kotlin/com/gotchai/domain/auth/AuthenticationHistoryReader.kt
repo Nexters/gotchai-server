@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 class AuthenticationHistoryReader(
     private val authenticationHistoryRepository: AuthenticationHistoryRepository,
 ) {
-    fun readByUserKeyWithDeviceWithRefreshToken(
+    fun readByUserWithDeviceWithRefreshToken(
         userId: Long,
         deviceId: String?,
         refreshToken: String,
