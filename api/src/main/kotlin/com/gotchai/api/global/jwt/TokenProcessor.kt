@@ -167,7 +167,7 @@ class TokenProcessor(
         refreshToken: String,
     ): AuthenticationHistory.Info {
         val authenticationHistory =
-            authenticationHistoryReader.readByUserKeyWithDeviceWithRefreshToken(
+            authenticationHistoryReader.readByUserWithDeviceWithRefreshToken(
                 userId = userId,
                 deviceId = deviceId,
                 refreshToken = refreshToken,
