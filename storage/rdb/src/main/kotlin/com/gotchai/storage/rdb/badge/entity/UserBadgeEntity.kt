@@ -11,7 +11,7 @@ class UserBadgeEntity(
     val userId: Long,
     val badgeId: Long,
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "provider", columnDefinition = "varchar(50)")
+    @Column(name = "rank", columnDefinition = "varchar(20)")
     val rank: Rank,
 ) : BaseEntity() {
     companion object {
