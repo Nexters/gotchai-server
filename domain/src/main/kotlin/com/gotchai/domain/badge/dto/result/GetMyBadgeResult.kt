@@ -22,7 +22,7 @@ data class GetMyBadgeResult(
                 name = badge.name,
                 description = badge.description,
                 image = badge.image,
-                rank = userBadge.rank,
+                rank = badge.rank,
                 acquiredAt = userBadge.createdAt
             )
     }

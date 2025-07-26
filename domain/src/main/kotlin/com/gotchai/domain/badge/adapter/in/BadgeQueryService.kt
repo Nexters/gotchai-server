@@ -18,11 +18,15 @@ class BadgeQueryService(
             ?: throw BadgeNotFoundException()
 
     override fun getMyBadges(userId: Long): List<GetMyBadgeResult> {
-        val userBadges =
-            userBadgeQueryPort.getUserBadgesByUserId(userId)
-                .associateBy { it.badgeId }
-        val badges = badgeQueryPort.getBadgesByIdIn(userBadges.keys)
+        val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
+        val badges =
+            badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId })
+                .associateBy { it.id }
 
-        return badges.map { GetMyBadgeResult.of(it, userBadges[it.id]!!) }
+        return userBadges.mapNotNull { userBadge ->
+            badges[userBadge.badgeId]?.let { badge ->
+                GetMyBadgeResult.of(badge, userBadge)
+            }
+        }
     }
 }

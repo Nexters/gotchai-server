@@ -51,7 +51,7 @@ class BadgeQueryServiceTest : BehaviorSpec() {
             val badges = listOf(createBadge())
 
             every { userBadgeQueryPort.getUserBadgesByUserId(user.id) } returns userBadges
-            every { badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId }.toSet()) } returns badges
+            every { badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId }) } returns badges
 
             When("해당 유저가 본인의 뱃지를 조회하면") {
                 val result = badgeQueryService.getMyBadges(user.id)

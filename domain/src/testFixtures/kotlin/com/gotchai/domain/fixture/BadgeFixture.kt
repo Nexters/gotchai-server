@@ -36,6 +36,7 @@ fun createBadge(
     name: String = NAME,
     description: String = DESCRIPTION,
     image: String = IMAGE,
+    rank: Rank = RANK,
     createdAt: LocalDateTime = CREATED_AT,
 ): Badge =
     Badge(
@@ -44,6 +45,7 @@ fun createBadge(
         name = name,
         description = description,
         image = image,
+        rank = rank,
         createdAt = createdAt
     )
 
@@ -51,13 +53,11 @@ fun createUserBadge(
     id: Long = ID,
     userId: Long = ID,
     badgeId: Long = ID,
-    rank: Rank = RANK,
     createdAt: LocalDateTime = CREATED_AT,
 ): UserBadge =
     UserBadge(
         id = id,
         userId = userId,
         badgeId = badgeId,
-        rank = rank,
         createdAt = createdAt
     )
