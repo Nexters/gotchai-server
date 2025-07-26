@@ -23,5 +23,5 @@ fun createUser(
         email = email,
         socialId = socialId,
         socialType = socialType,
-        createdAt = createdAt
+        createdAt = createdAt,
     )

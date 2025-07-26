@@ -24,7 +24,7 @@ fun createBadge(
         name = name,
         description = description,
         image = image,
-        createdAt = createdAt
+        createdAt = createdAt,
     )
 
 fun createUserBadge(
@@ -39,5 +39,5 @@ fun createUserBadge(
         userId = userId,
         badgeId = badgeId,
         rank = rank,
-        createdAt = createdAt
+        createdAt = createdAt,
     )

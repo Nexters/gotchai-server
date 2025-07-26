@@ -20,7 +20,7 @@ class BadgeEntity(
                     examId = examId,
                     name = name,
                     description = description,
-                    image = image
+                    image = image,
                 )
             }
     }

@@ -1,0 +1,21 @@
+services:
+  backend:
+    image: ${IMAGE_FULL_URL}
+    container_name: gotchai-dev
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    network_mode: host
+    env_file:
+      - ~/.env
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+    container_name: gotchai-redis
+    ports:
+      - "6379:6379"
+    environment:
+      - TZ=Asia/Seoul
+    network_mode: "host"
+    command: [ "redis-server", "--maxmemory", "64mb"q]
