@@ -25,7 +25,9 @@ dependencies {
     runtimeOnly(libs.jjwt.impl)
 
     testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.bundles.spring.test)
     testImplementation(libs.bundles.spring.rest.docs)
+    testImplementation(testFixtures(project(":domain")))
     testFixturesImplementation(libs.bundles.test)
     testFixturesImplementation(libs.bundles.spring.test)
     testFixturesImplementation(libs.bundles.spring.rest.docs)
