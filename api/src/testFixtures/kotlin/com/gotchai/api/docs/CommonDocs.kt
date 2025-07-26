@@ -8,7 +8,6 @@ val apiResponseFields =
     listOf(
         ApiResponse<*>::success bodyDesc "처리 성공 여부",
         ApiResponse<*>::status bodyDesc "상태 코드",
-        ApiResponse<*>::data bodyDesc "응답 데이터",
         ApiResponse<*>::timestamp bodyDesc "타임 스탬프",
     )
 
