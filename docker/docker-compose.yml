@@ -18,4 +18,15 @@ services:
     environment:
       - TZ=Asia/Seoul
     network_mode: "host"
-    command: [ "redis-server", "--maxmemory", "64mb"q]
+    command: [ "redis-server", "--maxmemory", "64mb"]
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: swagger
+    ports:
+      - "8080:8080"
+    environment:
+      - URLS_PRIMARY_NAME=gotchai
+      - "URLS=[{ url: 'https://${API_SPECIFICATION_BUCKET}.s3.amazonaws.com/api.yml', name: 'gotchai' }]"
+      - SUPPORTED_SUBMIT_METHODS=['get']
+    env_file:
+      - ~/.env
