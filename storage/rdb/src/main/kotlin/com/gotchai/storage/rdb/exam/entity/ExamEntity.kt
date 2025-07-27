@@ -29,4 +29,15 @@ class ExamEntity(
                 )
             }
     }
+
+    fun toExam() =
+        Exam(
+            id = id!!,
+            title = title,
+            subTitle = subTitle,
+            descriptionImage = descriptionImage,
+            iconImage = iconImage,
+            theme = theme,
+            createdAt = createdAt,
+        )
 }

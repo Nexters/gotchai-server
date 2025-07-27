@@ -133,7 +133,7 @@ class TokenCommandProcessor(
 
             authenticationHistoryCommandPort.update(
                 AuthenticationHistory.Update(
-                    userId = authenticationHistory.authenticationId,
+                    userId = authenticationHistory.id,
                     deviceId = authenticationHistory.deviceId,
                     refreshToken = refreshToken,
                     tokenPair =
@@ -164,7 +164,7 @@ class TokenCommandProcessor(
         userId: Long,
         deviceId: String?,
         refreshToken: String,
-    ): AuthenticationHistory.Info {
+    ): AuthenticationHistory {
         val authenticationHistory =
             authenticationHistoryQueryPort.findUserIdWithDeviceWithRefreshToken(
                 userId = userId,
