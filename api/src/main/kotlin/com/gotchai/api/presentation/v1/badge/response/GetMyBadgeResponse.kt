@@ -1,7 +1,7 @@
 package com.gotchai.api.presentation.v1.badge.response
 
 import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
-import com.gotchai.domain.badge.entity.Rank
+import com.gotchai.domain.badge.entity.Tier
 import java.time.LocalDateTime
 
 data class GetMyBadgeResponse(
@@ -10,7 +10,7 @@ data class GetMyBadgeResponse(
     val name: String,
     val description: String,
     val image: String,
-    val rank: Rank,
+    val tier: Tier,
     val acquiredAt: LocalDateTime,
 ) {
     companion object {
@@ -22,7 +22,7 @@ data class GetMyBadgeResponse(
                     name = name,
                     description = result.description,
                     image = image,
-                    rank = rank,
+                    tier = tier,
                     acquiredAt = acquiredAt,
                 )
             }

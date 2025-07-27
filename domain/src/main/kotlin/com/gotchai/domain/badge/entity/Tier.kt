@@ -1,6 +1,6 @@
 package com.gotchai.domain.badge.entity
 
-enum class Rank {
+enum class Tier {
     GOLD,
     SILVER,
     BRONZE,
