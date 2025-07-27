@@ -1,9 +1,9 @@
 package com.gotchai.api.global.jwt
 
-import com.gotchai.domain.auth.Provider
-import com.gotchai.domain.auth.RedisTokenRepository
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
+import com.gotchai.domain.auth.dto.Provider
+import com.gotchai.domain.auth.exception.InvalidTokenException
+import com.gotchai.domain.auth.port.out.RedisTokenCommandPort
+import com.gotchai.domain.auth.port.out.RedisTokenQueryPort
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -13,7 +13,8 @@ import org.springframework.security.oauth2.jwt.JwtClaimNames
 import org.springframework.util.Assert
 
 class JwtConverter(
-    private val redisTokenRepository: RedisTokenRepository,
+    private val redisTokenQueryPort: RedisTokenQueryPort,
+    private val redisTokenCommandPort: RedisTokenCommandPort,
 ) : Converter<Jwt, AbstractAuthenticationToken> {
     private var customJwtGrantedAuthoritiesConverter: Converter<Jwt, Collection<GrantedAuthority>> =
         CustomJwtGrantedAuthoritiesConverter()
@@ -39,7 +40,7 @@ class JwtConverter(
     }
 
     private fun findProvider(jwt: Jwt): Provider {
-        val tokenWithAuthentication = redisTokenRepository.findByToken(jwt.tokenValue)
+        val tokenWithAuthentication = redisTokenQueryPort.findByToken(jwt.tokenValue)
         jwt.validateByCachedToken(tokenWithAuthentication.accessToken)
         return Provider(
             userId = tokenWithAuthentication.provider.userId,
@@ -51,7 +52,7 @@ class JwtConverter(
             return
         }
 
-        redisTokenRepository.deleteAllToken(this.tokenValue)
-        throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+        redisTokenCommandPort.deleteAllToken(this.tokenValue)
+        throw InvalidTokenException()
     }
 }

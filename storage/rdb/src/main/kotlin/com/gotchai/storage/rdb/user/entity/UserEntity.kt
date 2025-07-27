@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.user.entity
 
-import com.gotchai.common.enum.user.SocialType
-import com.gotchai.domain.user.User
+import com.gotchai.domain.user.entity.SocialType
+import com.gotchai.domain.user.entity.User
 import com.gotchai.storage.rdb.global.common.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

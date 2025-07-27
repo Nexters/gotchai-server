@@ -86,6 +86,18 @@ class DocumentDsl<T>(
             ),
         )
 
-    private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> =
-        apiResponseFields + fields.map { "${ApiResponse<*>::data.name}.${it.path}" bodyDesc it.description as String }
+    private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> {
+        val isArray = fields.all { it.path.startsWith("[]") }
+        val dataField = "${ApiResponse<*>::data.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
+
+        return (
+            apiResponseFields + dataField +
+                fields.map {
+                    val path = ApiResponse<*>::data.name + ".".takeUnless { isArray }.orEmpty() + it.path
+                    val description = it.description as String
+
+                    path bodyDesc description
+                }
+        )
+    }
 }
