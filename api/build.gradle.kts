@@ -31,6 +31,8 @@ dependencies {
     testFixturesImplementation(libs.bundles.test)
     testFixturesImplementation(libs.bundles.spring.test)
     testFixturesImplementation(libs.bundles.spring.rest.docs)
+    testFixturesImplementation(testFixtures(project(":common")))
+    testFixturesImplementation(testFixtures(project(":domain")))
     testImplementation(project(":storage:redis"))
 }
 
