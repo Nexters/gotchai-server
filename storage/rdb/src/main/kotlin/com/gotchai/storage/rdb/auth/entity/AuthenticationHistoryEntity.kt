@@ -28,9 +28,9 @@ class AuthenticationHistoryEntity(
         refreshToken = newAuthenticationHistory.tokenPair.refreshToken,
     )
 
-    fun toAuthenticationHistory(): AuthenticationHistory.Info =
-        AuthenticationHistory.Info(
-            authenticationId = id!!,
+    fun toAuthenticationHistory(): AuthenticationHistory =
+        AuthenticationHistory(
+            id = id!!,
             deviceId = deviceId,
             tokenPair =
                 TokenPair(
@@ -41,11 +41,11 @@ class AuthenticationHistoryEntity(
             loggedInAt = updatedAt ?: createdAt,
         )
 
-    fun updateRefreshToken(tokenPair: TokenPair): AuthenticationHistory.Info {
+    fun updateRefreshToken(tokenPair: TokenPair): AuthenticationHistory {
         this.accessToken = tokenPair.accessToken
         this.refreshToken = tokenPair.refreshToken
-        return AuthenticationHistory.Info(
-            authenticationId = id!!,
+        return AuthenticationHistory(
+            id = id!!,
             deviceId = deviceId,
             tokenPair =
                 TokenPair(

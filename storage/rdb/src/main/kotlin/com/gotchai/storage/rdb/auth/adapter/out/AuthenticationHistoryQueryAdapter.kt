@@ -16,7 +16,7 @@ class AuthenticationHistoryQueryAdapter(
         userId: Long,
         deviceId: String?,
         refreshToken: String,
-    ): AuthenticationHistory.Info? {
+    ): AuthenticationHistory? {
         val histories =
             repository.findAllByUserIdAndDeviceId(
                 userId = userId,
@@ -26,7 +26,7 @@ class AuthenticationHistoryQueryAdapter(
     }
 
     @ReadOnlyTransactional
-    override fun findUserId(userId: Long): AuthenticationHistory.Info? {
+    override fun findUserId(userId: Long): AuthenticationHistory? {
         val histories = repository.findAllByUserIdAndEntityStatus(userId, AuthenticationEntityStatus.ACTIVE)
 
         if (histories.isNullOrEmpty()) {
