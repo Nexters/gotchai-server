@@ -1,13 +1,13 @@
 package com.gotchai.domain.auth.port.`in`
 
-import com.gotchai.domain.auth.dto.Token
-import com.gotchai.domain.user.dto.SocialUser
+import com.gotchai.domain.auth.dto.TokenPair
+import com.gotchai.domain.user.entity.SocialType
 
 interface AuthenticationCommandUseCase {
     fun testLogin(
         email: String,
         password: String,
-    ): Token
+    ): TokenPair
 
     fun testSignUp(
         name: String,
@@ -17,10 +17,12 @@ interface AuthenticationCommandUseCase {
 
     fun socialLogin(
         deviceId: String?,
-        socialUser: SocialUser,
-    ): Token
+        email: String,
+        socialId: String,
+        socialType: SocialType,
+    ): TokenPair
 
-    fun renew(refreshToken: String): Token
+    fun renew(refreshToken: String): TokenPair
 
     fun logout(token: String): String
 

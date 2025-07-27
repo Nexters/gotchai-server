@@ -1,6 +1,6 @@
 package com.gotchai.storage.rdb.auth.entity
 
-import com.gotchai.domain.auth.dto.Token
+import com.gotchai.domain.auth.dto.TokenPair
 import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import com.gotchai.domain.auth.entity.AuthenticationHistory
 import com.gotchai.domain.auth.entity.TokenStatus
@@ -24,16 +24,16 @@ class AuthenticationHistoryEntity(
     ) : this(
         userId = newAuthenticationHistory.userId,
         deviceId = newAuthenticationHistory.deviceId,
-        accessToken = newAuthenticationHistory.token.accessToken,
-        refreshToken = newAuthenticationHistory.token.refreshToken,
+        accessToken = newAuthenticationHistory.tokenPair.accessToken,
+        refreshToken = newAuthenticationHistory.tokenPair.refreshToken,
     )
 
     fun toAuthenticationHistory(): AuthenticationHistory.Info =
         AuthenticationHistory.Info(
             authenticationId = id!!,
             deviceId = deviceId,
-            token =
-                Token(
+            tokenPair =
+                TokenPair(
                     accessToken = accessToken,
                     refreshToken = refreshToken,
                 ),
@@ -41,16 +41,16 @@ class AuthenticationHistoryEntity(
             loggedInAt = updatedAt ?: createdAt,
         )
 
-    fun updateRefreshToken(token: Token): AuthenticationHistory.Info {
-        this.accessToken = token.accessToken
-        this.refreshToken = token.refreshToken
+    fun updateRefreshToken(tokenPair: TokenPair): AuthenticationHistory.Info {
+        this.accessToken = tokenPair.accessToken
+        this.refreshToken = tokenPair.refreshToken
         return AuthenticationHistory.Info(
             authenticationId = id!!,
             deviceId = deviceId,
-            token =
-                Token(
-                    accessToken = token.accessToken,
-                    refreshToken = token.refreshToken,
+            tokenPair =
+                TokenPair(
+                    accessToken = tokenPair.accessToken,
+                    refreshToken = tokenPair.refreshToken,
                 ),
             status = entityStatus.toTokenStatus(),
             loggedInAt = updatedAt ?: createdAt,

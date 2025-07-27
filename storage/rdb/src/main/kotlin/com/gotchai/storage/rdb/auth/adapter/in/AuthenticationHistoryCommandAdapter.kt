@@ -29,7 +29,7 @@ class AuthenticationHistoryCommandAdapter(
         return histories
             .find {
                 it.refreshToken == updateAuthenticationHistory.refreshToken
-            }?.updateRefreshToken(updateAuthenticationHistory.token)
+            }?.updateRefreshToken(updateAuthenticationHistory.tokenPair)
     }
 
     @Transactional

@@ -4,7 +4,7 @@ import com.gotchai.api.global.config.AuthenticationProperties
 import com.gotchai.domain.auth.dto.AuthorityType
 import com.gotchai.domain.auth.dto.GrantedAuthority
 import com.gotchai.domain.auth.dto.ProviderDetail
-import com.gotchai.domain.auth.dto.Token
+import com.gotchai.domain.auth.dto.TokenPair
 import com.gotchai.domain.auth.entity.AuthenticationHistory
 import com.gotchai.domain.auth.entity.TokenStatus
 import com.gotchai.domain.auth.exception.AuthenticationHistoryNotFoundException
@@ -31,7 +31,7 @@ class TokenCommandProcessor(
     override fun create(
         deviceId: String?,
         user: User.Issue,
-    ): Token {
+    ): TokenPair {
         val accessToken =
             jwtProvider.issueAccessToken(
                 user.id.toString(),
@@ -39,7 +39,7 @@ class TokenCommandProcessor(
             )
         val refreshToken = jwtProvider.issueRefreshToken(user.id.toString())
 
-        return Token(
+        return TokenPair(
             accessToken = accessToken,
             refreshToken = refreshToken,
         ).apply {
@@ -64,7 +64,7 @@ class TokenCommandProcessor(
     override fun create(
         deviceId: String?,
         socialUser: SocialUser,
-    ): Token {
+    ): TokenPair {
         val accessToken =
             jwtProvider.issueAccessToken(
                 socialUser.id.toString(),
@@ -72,7 +72,7 @@ class TokenCommandProcessor(
             )
         val refreshToken = jwtProvider.issueRefreshToken(socialUser.id.toString())
 
-        return Token(
+        return TokenPair(
             accessToken = accessToken,
             refreshToken = refreshToken,
         ).apply {
@@ -94,7 +94,7 @@ class TokenCommandProcessor(
         }
     }
 
-    override fun refresh(refreshToken: String): Token {
+    override fun refresh(refreshToken: String): TokenPair {
         val jwt = jwtProvider.validateToken(refreshToken)
         val tokenWithAuthentication = redisTokenQueryPort.findByToken(jwt.tokenValue)
         val authenticationHistory =
@@ -119,7 +119,7 @@ class TokenCommandProcessor(
                 jwtId = tokenWithAuthentication.provider.userId.toString(),
             )
 
-        return Token(
+        return TokenPair(
             accessToken = newAccessToken,
             refreshToken = newRefreshToken,
         ).apply {
@@ -137,8 +137,8 @@ class TokenCommandProcessor(
                     userId = authenticationHistory.authenticationId,
                     deviceId = authenticationHistory.deviceId,
                     refreshToken = refreshToken,
-                    token =
-                        Token(
+                    tokenPair =
+                        TokenPair(
                             accessToken = this.accessToken,
                             refreshToken = this.refreshToken,
                         ),
