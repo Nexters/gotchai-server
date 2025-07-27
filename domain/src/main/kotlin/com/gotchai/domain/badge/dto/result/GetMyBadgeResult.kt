@@ -16,7 +16,7 @@ data class GetMyBadgeResult(
 ) {
     companion object {
         fun of(
-            badge: Badge,
+            badge: Badge.Info,
             userBadge: UserBadge,
         ): GetMyBadgeResult =
             GetMyBadgeResult(

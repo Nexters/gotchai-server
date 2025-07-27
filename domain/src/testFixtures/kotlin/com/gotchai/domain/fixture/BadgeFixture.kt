@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 private const val NAME = "AI 산타 감별사"
 private const val DESCRIPTION = "크리스마스엔 선물보다 눈치가 중요하다는 걸 증명했어요!"
 private const val IMAGE = "https://gotchai.com/image.png"
-private val Tier = Tier.GOLD
+private val TIER = Tier.GOLD
 
 fun createGetMyBadgeResult(
     id: Long = ID,
@@ -17,7 +17,7 @@ fun createGetMyBadgeResult(
     name: String = NAME,
     description: String = DESCRIPTION,
     image: String = IMAGE,
-    tier: Tier = Tier,
+    tier: Tier = TIER,
     acquiredAt: LocalDateTime = CREATED_AT,
 ): GetMyBadgeResult =
     GetMyBadgeResult(
@@ -36,10 +36,10 @@ fun createBadge(
     name: String = NAME,
     description: String = DESCRIPTION,
     image: String = IMAGE,
-    tier: Tier = Tier,
+    tier: Tier = TIER,
     createdAt: LocalDateTime = CREATED_AT,
-): Badge =
-    Badge(
+): Badge.Info =
+    Badge.Info(
         id = id,
         examId = examId,
         name = name,
