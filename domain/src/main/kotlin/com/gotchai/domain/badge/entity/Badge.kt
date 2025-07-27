@@ -8,6 +8,7 @@ data class Badge(
     val name: String,
     val description: String,
     val image: String,
+    val rank: Rank,
     val createdAt: LocalDateTime,
 ) {
     data class Creation(
@@ -15,5 +16,6 @@ data class Badge(
         val name: String,
         val description: String,
         val image: String,
+        val rank: Rank,
     )
 }
