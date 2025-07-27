@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional
 class AuthenticationHistoryCommandAdapter(
     private val repository: AuthenticationHistoryJpaRepository,
 ) : AuthenticationHistoryCommandPort {
-    override fun create(newAuthenticationHistory: AuthenticationHistory.Creation): AuthenticationHistory.Info {
+    override fun create(newAuthenticationHistory: AuthenticationHistory.Creation): AuthenticationHistory {
         val saveHistory = repository.save(AuthenticationHistoryEntity(newAuthenticationHistory))
         return saveHistory.toAuthenticationHistory()
     }
 
     @Transactional
-    override fun update(updateAuthenticationHistory: AuthenticationHistory.Update): AuthenticationHistory.Info? {
+    override fun update(updateAuthenticationHistory: AuthenticationHistory.Update): AuthenticationHistory? {
         val histories =
             repository.findAllByUserIdAndDeviceId(
                 userId = updateAuthenticationHistory.userId,
