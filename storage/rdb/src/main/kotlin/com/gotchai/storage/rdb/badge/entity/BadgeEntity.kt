@@ -33,8 +33,8 @@ class BadgeEntity(
             }
     }
 
-    fun toBadge(): Badge.Info =
-        Badge.Info(
+    fun toBadge(): Badge =
+        Badge(
             id = id!!,
             examId = examId,
             name = name,

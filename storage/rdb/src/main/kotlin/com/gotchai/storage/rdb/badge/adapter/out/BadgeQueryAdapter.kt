@@ -12,13 +12,13 @@ class BadgeQueryAdapter(
     private val badgeRepository: BadgeJpaRepository,
 ) : BadgeQueryPort {
     @ReadOnlyTransactional
-    override fun getBadgeById(id: Long): Badge.Info? =
+    override fun getBadgeById(id: Long): Badge? =
         badgeRepository
             .findByIdOrNull(id)
             ?.toBadge()
 
     @ReadOnlyTransactional
-    override fun getBadgesByIdIn(ids: Collection<Long>): List<Badge.Info> =
+    override fun getBadgesByIdIn(ids: Collection<Long>): List<Badge> =
         badgeRepository
             .findAllByIdIn(ids)
             .map { it.toBadge() }

@@ -12,7 +12,7 @@ data class BadgeResponse(
     val createdAt: LocalDateTime,
 ) {
     companion object {
-        fun from(badge: Badge.Info): BadgeResponse =
+        fun from(badge: Badge): BadgeResponse =
             with(badge) {
                 BadgeResponse(
                     id = id,

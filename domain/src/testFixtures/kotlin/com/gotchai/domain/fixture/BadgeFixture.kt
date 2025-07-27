@@ -38,8 +38,8 @@ fun createBadge(
     image: String = IMAGE,
     tier: Tier = TIER,
     createdAt: LocalDateTime = CREATED_AT,
-): Badge.Info =
-    Badge.Info(
+): Badge =
+    Badge(
         id = id,
         examId = examId,
         name = name,
