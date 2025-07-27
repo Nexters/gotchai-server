@@ -118,7 +118,7 @@ jobs:
                 },
                 {
                   "name": "Commit",
-                  "value": "[${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})",
+                  "value": "[$(git log -1 --pretty=%s)](https://github.com/${{ github.repository }}/commit/${{ github.sha }})",
                   "inline": true
                 },
                 {
