@@ -3,7 +3,11 @@ package com.gotchai.storage.rdb.badge.entity
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Rank
 import com.gotchai.storage.rdb.global.common.BaseEntity
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+import jakarta.persistence.Enumerated
+import jakarta.persistence.EnumType
+import jakarta.persistence.Column
 
 @Entity
 @Table(name = "badge")
