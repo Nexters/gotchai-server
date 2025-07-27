@@ -13,6 +13,9 @@ import com.gotchai.api.presentation.v1.auth.request.AuthRequest
 import com.gotchai.api.presentation.v1.auth.response.AuthResponse
 import com.gotchai.api.util.document
 import com.gotchai.domain.auth.dto.TokenPair
+import com.gotchai.domain.auth.exception.InvalidAppleTokenException
+import com.gotchai.domain.auth.exception.InvalidKakaoTokenException
+import com.gotchai.domain.auth.exception.InvalidRefreshTokenException
 import com.gotchai.domain.auth.port.`in`.AuthenticationCommandUseCase
 import com.gotchai.domain.user.entity.SocialType
 import com.gotchai.infrastructure.oauth.apple.AppleClientResult
@@ -41,7 +44,6 @@ class AuthControllerTest : ControllerTest() {
 
                     every { authenticationCommandUseCase.testLogin(request.email, request.password) } returns tokenPair
 
-                    // when & then
                     webClient
                         .post()
                         .uri("/api/v1/auth/test-login")
@@ -54,6 +56,30 @@ class AuthControllerTest : ControllerTest() {
                         .document("auth-test-login") {
                             requestBody(testLoginRequestFields)
                             responseBody(authTokenResponseFields)
+                        }
+                }
+            }
+        }
+
+        describe("POST /api/v1/auth/test-signup") {
+            context("유효한 테스트 회원가입 요청") {
+                it("회원가입 완료 메시지를 반환한다") {
+                    val request = AuthRequest.SignUp("테스트", "test@example.com", "password")
+
+                    every { authenticationCommandUseCase.testSignUp(request.name, request.email, request.password) } returns Unit
+
+                    webClient
+                        .post()
+                        .uri("/api/v1/auth/test-signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(request)
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<AuthResponse.Message>()
+                        .document("auth-test-signup") {
+                            requestBody(testSignUpRequestFields)
+                            responseBody(authMessageResponseFields)
                         }
                 }
             }
@@ -93,28 +119,21 @@ class AuthControllerTest : ControllerTest() {
                         }
                 }
             }
-        }
 
-        describe("POST /api/v1/auth/test-signup") {
-            context("유효한 테스트 회원가입 요청") {
-                it("회원가입 완료 메시지를 반환한다") {
-                    val request = AuthRequest.SignUp("테스트", "test@example.com", "password")
+            context("유효하지 않은 카카오 토큰으로 로그인 시도") {
+                it("401 상태 코드를 반환한다") {
+                    val request = AuthRequest.KakaoLogin("invalid-token")
 
-                    every { authenticationCommandUseCase.testSignUp(request.name, request.email, request.password) } returns Unit
+                    every { oAuthQueryUseCase.getKaKaoUserInfo(request.accessToken) } throws InvalidKakaoTokenException()
 
                     webClient
                         .post()
-                        .uri("/api/v1/auth/test-signup")
+                        .uri("/api/v1/auth/login/kakao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
-                        .isOk
-                        .expectBody<AuthResponse.Message>()
-                        .document("auth-test-signup") {
-                            requestBody(testSignUpRequestFields)
-                            responseBody(authMessageResponseFields)
-                        }
+                        .isUnauthorized
                 }
             }
         }
@@ -151,6 +170,23 @@ class AuthControllerTest : ControllerTest() {
                             requestBody(appleLoginRequestFields)
                             responseBody(authTokenResponseFields)
                         }
+                }
+            }
+
+            context("유효하지 않은 애플 토큰으로 로그인 시도") {
+                it("401 상태 코드를 반환한다") {
+                    val request = AuthRequest.AppleLogin("invalid-token")
+
+                    every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } throws InvalidAppleTokenException()
+
+                    webClient
+                        .post()
+                        .uri("/api/v1/auth/login/apple")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(request)
+                        .exchange()
+                        .expectStatus()
+                        .isUnauthorized
                 }
             }
         }
@@ -219,6 +255,23 @@ class AuthControllerTest : ControllerTest() {
                             requestBody(refreshTokenRequestFields)
                             responseBody(authTokenResponseFields)
                         }
+                }
+            }
+
+            context("유효하지 않은 리프레시 토큰으로 갱신 시도") {
+                it("401 상태 코드를 반환한다") {
+                    val request = AuthRequest.RefreshToken("invalid-refresh-token")
+
+                    every { authenticationCommandUseCase.renew(request.refreshToken) } throws InvalidRefreshTokenException()
+
+                    webClient
+                        .post()
+                        .uri("/api/v1/auth/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(request)
+                        .exchange()
+                        .expectStatus()
+                        .isUnauthorized
                 }
             }
         }
