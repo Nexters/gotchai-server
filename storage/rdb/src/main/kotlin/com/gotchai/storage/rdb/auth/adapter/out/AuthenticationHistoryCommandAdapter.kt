@@ -1,4 +1,4 @@
-package com.gotchai.storage.rdb.auth.adapter.`in`
+package com.gotchai.storage.rdb.auth.adapter.out
 
 import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import com.gotchai.domain.auth.entity.AuthenticationHistory
