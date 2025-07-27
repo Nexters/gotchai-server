@@ -1,8 +1,7 @@
 package com.gotchai.infrastructure.oauth.apple
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
+import com.gotchai.domain.auth.exception.InvalidAppleTokenException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.RSAKey
@@ -25,7 +24,7 @@ class AppleClient internal constructor(
             signedJWT = SignedJWT.parse(token)
             jwtClaims = signedJWT.jwtClaimsSet
         } catch (e: ParseException) {
-            throw AuthenticationErrorException(AuthenticationErrorType.INVALID_APPLE_TOKEN)
+            throw InvalidAppleTokenException()
         }
 
         return try {
@@ -34,7 +33,7 @@ class AppleClient internal constructor(
                 jwtClaims.getStringClaim("email"),
             )
         } catch (e: ParseException) {
-            throw AuthenticationErrorException(AuthenticationErrorType.INVALID_APPLE_TOKEN)
+            throw InvalidAppleTokenException()
         }
     }
 

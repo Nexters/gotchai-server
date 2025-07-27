@@ -1,11 +1,11 @@
 package com.gotchai.api.presentation.v1.badge
 
 import com.gotchai.api.global.annotation.ApiV1Controller
-import com.gotchai.api.presentation.v1.badge.dto.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.dto.response.GetMyBadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.domain.badge.port.`in`.BadgeCommandUseCase
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
-import com.gotchai.domain.user.User
+import com.gotchai.domain.user.entity.User
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 

@@ -1,7 +1,7 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.badge.dto.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.dto.response.GetMyBadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.api.util.bodyDesc
 
 val badgeResponseFields =
@@ -21,6 +21,6 @@ val getMyBadgeResponseFields =
         GetMyBadgeResponse::name bodyDesc "이름",
         GetMyBadgeResponse::description bodyDesc "설명",
         GetMyBadgeResponse::image bodyDesc "이미지 URI",
-        GetMyBadgeResponse::rank bodyDesc "등급",
+        GetMyBadgeResponse::tier bodyDesc "등급",
         GetMyBadgeResponse::acquiredAt bodyDesc "취득 날짜",
     )

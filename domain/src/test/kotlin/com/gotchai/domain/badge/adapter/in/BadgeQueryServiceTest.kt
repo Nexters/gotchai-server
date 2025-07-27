@@ -3,7 +3,11 @@ package com.gotchai.domain.badge.adapter.`in`
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.domain.badge.port.out.UserBadgeQueryPort
-import com.gotchai.domain.fixture.*
+import com.gotchai.domain.fixture.ID
+import com.gotchai.domain.fixture.createBadge
+import com.gotchai.domain.fixture.createGetMyBadgeResult
+import com.gotchai.domain.fixture.createUser
+import com.gotchai.domain.fixture.createUserBadge
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -16,15 +20,16 @@ class BadgeQueryServiceTest : BehaviorSpec() {
     private val badgeQueryService =
         BadgeQueryService(
             badgeQueryPort = badgeQueryPort,
-            userBadgeQueryPort = userBadgeQueryPort
+            userBadgeQueryPort = userBadgeQueryPort,
         )
 
     init {
         Given("임의의 뱃지가 존재하는 경우") {
-            val badge = createBadge()
-                .also {
-                    every { badgeQueryPort.getBadgeById(it.id) } returns it
-                }
+            val badge =
+                createBadge()
+                    .also {
+                        every { badgeQueryPort.getBadgeById(it.id) } returns it
+                    }
 
             When("유저가 해당 뱃지를 조회하면") {
                 val result = badgeQueryService.getBadgeById(badge.id)

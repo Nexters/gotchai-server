@@ -1,6 +1,6 @@
 package com.gotchai.storage.rdb.global.common
 
-import com.gotchai.common.enum.auth.AuthenticationEntityStatus
+import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.EnumType

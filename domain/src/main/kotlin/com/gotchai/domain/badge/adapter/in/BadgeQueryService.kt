@@ -20,7 +20,8 @@ class BadgeQueryService(
     override fun getMyBadges(userId: Long): List<GetMyBadgeResult> {
         val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
         val badges =
-            badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId })
+            badgeQueryPort
+                .getBadgesByIdIn(userBadges.map { it.badgeId })
                 .associateBy { it.id }
 
         return userBadges.mapNotNull { userBadge ->
