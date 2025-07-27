@@ -29,7 +29,7 @@ class AuthenticationHistoryQueryAdapter(
     override fun findUserId(userId: Long): AuthenticationHistory? {
         val histories = repository.findAllByUserIdAndEntityStatus(userId, AuthenticationEntityStatus.ACTIVE)
 
-        if (histories.isNullOrEmpty()) {
+        if (histories.isEmpty()) {
             return null
         }
 
