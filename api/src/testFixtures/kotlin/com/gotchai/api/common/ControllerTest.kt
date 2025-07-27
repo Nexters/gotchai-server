@@ -1,9 +1,9 @@
 package com.gotchai.api.common
 
-import com.gotchai.domain.auth.Provider
+import com.gotchai.domain.auth.dto.Provider
 import com.gotchai.domain.fixture.createUser
-import com.gotchai.domain.user.User
-import com.gotchai.domain.user.UserService
+import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.user.port.`in`.UserQueryUseCase
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.extensions.Extension
 import io.kotest.core.spec.Spec
@@ -33,7 +33,7 @@ abstract class ControllerTest : DescribeSpec() {
     private lateinit var restDocumentationContextProvider: RestDocumentationContextProvider
 
     @MockkBean
-    private lateinit var userService: UserService
+    private lateinit var userQueryUseCase: UserQueryUseCase
 
     protected val webClient by lazy {
         MockMvcWebTestClient
@@ -46,7 +46,7 @@ abstract class ControllerTest : DescribeSpec() {
     override suspend fun beforeSpec(spec: Spec) {
         val user = createUser()
 
-        every { userService.getUserIssue(any()) } returns User.Issue(id = user.id)
+        every { userQueryUseCase.getUserIssue(any()) } returns User.Issue(id = user.id)
         SecurityContextHolder.getContext().authentication =
             UsernamePasswordAuthenticationToken(Provider(userId = user.id), null, setOf(SimpleGrantedAuthority("USER")))
     }

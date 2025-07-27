@@ -1,9 +1,9 @@
 package com.gotchai.storage.rdb.auth.entity
 
-import com.gotchai.common.enum.auth.AuthenticationEntityStatus
-import com.gotchai.common.enum.auth.TokenStatus
-import com.gotchai.domain.auth.AuthenticationHistory
-import com.gotchai.domain.auth.Token
+import com.gotchai.domain.auth.dto.Token
+import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
+import com.gotchai.domain.auth.entity.AuthenticationHistory
+import com.gotchai.domain.auth.entity.TokenStatus
 import com.gotchai.storage.rdb.global.common.AuthenticationBaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

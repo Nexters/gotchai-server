@@ -1,7 +1,7 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.badge.dto.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.dto.response.GetMyBadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.api.util.bodyDesc
 
 val badgeResponseFields =

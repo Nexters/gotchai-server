@@ -1,8 +1,8 @@
 package com.gotchai.api.global.jwt
 
 import com.gotchai.api.global.config.AuthenticationProperties
-import com.gotchai.common.enum.auth.AuthorityType
-import com.gotchai.domain.auth.GrantedAuthority
+import com.gotchai.domain.auth.dto.AuthorityType
+import com.gotchai.domain.auth.dto.GrantedAuthority
 import com.gotchai.domain.global.exception.AuthenticationErrorException
 import com.gotchai.domain.global.exception.AuthenticationErrorType
 import org.springframework.security.authentication.AuthenticationServiceException

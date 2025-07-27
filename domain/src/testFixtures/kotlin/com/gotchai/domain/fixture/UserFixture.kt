@@ -1,7 +1,7 @@
 package com.gotchai.domain.fixture
 
-import com.gotchai.common.enum.user.SocialType
-import com.gotchai.domain.user.User
+import com.gotchai.domain.user.entity.SocialType
+import com.gotchai.domain.user.entity.User
 import java.time.LocalDateTime
 
 private const val NAME = "정상윤"

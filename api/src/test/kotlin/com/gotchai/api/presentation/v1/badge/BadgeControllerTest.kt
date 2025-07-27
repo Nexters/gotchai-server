@@ -6,8 +6,8 @@ import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.docs.getMyBadgeResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.global.dto.ErrorResponse
-import com.gotchai.api.presentation.v1.badge.dto.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.dto.response.GetMyBadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.paramDesc
 import com.gotchai.api.util.toListFields

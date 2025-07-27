@@ -1,6 +1,6 @@
 package com.gotchai.api.presentation.v1.auth.response
 
-import com.gotchai.domain.auth.Token
+import com.gotchai.domain.auth.dto.Token
 
 data class TokenResponse(
     val accessToken: String,

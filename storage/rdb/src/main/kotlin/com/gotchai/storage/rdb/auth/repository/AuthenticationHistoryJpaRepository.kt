@@ -1,5 +1,5 @@
 package com.gotchai.storage.rdb.auth.repository
-import com.gotchai.common.enum.auth.AuthenticationEntityStatus
+import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import com.gotchai.storage.rdb.auth.entity.AuthenticationHistoryEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
@@ -12,7 +12,7 @@ interface AuthenticationHistoryJpaRepository : JpaRepository<AuthenticationHisto
     fun findAllByUserIdAndEntityStatus(
         userId: Long,
         active: AuthenticationEntityStatus,
-    ): List<AuthenticationHistoryEntity>?
+    ): List<AuthenticationHistoryEntity>
 
     fun findByAccessToken(accessToken: String): AuthenticationHistoryEntity?
 }

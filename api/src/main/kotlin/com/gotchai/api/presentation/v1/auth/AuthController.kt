@@ -11,11 +11,12 @@ import com.gotchai.api.presentation.v1.auth.response.LogoutResponse
 import com.gotchai.api.presentation.v1.auth.response.SignUpResponse
 import com.gotchai.api.presentation.v1.auth.response.TokenResponse
 import com.gotchai.api.presentation.v1.auth.response.WithdrawalResponse
-import com.gotchai.common.enum.user.SocialType
-import com.gotchai.domain.auth.AuthenticationFacade
-import com.gotchai.domain.auth.AuthenticationService
-import com.gotchai.domain.user.User
-import com.gotchai.infrastructure.oauth.OAuthService
+import com.gotchai.domain.auth.adapter.`in`.AuthenticationFacade
+import com.gotchai.domain.auth.port.`in`.AuthenticationCommandUseCase
+import com.gotchai.domain.auth.port.`in`.AuthenticationQueryUseCase
+import com.gotchai.domain.user.entity.SocialType
+import com.gotchai.domain.user.entity.User
+import com.gotchai.infrastructure.oauth.port.`in`.OAuthQueryUseCase
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,16 +24,17 @@ import org.springframework.web.bind.annotation.RequestHeader
 
 @ApiV1Controller
 class AuthController(
-    private val authenticationService: AuthenticationService,
+    private val authenticationCommandUseCase: AuthenticationCommandUseCase,
+    private val authenticationQueryUseCase: AuthenticationQueryUseCase,
     private val authenticationFacade: AuthenticationFacade,
-    private val oauthService: OAuthService,
+    private val oAuthQueryUseCase: OAuthQueryUseCase,
 ) {
     @PostMapping("/auth/test-login")
     fun testLogin(
         @RequestBody request: LoginRequest,
     ): TokenResponse =
         TokenResponse.of(
-            authenticationService.testLogin(
+            authenticationCommandUseCase.testLogin(
                 request.email,
                 request.password,
             ),
@@ -42,7 +44,7 @@ class AuthController(
     fun testSignUp(
         @RequestBody request: SignUpRequest,
     ): SignUpResponse {
-        authenticationService.testSignUp(
+        authenticationCommandUseCase.testSignUp(
             name = request.name,
             email = request.email,
             password = request.password,
@@ -55,7 +57,7 @@ class AuthController(
         @RequestHeader(value = "X-DEVICE-ID") deviceId: String?,
         @RequestBody request: AppleLoginRequest,
     ): TokenResponse {
-        val appleUserInfo = oauthService.getAppleUserInfo(request.idToken)
+        val appleUserInfo = oAuthQueryUseCase.getAppleUserInfo(request.idToken)
 
         return TokenResponse.of(
             authenticationFacade.socialLogin(
@@ -72,7 +74,7 @@ class AuthController(
         @RequestHeader(value = "X-DEVICE-ID") deviceId: String?,
         @RequestBody request: KakaoLoginRequest,
     ): TokenResponse {
-        val kakaoUserInfo = oauthService.getKaKaoUserInfo(request.accessToken)
+        val kakaoUserInfo = oAuthQueryUseCase.getKaKaoUserInfo(request.accessToken)
 
         return TokenResponse.of(
             authenticationFacade.socialLogin(
@@ -88,13 +90,13 @@ class AuthController(
     fun logout(
         @RequestBody request: LogoutRequest,
     ): LogoutResponse {
-        val logout = authenticationService.logout(request.accessToken)
+        val logout = authenticationCommandUseCase.logout(request.accessToken)
         return LogoutResponse("로그아웃 되었습니다. userId=$logout")
     }
 
     @DeleteMapping("/auth/withdrawal")
     fun withdrawal(user: User.Issue): WithdrawalResponse {
-        authenticationService.withdrawUser(user.id)
+        authenticationCommandUseCase.withdrawUser(user.id)
         return WithdrawalResponse("회원탈퇴가 완료되었습니다.")
     }
 
@@ -102,7 +104,7 @@ class AuthController(
     fun refresh(
         @RequestBody request: RefreshTokenRequest,
     ): TokenResponse {
-        val token = authenticationService.renew(request.refreshToken)
+        val token = authenticationCommandUseCase.renew(request.refreshToken)
         return TokenResponse.of(token)
     }
 }

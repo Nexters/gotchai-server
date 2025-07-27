@@ -5,9 +5,13 @@ import com.gotchai.api.docs.apiResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.FieldDescriptor
-import org.springframework.restdocs.payload.PayloadDocumentation.*
+import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
+import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
+import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
 import org.springframework.restdocs.request.ParameterDescriptor
-import org.springframework.restdocs.request.RequestDocumentation.*
+import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
+import org.springframework.restdocs.request.RequestDocumentation.pathParameters
+import org.springframework.restdocs.request.RequestDocumentation.queryParameters
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.reactive.server.WebTestClient.BodySpec
 import kotlin.reflect.KProperty
