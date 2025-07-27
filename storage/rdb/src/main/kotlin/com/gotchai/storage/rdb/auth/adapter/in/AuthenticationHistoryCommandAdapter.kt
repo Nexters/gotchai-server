@@ -2,9 +2,8 @@ package com.gotchai.storage.rdb.auth.adapter.`in`
 
 import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import com.gotchai.domain.auth.entity.AuthenticationHistory
+import com.gotchai.domain.auth.exception.AuthenticationHistoryNotFoundException
 import com.gotchai.domain.auth.port.out.AuthenticationHistoryCommandPort
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
 import com.gotchai.storage.rdb.auth.entity.AuthenticationHistoryEntity
 import com.gotchai.storage.rdb.auth.repository.AuthenticationHistoryJpaRepository
 import org.springframework.stereotype.Repository
@@ -43,7 +42,7 @@ class AuthenticationHistoryCommandAdapter(
     override fun remove(token: String): String {
         val authenticationHistory =
             repository.findByAccessToken(token)
-                ?: throw AuthenticationErrorException(AuthenticationErrorType.NOT_FOUND_HISTORY)
+                ?: throw AuthenticationHistoryNotFoundException()
         authenticationHistory.delete()
         return authenticationHistory.refreshToken
     }

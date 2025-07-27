@@ -5,14 +5,14 @@ import com.gotchai.domain.auth.dto.CredentialSocial
 import com.gotchai.domain.auth.dto.TokenPair
 import com.gotchai.domain.auth.entity.AuthenticationHistory
 import com.gotchai.domain.auth.entity.TokenStatus
+import com.gotchai.domain.auth.exception.UnmatchedUserPasswordException
 import com.gotchai.domain.auth.port.`in`.AuthenticationCommandUseCase
 import com.gotchai.domain.auth.port.out.AuthenticationHistoryCommandPort
 import com.gotchai.domain.auth.port.out.TokenCommandPort
-import com.gotchai.domain.global.exception.ErrorException
-import com.gotchai.domain.global.exception.ErrorType
 import com.gotchai.domain.user.dto.SocialUser
 import com.gotchai.domain.user.entity.SocialType
 import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.user.exception.UserNotFoundException
 import com.gotchai.domain.user.port.`in`.UserCommandUseCase
 import com.gotchai.domain.user.port.`in`.UserQueryUseCase
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -33,10 +33,10 @@ class AuthenticationCommandService(
     ): TokenPair {
         val user =
             userQueryUseCase.getUserCredentialByEmail(email)
-                ?: throw ErrorException(ErrorType.NOT_FOUND_USER)
+                ?: throw UserNotFoundException()
 
         if (!passwordEncoder.matches(password, user.password)) {
-            throw ErrorException(ErrorType.INVALID_PASSWORD)
+            throw UnmatchedUserPasswordException()
         }
 
         return tokenCommandPort.create(null, User.Issue(user.id)).apply {
@@ -76,7 +76,7 @@ class AuthenticationCommandService(
                 SocialUser(
                     id = existingUser.id,
                     name = existingUser.name,
-                    socialId = existingUser.socialId!!,
+                    socialId = existingUser.socialId,
                     socialType = existingUser.socialType,
                 )
             } else {

@@ -3,9 +3,8 @@ package com.gotchai.storage.redis.adapter.`in`
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.domain.auth.dto.ProviderDetail
 import com.gotchai.domain.auth.dto.TokenWithAuthentication
+import com.gotchai.domain.auth.exception.InvalidTokenException
 import com.gotchai.domain.auth.port.out.RedisTokenCommandPort
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Repository
 import java.time.Duration
@@ -54,7 +53,7 @@ class RedisTokenCommandAdapter(
         val tokenWithAuthentication =
             redisTemplate.opsForValue().get(token)?.let {
                 objectMapper.readValue(it, TokenWithAuthentication::class.java)
-            } ?: throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+            } ?: throw InvalidTokenException()
 
         redisTemplate.delete(tokenWithAuthentication.accessToken)
         redisTemplate.delete(tokenWithAuthentication.refreshToken)

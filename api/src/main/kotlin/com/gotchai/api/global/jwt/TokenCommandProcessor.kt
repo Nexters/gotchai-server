@@ -8,13 +8,12 @@ import com.gotchai.domain.auth.dto.TokenPair
 import com.gotchai.domain.auth.entity.AuthenticationHistory
 import com.gotchai.domain.auth.entity.TokenStatus
 import com.gotchai.domain.auth.exception.AuthenticationHistoryNotFoundException
+import com.gotchai.domain.auth.exception.InvalidTokenException
 import com.gotchai.domain.auth.port.out.AuthenticationHistoryCommandPort
 import com.gotchai.domain.auth.port.out.AuthenticationHistoryQueryPort
 import com.gotchai.domain.auth.port.out.RedisTokenCommandPort
 import com.gotchai.domain.auth.port.out.RedisTokenQueryPort
 import com.gotchai.domain.auth.port.out.TokenCommandPort
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
 import com.gotchai.domain.user.dto.SocialUser
 import com.gotchai.domain.user.entity.User
 import org.springframework.stereotype.Service
@@ -174,7 +173,7 @@ class TokenCommandProcessor(
             ) ?: throw AuthenticationHistoryNotFoundException()
 
         if (authenticationHistory.status == TokenStatus.INACTIVE) {
-            throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+            throw InvalidTokenException()
         }
         return authenticationHistory
     }

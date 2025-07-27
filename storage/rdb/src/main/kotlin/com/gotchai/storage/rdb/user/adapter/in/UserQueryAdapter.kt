@@ -1,8 +1,7 @@
 package com.gotchai.storage.rdb.user.adapter.`in`
 
-import com.gotchai.domain.global.exception.ErrorException
-import com.gotchai.domain.global.exception.ErrorType
 import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.user.exception.UserNotFoundException
 import com.gotchai.domain.user.port.out.UserQueryPort
 import com.gotchai.storage.rdb.global.common.ReadOnlyTransactional
 import com.gotchai.storage.rdb.global.util.findByIdOrElseThrow
@@ -24,7 +23,7 @@ class UserQueryAdapter(
 
     @ReadOnlyTransactional
     override fun findCredentialByEmail(email: String): User.Credential {
-        val user = userJpaRepository.findByEmail(email) ?: throw ErrorException(ErrorType.NOT_FOUND_USER)
+        val user = userJpaRepository.findByEmail(email) ?: throw UserNotFoundException()
         return user.toCredential()
     }
 

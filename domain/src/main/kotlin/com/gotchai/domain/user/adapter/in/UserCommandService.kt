@@ -1,8 +1,8 @@
 package com.gotchai.domain.user.adapter.`in`
 
-import com.gotchai.domain.global.exception.ErrorException
-import com.gotchai.domain.global.exception.ErrorType
 import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.user.exception.DuplicateUserException
+import com.gotchai.domain.user.exception.InvalidEmailFormatException
 import com.gotchai.domain.user.port.`in`.UserCommandUseCase
 import com.gotchai.domain.user.port.out.UserCommandPort
 import com.gotchai.domain.user.port.out.UserQueryPort
@@ -37,11 +37,11 @@ class UserCommandService(
 
     private fun verifyEmail(email: String) {
         if (!email.matches(EMAIL_REGEX)) {
-            throw ErrorException(ErrorType.INVALID_LOGIN_ID_FORMAT)
+            throw InvalidEmailFormatException()
         }
 
         if (userQueryPort.existsByEmail(email)) {
-            throw ErrorException(ErrorType.DUPLICATED_USER)
+            throw DuplicateUserException()
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.gotchai.infrastructure.oauth.adapter.`in`
 
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
+import com.gotchai.domain.auth.exception.InvalidAppleTokenException
+import com.gotchai.domain.auth.exception.InvalidKakaoTokenException
 import com.gotchai.infrastructure.oauth.apple.AppleClient
 import com.gotchai.infrastructure.oauth.apple.AppleClientResult
 import com.gotchai.infrastructure.oauth.kakao.KaKaoClient
@@ -20,14 +20,14 @@ class OAuthQueryService(
             kaKaoClient.getUserInfo(accessToken)
         } catch (e: FeignException) {
             if (e.status() == 401) {
-                throw AuthenticationErrorException(AuthenticationErrorType.INVALID_KAKAO_TOKEN)
+                throw InvalidKakaoTokenException()
             } else {
-                throw AuthenticationErrorException(AuthenticationErrorType.INVALID_KAKAO_TOKEN, e.message)
+                throw InvalidKakaoTokenException(e.message ?: "카카오 API 호출 중 오류가 발생했습니다.")
             }
         }
 
     override fun getAppleUserInfo(idToken: String): AppleClientResult {
-        if (!appleClient.verify(idToken)) throw AuthenticationErrorException(AuthenticationErrorType.INVALID_APPLE_TOKEN)
+        if (!appleClient.verify(idToken)) throw InvalidAppleTokenException()
         return appleClient.getUserInfo(idToken)
     }
 }

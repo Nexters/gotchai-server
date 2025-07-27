@@ -3,8 +3,7 @@ package com.gotchai.api.global.jwt
 import com.gotchai.api.global.config.AuthenticationProperties
 import com.gotchai.domain.auth.dto.AuthorityType
 import com.gotchai.domain.auth.dto.GrantedAuthority
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
+import com.gotchai.domain.auth.exception.InvalidTokenException
 import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.oauth2.jwt.BadJwtException
 import org.springframework.security.oauth2.jwt.Jwt
@@ -63,7 +62,7 @@ class JwtProvider(
         try {
             jwtDecoder.decode(token)
         } catch (exception: BadJwtException) {
-            throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+            throw InvalidTokenException()
         } catch (exception: JwtException) {
             throw AuthenticationServiceException(exception.message, exception)
         }

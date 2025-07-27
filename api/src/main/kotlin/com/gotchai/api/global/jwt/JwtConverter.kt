@@ -1,10 +1,9 @@
 package com.gotchai.api.global.jwt
 
 import com.gotchai.domain.auth.dto.Provider
+import com.gotchai.domain.auth.exception.InvalidTokenException
 import com.gotchai.domain.auth.port.out.RedisTokenCommandPort
 import com.gotchai.domain.auth.port.out.RedisTokenQueryPort
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -54,6 +53,6 @@ class JwtConverter(
         }
 
         redisTokenCommandPort.deleteAllToken(this.tokenValue)
-        throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+        throw InvalidTokenException()
     }
 }

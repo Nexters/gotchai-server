@@ -3,9 +3,8 @@ package com.gotchai.storage.redis.adapter.`in`
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.domain.auth.dto.Provider
 import com.gotchai.domain.auth.dto.TokenWithAuthentication
+import com.gotchai.domain.auth.exception.InvalidTokenException
 import com.gotchai.domain.auth.port.out.RedisTokenQueryPort
-import com.gotchai.domain.global.exception.AuthenticationErrorException
-import com.gotchai.domain.global.exception.AuthenticationErrorType
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Repository
 
@@ -17,7 +16,7 @@ class RedisTokenQueryAdapter(
     override fun findByToken(token: String): TokenWithAuthentication {
         redisTemplate.opsForValue().get(token)?.let {
             return objectMapper.readValue(it, TokenWithAuthentication::class.java)
-        } ?: throw AuthenticationErrorException(AuthenticationErrorType.INVALID_TOKEN)
+        } ?: throw InvalidTokenException()
     }
 
     override fun findBy(accessToken: String): Provider? =
