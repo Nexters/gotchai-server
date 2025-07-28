@@ -9,8 +9,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common"))
     implementation(project(":infrastructure:oauth"))
-    runtimeOnly(project(":storage:rdb"))
-    runtimeOnly(project(":storage:redis"))
+    implementation(project(":storage:rdb"))
+    implementation(project(":storage:redis"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.aop)

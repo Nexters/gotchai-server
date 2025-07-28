@@ -13,6 +13,8 @@ import io.mockk.every
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.restdocs.RestDocumentationContextProvider
+import org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -27,6 +29,9 @@ abstract class ControllerTest : DescribeSpec() {
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
 
+    @Autowired
+    private lateinit var restDocumentationContextProvider: RestDocumentationContextProvider
+
     @MockkBean
     private lateinit var userQueryUseCase: UserQueryUseCase
 
@@ -34,6 +39,7 @@ abstract class ControllerTest : DescribeSpec() {
         MockMvcWebTestClient
             .bindToApplicationContext(webApplicationContext)
             .configureClient()
+            .filter(WebTestClientRestDocumentation.documentationConfiguration(restDocumentationContextProvider))
             .build()
     }
 

@@ -3,11 +3,11 @@ package com.gotchai.storage.rdb.badge.adapter.out
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.storage.rdb.badge.repository.BadgeJpaRepository
-import com.gotchai.storage.rdb.global.common.ReadOnlyTransactional
+import com.gotchai.storage.rdb.global.annotation.Adapter
+import com.gotchai.storage.rdb.global.annotation.ReadOnlyTransactional
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.stereotype.Repository
 
-@Repository
+@Adapter
 class BadgeQueryAdapter(
     private val badgeRepository: BadgeJpaRepository,
 ) : BadgeQueryPort {

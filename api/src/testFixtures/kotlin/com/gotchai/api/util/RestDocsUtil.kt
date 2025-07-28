@@ -5,13 +5,9 @@ import com.gotchai.api.docs.apiResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.FieldDescriptor
-import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
-import org.springframework.restdocs.payload.PayloadDocumentation.requestFields
-import org.springframework.restdocs.payload.PayloadDocumentation.responseFields
+import org.springframework.restdocs.payload.PayloadDocumentation.*
 import org.springframework.restdocs.request.ParameterDescriptor
-import org.springframework.restdocs.request.RequestDocumentation.parameterWithName
-import org.springframework.restdocs.request.RequestDocumentation.pathParameters
-import org.springframework.restdocs.request.RequestDocumentation.queryParameters
+import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.reactive.server.WebTestClient.BodySpec
 import kotlin.reflect.KProperty
@@ -28,7 +24,8 @@ infix fun String.paramDesc(description: String): ParameterDescriptor =
     parameterWithName(this)
         .description(description)
 
-fun List<FieldDescriptor>.toListFields(): List<FieldDescriptor> = map { "[].${it.path}" bodyDesc it.description as String }
+fun List<FieldDescriptor>.toListFields(): List<FieldDescriptor> =
+    map { "[].${it.path}" bodyDesc it.description as String }
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
@@ -88,16 +85,16 @@ class DocumentDsl<T>(
 
     private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> {
         val isArray = fields.all { it.path.startsWith("[]") }
-        val dataField = "${ApiResponse<*>::data.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
+        val dataField = "${ApiResponse<*>::body.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
 
         return (
             apiResponseFields + dataField +
                 fields.map {
-                    val path = ApiResponse<*>::data.name + ".".takeUnless { isArray }.orEmpty() + it.path
+                    val path = ApiResponse<*>::body.name + ".".takeUnless { isArray }.orEmpty() + it.path
                     val description = it.description as String
 
                     path bodyDesc description
                 }
-        )
+            )
     }
 }

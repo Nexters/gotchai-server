@@ -4,4 +4,4 @@ import com.gotchai.domain.global.exception.ServerException
 
 class UserNotFoundException(
     override val message: String = "사용자를 찾을 수 없습니다.",
-) : ServerException(statusCode = 404, message)
+) : ServerException(status = 404, message)

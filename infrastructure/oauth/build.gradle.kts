@@ -1,5 +1,5 @@
 dependencies {
-    implementation(libs.bundles.openfeign)
+    implementation(libs.spring.boot.starter.webflux)
 
     implementation(project(":domain"))
 }

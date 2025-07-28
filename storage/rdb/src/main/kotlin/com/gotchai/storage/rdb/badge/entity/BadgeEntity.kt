@@ -2,7 +2,7 @@ package com.gotchai.storage.rdb.badge.entity
 
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
-import com.gotchai.storage.rdb.global.common.BaseEntity
+import com.gotchai.storage.rdb.global.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType

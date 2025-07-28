@@ -5,7 +5,8 @@ import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
 import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.domain.badge.port.`in`.BadgeCommandUseCase
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
-import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.global.security.GotchaiAuthentication
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
@@ -24,8 +25,11 @@ class BadgeController(
             .let { BadgeResponse.from(it) }
 
     @GetMapping("/users/me/badges")
-    fun getMyBadges(user: User.Issue): List<GetMyBadgeResponse> =
+    fun getMyBadges(
+        @AuthenticationPrincipal
+        authentication: GotchaiAuthentication,
+    ): List<GetMyBadgeResponse> =
         badgeQueryUseCase
-            .getMyBadges(user.id)
+            .getMyBadges(authentication.userId)
             .map { GetMyBadgeResponse.from(it) }
 }

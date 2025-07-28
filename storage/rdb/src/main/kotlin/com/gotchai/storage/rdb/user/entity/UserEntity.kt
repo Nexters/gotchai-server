@@ -1,70 +1,37 @@
 package com.gotchai.storage.rdb.user.entity
 
-import com.gotchai.domain.user.entity.SocialType
+import com.gotchai.domain.user.entity.Role
 import com.gotchai.domain.user.entity.User
-import com.gotchai.storage.rdb.global.common.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Table
+import com.gotchai.storage.rdb.global.entity.BaseEntity
+import jakarta.persistence.*
 
-@Table
-@Entity(name = "user")
+@Table(name = "user")
+@Entity
 class UserEntity(
-    @Column(length = 20)
-    val name: String,
     @Column(length = 50)
     val email: String,
-    val password: String,
-    val socialId: String?,
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "provider", columnDefinition = "varchar(50)")
-    private val socialType: SocialType,
+    val password: String?,
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    val roles: Set<Role>,
 ) : BaseEntity() {
-    constructor(create: User.SocialCreation) : this(
-        name = create.name,
-        email = create.email,
-        password = "",
-        socialId = create.socialId,
-        socialType = create.socialType,
-    )
+    companion object {
+        fun from(creation: User.Creation): UserEntity =
+            with(creation) {
+                UserEntity(
+                    email = email,
+                    password = password,
+                    roles = roles
+                )
+            }
+    }
 
-    constructor(create: User.GotchaiCreation) : this(
-        name = create.name,
-        email = create.email,
-        password = create.password,
-        socialId = null,
-        socialType = SocialType.GOTCHAI,
-    )
-
-    fun toUserInfo(): User.Info =
-        User.Info(
-            id = id!!,
-            name = name,
-            email = email,
-            socialId = socialId,
-            socialType = socialType,
-            createdAt = createdAt,
-        )
-
-    fun toCredential(): User.Credential =
-        User.Credential(
+    fun toUser(): User =
+        User(
             id = id!!,
             email = email,
             password = password,
-            socialType = socialType,
-        )
-
-    fun toProfile(): User.Profile =
-        User.Profile(
-            name = name,
-            email = email,
-            socialType = socialType,
-        )
-
-    fun toIssue(): User.Issue =
-        User.Issue(
-            id = id!!,
+            roles = roles,
+            createdAt = createdAt
         )
 }

@@ -3,9 +3,9 @@ package com.gotchai.api.global.dto
 import java.time.LocalDateTime
 
 data class ApiResponse<T>(
-    val success: Boolean,
+    val isSuccess: Boolean,
     val status: Int,
-    val data: T? = null,
+    val body: T? = null,
     val timestamp: LocalDateTime,
 ) {
     companion object {

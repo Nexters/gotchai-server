@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.exam.entity
 
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.storage.rdb.global.common.BaseEntity
+import com.gotchai.storage.rdb.global.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table

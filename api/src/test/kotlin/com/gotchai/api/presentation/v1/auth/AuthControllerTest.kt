@@ -1,24 +1,19 @@
 package com.gotchai.api.presentation.v1.auth
 
 import com.gotchai.api.common.ControllerTest
-import com.gotchai.api.docs.appleLoginRequestFields
-import com.gotchai.api.docs.authMessageResponseFields
-import com.gotchai.api.docs.authTokenResponseFields
-import com.gotchai.api.docs.kakaoLoginRequestFields
-import com.gotchai.api.docs.logoutRequestFields
-import com.gotchai.api.docs.refreshTokenRequestFields
-import com.gotchai.api.docs.testLoginRequestFields
-import com.gotchai.api.docs.testSignUpRequestFields
+import com.gotchai.api.docs.*
+import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.auth.request.AuthRequest
 import com.gotchai.api.presentation.v1.auth.response.AuthResponse
 import com.gotchai.api.util.document
+import com.gotchai.api.util.expectError
 import com.gotchai.domain.auth.dto.TokenPair
-import com.gotchai.domain.auth.exception.InvalidAppleTokenException
+import com.gotchai.domain.auth.exception.InvalidOAuthTokenException
 import com.gotchai.domain.auth.exception.InvalidKakaoTokenException
 import com.gotchai.domain.auth.exception.InvalidRefreshTokenException
-import com.gotchai.domain.auth.port.`in`.AuthenticationCommandUseCase
-import com.gotchai.domain.user.entity.SocialType
-import com.gotchai.infrastructure.oauth.apple.AppleClientResult
+import com.gotchai.domain.auth.port.`in`.AuthCommandUseCase
+import com.gotchai.domain.user.entity.SocialProvider
+import com.gotchai.infrastructure.oauth.dto.AppleUser
 import com.gotchai.infrastructure.oauth.kakao.KaKaoClientResult
 import com.gotchai.infrastructure.oauth.port.`in`.OAuthQueryUseCase
 import com.ninjasquad.springmockk.MockkBean
@@ -30,19 +25,20 @@ import org.springframework.test.web.reactive.server.expectBody
 @WebMvcTest(AuthController::class)
 class AuthControllerTest : ControllerTest() {
     @MockkBean
-    private lateinit var authenticationCommandUseCase: AuthenticationCommandUseCase
+    private lateinit var authCommandUseCase: AuthCommandUseCase
 
     @MockkBean
     private lateinit var oAuthQueryUseCase: OAuthQueryUseCase
 
     init {
-        describe("POST /api/v1/auth/test-login") {
-            context("유효한 테스트 로그인 요청") {
-                it("액세스 토큰과 리프레시 토큰을 반환한다") {
-                    val request = AuthRequest.Login("test@example.com", "password")
-                    val tokenPair = TokenPair("access-token", "refresh-token")
+        describe("testLogin()은") {
+            context("유효한 테스트 로그인 요청을 받은 경우") {
+                val request = AuthRequest.Login("test@example.com", "password")
+                val tokenPair = TokenPair("access-token", "refresh-token")
 
-                    every { authenticationCommandUseCase.testLogin(request.email, request.password) } returns tokenPair
+                every { authCommandUseCase.testLogin(request.email, request.password) } returns tokenPair
+
+                it("액세스 토큰과 리프레시 토큰을 반환한다.") {
 
                     webClient
                         .post()
@@ -52,7 +48,7 @@ class AuthControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<AuthResponse.Token>()
+                        .expectBody<ApiResponse<AuthResponse.Token>>()
                         .document("auth-test-login") {
                             requestBody(testLoginRequestFields)
                             responseBody(authTokenResponseFields)
@@ -61,12 +57,18 @@ class AuthControllerTest : ControllerTest() {
             }
         }
 
-        describe("POST /api/v1/auth/test-signup") {
-            context("유효한 테스트 회원가입 요청") {
-                it("회원가입 완료 메시지를 반환한다") {
+        describe("testSignUp()은") {
+            context("유효한 테스트 회원가입 요청을 받은 경우") {
+                it("회원가입 완료 메시지를 반환한다.") {
                     val request = AuthRequest.SignUp("테스트", "test@example.com", "password")
 
-                    every { authenticationCommandUseCase.testSignUp(request.name, request.email, request.password) } returns Unit
+                    every {
+                        authCommandUseCase.testSignUp(
+                            request.name,
+                            request.email,
+                            request.password
+                        )
+                    } returns Unit
 
                     webClient
                         .post()
@@ -76,7 +78,7 @@ class AuthControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<AuthResponse.Message>()
+                        .expectBody<ApiResponse<AuthResponse.Message>>()
                         .document("auth-test-signup") {
                             requestBody(testSignUpRequestFields)
                             responseBody(authMessageResponseFields)
@@ -85,24 +87,23 @@ class AuthControllerTest : ControllerTest() {
             }
         }
 
-        describe("POST /api/v1/auth/login/kakao") {
-            context("유효한 카카오 로그인 요청") {
-                it("액세스 토큰과 리프레시 토큰을 반환한다") {
-                    val request = AuthRequest.KakaoLogin("kakao-access-token")
-                    val kakaoUserInfo = KaKaoClientResult("kakao-id", "test@example.com", "테스트")
-                    val tokenPair = TokenPair("access-token", "refresh-token")
+        describe("kakaoLogin()은") {
+            context("유효한 카카오 로그인 요청을 받은 경우") {
+                val request = AuthRequest.KakaoLogin("kakao-access-token")
+                val kakaoUserInfo = KaKaoClientResult("kakao-id", "test@example.com", "테스트")
+                val tokenPair = TokenPair("access-token", "refresh-token")
 
-                    every { oAuthQueryUseCase.getKaKaoUserInfo(request.accessToken) } returns kakaoUserInfo
-                    every {
-                        authenticationCommandUseCase.socialLogin(
-                            any(),
-                            kakaoUserInfo.email,
-                            kakaoUserInfo.id,
-                            SocialType.KAKAO,
-                        )
-                    } returns
-                        tokenPair
+                every { oAuthQueryUseCase.getKaKaoUserInfo(request.accessToken) } returns kakaoUserInfo
+                every {
+                    authCommandUseCase.socialLogin(
+                        any(),
+                        kakaoUserInfo.email,
+                        kakaoUserInfo.id,
+                        SocialProvider.KAKAO,
+                    )
+                } returns tokenPair
 
+                it("상태 코드 200과 Token을 반환한다") {
                     webClient
                         .post()
                         .uri("/api/v1/auth/login/kakao")
@@ -112,16 +113,16 @@ class AuthControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<AuthResponse.Token>()
-                        .document("auth-kakao-login") {
+                        .expectBody<ApiResponse<AuthResponse.Token>>()
+                        .document("카카오 로그인 성공(200)") {
                             requestBody(kakaoLoginRequestFields)
                             responseBody(authTokenResponseFields)
                         }
                 }
             }
 
-            context("유효하지 않은 카카오 토큰으로 로그인 시도") {
-                it("401 상태 코드를 반환한다") {
+            context("유효하지 않은 카카오 토큰을 받은 경우") {
+                it("상태 코드 401과 ErrorResponse를 반환한다") {
                     val request = AuthRequest.KakaoLogin("invalid-token")
 
                     every { oAuthQueryUseCase.getKaKaoUserInfo(request.accessToken) } throws InvalidKakaoTokenException()
@@ -134,28 +135,34 @@ class AuthControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isUnauthorized
+                        .expectError()
+                        .document("카카오 로그인 실패(401)") {
+                            requestBody(kakaoLoginRequestFields)
+                            responseBody(errorResponseFields)
+                        }
+
                 }
             }
         }
 
         describe("POST /api/v1/auth/login/apple") {
             context("유효한 Apple 로그인 요청") {
+                val request = AuthRequest.AppleLogin("apple-id-token")
+                val appleUserInfo = AppleUser("apple-id", "test@example.com")
+                val tokenPair = TokenPair("access-token", "refresh-token")
+
+                every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } returns appleUserInfo
+                every {
+                    authCommandUseCase.socialLogin(
+                        any(),
+                        appleUserInfo.email,
+                        appleUserInfo.id,
+                        SocialProvider.APPLE,
+                    )
+                } returns
+                    tokenPair
+
                 it("액세스 토큰과 리프레시 토큰을 반환한다") {
-                    val request = AuthRequest.AppleLogin("apple-id-token")
-                    val appleUserInfo = AppleClientResult("apple-id", "test@example.com")
-                    val tokenPair = TokenPair("access-token", "refresh-token")
-
-                    every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } returns appleUserInfo
-                    every {
-                        authenticationCommandUseCase.socialLogin(
-                            any(),
-                            appleUserInfo.email,
-                            appleUserInfo.id,
-                            SocialType.APPLE,
-                        )
-                    } returns
-                        tokenPair
-
                     webClient
                         .post()
                         .uri("/api/v1/auth/login/apple")
@@ -177,7 +184,7 @@ class AuthControllerTest : ControllerTest() {
                 it("401 상태 코드를 반환한다") {
                     val request = AuthRequest.AppleLogin("invalid-token")
 
-                    every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } throws InvalidAppleTokenException()
+                    every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } throws InvalidOAuthTokenException()
 
                     webClient
                         .post()
@@ -196,7 +203,7 @@ class AuthControllerTest : ControllerTest() {
                 it("로그아웃 완료 메시지를 반환한다") {
                     val request = AuthRequest.Logout("access-token")
 
-                    every { authenticationCommandUseCase.logout(request.accessToken) } returns "1"
+                    every { authCommandUseCase.logout(request.accessToken) } returns "1"
 
                     webClient
                         .post()
@@ -218,7 +225,7 @@ class AuthControllerTest : ControllerTest() {
         describe("DELETE /api/v1/auth/withdrawal") {
             context("인증된 사용자의 회원탈퇴 요청") {
                 it("회원탈퇴 완료 메시지를 반환한다") {
-                    every { authenticationCommandUseCase.withdrawUser(any()) } returns Unit
+                    every { authCommandUseCase.withdraw(any()) } returns Unit
 
                     webClient
                         .delete()
@@ -240,7 +247,7 @@ class AuthControllerTest : ControllerTest() {
                     val request = AuthRequest.RefreshToken("refresh-token")
                     val tokenPair = TokenPair("new-access-token", "new-refresh-token")
 
-                    every { authenticationCommandUseCase.renew(request.refreshToken) } returns tokenPair
+                    every { authCommandUseCase.refresh(request.refreshToken) } returns tokenPair
 
                     webClient
                         .post()
@@ -262,7 +269,7 @@ class AuthControllerTest : ControllerTest() {
                 it("401 상태 코드를 반환한다") {
                     val request = AuthRequest.RefreshToken("invalid-refresh-token")
 
-                    every { authenticationCommandUseCase.renew(request.refreshToken) } throws InvalidRefreshTokenException()
+                    every { authCommandUseCase.refresh(request.refreshToken) } throws InvalidRefreshTokenException()
 
                     webClient
                         .post()

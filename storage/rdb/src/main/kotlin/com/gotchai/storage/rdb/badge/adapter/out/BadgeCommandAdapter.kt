@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.badge.adapter.out
 
 import com.gotchai.domain.badge.port.out.BadgeCommandPort
-import org.springframework.stereotype.Repository
+import com.gotchai.storage.rdb.global.annotation.Adapter
 
-@Repository
+@Adapter
 class BadgeCommandAdapter : BadgeCommandPort

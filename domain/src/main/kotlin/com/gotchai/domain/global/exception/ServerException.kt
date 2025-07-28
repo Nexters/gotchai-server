@@ -1,6 +1,6 @@
 package com.gotchai.domain.global.exception
 
 abstract class ServerException(
-    val statusCode: Int,
+    val status: Int,
     override val message: String,
 ) : RuntimeException(message)

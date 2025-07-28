@@ -79,6 +79,7 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 spring-context = { group = "org.springframework", name = "spring-context" }
 spring-tx = { group = "org.springframework", name = "spring-tx" }
 spring-boot-starter-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
 spring-boot-starter-data-jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa", version.ref = "spring-boot" }
 spring-boot-starter-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
 spring-boot-starter-actuator = { group = "org.springframework.boot", name = "spring-boot-starter-actuator", version.ref = "spring-boot" }
