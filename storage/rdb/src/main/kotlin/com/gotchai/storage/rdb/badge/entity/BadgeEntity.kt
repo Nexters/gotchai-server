@@ -17,7 +17,7 @@ class BadgeEntity(
     val description: String,
     val image: String,
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "tier", columnDefinition = "varchar(20)")
+    @Column(columnDefinition = "varchar(20)")
     val tier: Tier,
 ) : BaseEntity() {
     companion object {

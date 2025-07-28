@@ -1,4 +1,4 @@
-package com.gotchai.storage.rdb.auth.adapter.`in`
+package com.gotchai.storage.rdb.auth.adapter.out
 
 import com.gotchai.domain.auth.entity.AuthenticationEntityStatus
 import com.gotchai.domain.auth.entity.AuthenticationHistory
@@ -29,7 +29,7 @@ class AuthenticationHistoryQueryAdapter(
     override fun findUserId(userId: Long): AuthenticationHistory? {
         val histories = repository.findAllByUserIdAndEntityStatus(userId, AuthenticationEntityStatus.ACTIVE)
 
-        if (histories.isNullOrEmpty()) {
+        if (histories.isEmpty()) {
             return null
         }
 

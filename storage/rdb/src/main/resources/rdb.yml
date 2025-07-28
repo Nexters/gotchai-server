@@ -6,6 +6,7 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
+        globally_quoted_identifiers: true
 ---
 spring:
   config:
