@@ -6,12 +6,12 @@ data class Quiz(
     val id: Long,
     val examId: Long,
     val contents: String,
-    val priority: Int,
+    val order: Int,
     val createdAt: LocalDateTime,
 ) {
     data class Creation(
         val examId: Long,
         val contents: String,
-        val priority: Int,
+        val order: Int,
     )
 }

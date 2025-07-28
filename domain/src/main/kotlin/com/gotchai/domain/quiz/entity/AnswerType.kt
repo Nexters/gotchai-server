@@ -1,6 +1,6 @@
 package com.gotchai.domain.quiz.entity
 
-enum class QuizType {
+enum class AnswerType {
     AI,
     HUMAN,
 }

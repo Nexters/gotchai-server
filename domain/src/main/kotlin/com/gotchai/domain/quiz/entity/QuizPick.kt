@@ -1,14 +1,14 @@
 package com.gotchai.domain.quiz.entity
 
-data class QuizContents(
+data class QuizPick(
     val id: Long,
     val quizId: Long,
     val contents: String,
-    val type: QuizType,
+    val type: AnswerType,
 ) {
     data class Creation(
         val quizId: Long,
         val contents: String,
-        val type: QuizType,
+        val answerType: AnswerType,
     )
 }

@@ -2,6 +2,7 @@ package com.gotchai.storage.rdb.quiz.entity
 
 import com.gotchai.domain.quiz.entity.Quiz
 import com.gotchai.storage.rdb.global.common.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
@@ -10,7 +11,8 @@ import jakarta.persistence.Table
 class QuizEntity(
     val examId: Long,
     val contents: String,
-    val priority: Int,
+    @Column(name = "order")
+    val order: Int,
 ) : BaseEntity() {
     companion object {
         fun from(creation: Quiz.Creation): QuizEntity =
@@ -18,7 +20,7 @@ class QuizEntity(
                 QuizEntity(
                     examId = examId,
                     contents = contents,
-                    priority = priority,
+                    order = order,
                 )
             }
     }
@@ -28,7 +30,7 @@ class QuizEntity(
             id = id!!,
             examId = examId,
             contents = contents,
-            priority = priority,
+            order = order,
             createdAt = createdAt,
         )
 }
