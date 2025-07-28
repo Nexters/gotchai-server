@@ -1,0 +1,29 @@
+package com.gotchai.api.presentation.v1.exam.response
+
+import com.gotchai.domain.exam.entity.Exam
+import java.time.LocalDateTime
+
+data class ExamResponse(
+    val id: Long,
+    val title: String,
+    val subTitle: String,
+    val descriptionImage: String,
+    val iconImage: String,
+    val theme: String,
+    val createdAt: LocalDateTime,
+) {
+    companion object {
+        fun from(exam: Exam): ExamResponse =
+            with(exam) {
+                ExamResponse(
+                    id = id,
+                    title = title,
+                    subTitle = subTitle,
+                    descriptionImage = descriptionImage,
+                    iconImage = iconImage,
+                    theme = theme,
+                    createdAt = createdAt,
+                )
+            }
+    }
+}

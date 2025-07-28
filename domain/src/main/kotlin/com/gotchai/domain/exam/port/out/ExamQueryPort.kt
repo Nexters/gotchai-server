@@ -1,3 +1,9 @@
 package com.gotchai.domain.exam.port.out
 
-interface ExamQueryPort
+import com.gotchai.domain.exam.entity.Exam
+
+interface ExamQueryPort {
+    fun getExamById(examId: Long): Exam
+
+    fun getExams(): List<Exam>
+}
