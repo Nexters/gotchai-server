@@ -19,7 +19,7 @@ class CustomAuthenticationEntryPoint(
         authenticationException: AuthenticationException,
     ) {
         with(response) {
-            status = HttpStatus.UNAUTHORIZED.value()
+            status = HttpStatus.FORBIDDEN.value()
             contentType = MediaType.APPLICATION_JSON_VALUE
             writer.write(
                 objectMapper.writeValueAsString(
@@ -27,8 +27,8 @@ class CustomAuthenticationEntryPoint(
                         status = status,
                         response =
                             ErrorResponse(
-                                errorCode = "UNAUTHORIZED_USER",
-                                message = "인가되지 않은 사용자입니다.",
+                                errorCode = "UNAUTHENTICATED_USER",
+                                message = "인증되지 않은 사용자입니다.",
                             ),
                     ),
                 ),

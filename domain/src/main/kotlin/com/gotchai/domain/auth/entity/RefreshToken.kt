@@ -2,7 +2,7 @@ package com.gotchai.domain.auth.entity
 
 import java.time.Duration
 
-class RefreshToken(
+data class RefreshToken(
     val userId: Long,
     val deviceId: String?,
     val content: String,

@@ -2,13 +2,13 @@ package com.gotchai.infrastructure.oauth.client
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.domain.auth.exception.InvalidOAuthTokenException
+import com.gotchai.infrastructure.oauth.config.AppleProperties
 import com.gotchai.infrastructure.oauth.dto.ApplePublicKey
 import com.gotchai.infrastructure.oauth.dto.AppleUser
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.SignedJWT
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -19,8 +19,7 @@ import java.util.*
 class AppleClient(
     private val webClient: WebClient,
     private val objectMapper: ObjectMapper,
-    @Value("\${apple.bundle-id}")
-    private val bundleId: String,
+    private val appleProperties: AppleProperties,
 ) {
     companion object {
         private const val APPLE_URI = "https://appleid.apple.com"
@@ -46,7 +45,7 @@ class AppleClient(
             val now = Date()
 
             if (!isSignatureValid(signedJwt)) return false
-            if (claimSet.audience.firstOrNull() != bundleId) return false
+            if (claimSet.audience.firstOrNull() != appleProperties.bundleId) return false
 
             now.before(claimSet.expirationTime) && claimSet.issuer == APPLE_URI
         }.getOrElse { false }
@@ -63,7 +62,7 @@ class AppleClient(
 
     private fun getPublicKeys(): List<ApplePublicKey> =
         webClient.get()
-            .uri("https://appleid.apple.com/auth/keys")
+            .uri("$APPLE_URI/auth/keys")
             .retrieve()
             .bodyToMono<List<ApplePublicKey>>()
             .block()!!

@@ -11,9 +11,13 @@ import org.springframework.web.reactive.function.client.bodyToMono
 class KakaoClient(
     private val webClient: WebClient,
 ) {
+    companion object {
+        private const val KAKAO_URI = "https://kapi.kakao.com"
+    }
+
     fun getKakaoUserByToken(accessToken: String): KakaoUser =
         webClient.get()
-            .uri("https://kapi.kakao.com/v2/user/me")
+            .uri("$KAKAO_URI/v2/user/me")
             .header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
             .retrieve()
             .bodyToMono<KakaoUser>()

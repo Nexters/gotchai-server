@@ -13,7 +13,7 @@ import com.gotchai.domain.auth.exception.InvalidKakaoTokenException
 import com.gotchai.domain.auth.exception.InvalidRefreshTokenException
 import com.gotchai.domain.auth.port.`in`.AuthCommandUseCase
 import com.gotchai.domain.user.entity.SocialProvider
-import com.gotchai.infrastructure.oauth.dto.AppleUser
+import com.gotchai.infrastructure.oauth.dto.GetAppleUserResponse
 import com.gotchai.infrastructure.oauth.kakao.KaKaoClientResult
 import com.gotchai.infrastructure.oauth.port.`in`.OAuthQueryUseCase
 import com.ninjasquad.springmockk.MockkBean
@@ -148,15 +148,15 @@ class AuthControllerTest : ControllerTest() {
         describe("POST /api/v1/auth/login/apple") {
             context("유효한 Apple 로그인 요청") {
                 val request = AuthRequest.AppleLogin("apple-id-token")
-                val appleUserInfo = AppleUser("apple-id", "test@example.com")
+                val getAppleUserResponseInfo = GetAppleUserResponse("apple-id", "test@example.com")
                 val tokenPair = TokenPair("access-token", "refresh-token")
 
-                every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } returns appleUserInfo
+                every { oAuthQueryUseCase.getAppleUserInfo(request.idToken) } returns getAppleUserResponseInfo
                 every {
                     authCommandUseCase.socialLogin(
                         any(),
-                        appleUserInfo.email,
-                        appleUserInfo.id,
+                        getAppleUserResponseInfo.email,
+                        getAppleUserResponseInfo.id,
                         SocialProvider.APPLE,
                     )
                 } returns

@@ -19,6 +19,7 @@ server:
     encoding:
       charset: UTF-8
       force: true
+frontend-uri: ${FRONTEND_URI}
 ---
 spring:
   config:

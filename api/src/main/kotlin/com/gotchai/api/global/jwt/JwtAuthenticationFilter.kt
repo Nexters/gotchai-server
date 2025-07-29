@@ -1,7 +1,7 @@
 package com.gotchai.api.global.jwt
 
-import com.gotchai.api.global.exception.JwtException
 import com.gotchai.domain.global.jwt.JwtProvider
+import io.jsonwebtoken.JwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -18,11 +18,15 @@ class JwtAuthenticationFilter(
         filterChain: FilterChain,
     ) {
         request.getHeader(HttpHeaders.AUTHORIZATION)
-            .runCatching { jwtProvider.getAuthentication(toBearerToken()) }
-            .onSuccess { SecurityContextHolder.getContext().authentication = it }
-            .run { filterChain.doFilter(request, response) }
+            ?.run {
+                runCatching { jwtProvider.getAuthentication(getBearerToken()) }
+                    .onSuccess { SecurityContextHolder.getContext().authentication = it }
+                    .onFailure { if (it !is JwtException) throw it }
+            }
+
+        filterChain.doFilter(request, response)
     }
 
-    private fun String.toBearerToken(): String =
+    private fun String.getBearerToken(): String =
         if (startsWith("Bearer ")) substring(7) else throw JwtException("Authorization header is invalid.")
 }
