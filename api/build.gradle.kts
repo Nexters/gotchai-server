@@ -15,25 +15,22 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.aop)
     implementation(libs.spring.boot.starter.validation)
-    implementation(libs.jakarta.validation)
-
-    // Security
     implementation(libs.spring.boot.starter.security)
-    testImplementation(libs.spring.security.test)
+    implementation(libs.jakarta.validation)
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.jackson)
     runtimeOnly(libs.jjwt.impl)
 
-    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(testFixtures(project(":domain")))
     testImplementation(libs.bundles.spring.test)
     testImplementation(libs.bundles.spring.rest.docs)
-    testImplementation(testFixtures(project(":domain")))
+
+    testFixturesImplementation(testFixtures(project(":common")))
+    testFixturesImplementation(testFixtures(project(":domain")))
     testFixturesImplementation(libs.bundles.test)
     testFixturesImplementation(libs.bundles.spring.test)
     testFixturesImplementation(libs.bundles.spring.rest.docs)
-    testFixturesImplementation(testFixtures(project(":common")))
-    testFixturesImplementation(testFixtures(project(":domain")))
-    testImplementation(project(":storage:redis"))
+    testFixturesImplementation(libs.spring.boot.starter.security)
 }
 
 tasks {

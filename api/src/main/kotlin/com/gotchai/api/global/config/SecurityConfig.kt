@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.factory.PasswordEncoderFactories
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
@@ -21,7 +23,7 @@ class SecurityConfig {
         http: HttpSecurity,
         customAuthenticationEntryPoint: CustomAuthenticationEntryPoint,
         customAccessDeniedHandler: CustomAccessDeniedHandler,
-        jwtAuthenticationFilter: JwtAuthenticationFilter,
+        jwtAuthenticationFilter: JwtAuthenticationFilter
     ): SecurityFilterChain =
         with(http) {
             csrf { it.disable() }
@@ -29,14 +31,20 @@ class SecurityConfig {
             logout { it.disable() }
             sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             exceptionHandling {
-                it.authenticationEntryPoint(customAuthenticationEntryPoint)
+                it
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
                     .accessDeniedHandler(customAccessDeniedHandler)
             }
             authorizeHttpRequests {
-                it.requestMatchers(HttpMethod.GET, "/ping")
+                it
+                    .requestMatchers(HttpMethod.GET, "/ping")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/login/**", "/api/v1/auth/refresh")
-                    .permitAll()
+                    .requestMatchers(
+                        HttpMethod.POST,
+                        "/api/v1/auth/login/**",
+                        "/api/v1/auth/refresh",
+                        "/api/v1/auth/test/**"
+                    ).permitAll()
                     .anyRequest()
                     .authenticated()
             }
@@ -51,4 +59,7 @@ class SecurityConfig {
     @Bean
     fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler =
         CustomAccessDeniedHandler(objectMapper)
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
 }

@@ -1,11 +1,9 @@
 package com.gotchai.api.global.logging
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import jakarta.servlet.FilterChain
-import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
@@ -18,17 +16,16 @@ import java.io.UnsupportedEncodingException
 
 @Component
 class LoggingFilter(
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
     companion object {
         private val log by lazy { LoggerFactory.getLogger(this::class.java) }
     }
 
-    @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain,
+        filterChain: FilterChain
     ) {
         val isFirstRequest = !this.isAsyncDispatch(request)
         var wrapper = request
@@ -44,7 +41,6 @@ class LoggingFilter(
         }
     }
 
-    @Throws(JsonProcessingException::class)
     private fun createMessage(request: HttpServletRequest) {
         val logData = objectMapper.createObjectNode()
         setClient(request, logData)
@@ -58,7 +54,7 @@ class LoggingFilter(
 
     private fun setParameters(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         request.queryString.takeIf { !it.isNullOrBlank() } ?: return
 
@@ -85,12 +81,12 @@ class LoggingFilter(
 
     private fun setPayload(
         request: HttpServletRequest,
-        node: ObjectNode,
+        node: ObjectNode
     ) {
         val wrapper =
             WebUtils.getNativeRequest(
                 request,
-                ContentCachingRequestWrapper::class.java,
+                ContentCachingRequestWrapper::class.java
             )
         if (wrapper != null) {
             val buf = wrapper.contentAsByteArray
@@ -111,21 +107,21 @@ class LoggingFilter(
 
     private fun setUri(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         logData.put("uri", request.requestURI)
     }
 
     private fun setMethod(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         logData.put("method", request.method)
     }
 
     private fun setClient(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         request.remoteAddr?.takeIf { it.isNotBlank() }?.let { logData.put("client", it) }
         setSession(request, logData)
@@ -134,7 +130,7 @@ class LoggingFilter(
 
     private fun setSession(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         val session = request.getSession(false)
         if (session != null) {
@@ -144,7 +140,7 @@ class LoggingFilter(
 
     private fun setUser(
         request: HttpServletRequest,
-        logData: ObjectNode,
+        logData: ObjectNode
     ) {
         val remoteUser = request.remoteUser
         if (remoteUser != null) {

@@ -1,13 +1,14 @@
 spring:
   application:
     name: gotchai-server
+  main:
+    banner-mode: off
   profiles:
     include:
     - auth
     - oauth
     - rdb
     - redis
-    - env
   web.resources.add-mappings: false
 server:
   tomcat:

@@ -2,11 +2,10 @@ package com.gotchai.infrastructure.oauth.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.client.RestClient
 
 @Configuration
-class WebClientConfig {
+class RestClientConfig {
     @Bean
-    fun webClient(): WebClient =
-        WebClient.create()
+    fun restClient(): RestClient = RestClient.create()
 }

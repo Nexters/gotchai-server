@@ -4,7 +4,7 @@ import com.gotchai.domain.auth.dto.command.SocialLoginCommand
 import com.gotchai.domain.user.entity.SocialProvider
 
 data class KakaoLoginRequest(
-    val accessToken: String,
+    val accessToken: String
 ) {
     fun toCommand(): SocialLoginCommand =
         SocialLoginCommand(

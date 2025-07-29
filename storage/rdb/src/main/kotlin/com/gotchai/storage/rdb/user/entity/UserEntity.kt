@@ -13,7 +13,7 @@ class UserEntity(
     val password: String?,
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    val roles: Set<Role>,
+    val roles: Set<Role>
 ) : BaseEntity() {
     companion object {
         fun from(creation: User.Creation): UserEntity =

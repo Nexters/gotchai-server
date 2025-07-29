@@ -8,9 +8,15 @@ import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class UserQueryAdapter(
-    private val userRepository: UserJpaRepository,
+    private val userRepository: UserJpaRepository
 ) : UserQueryPort {
     override fun getUserById(id: Long): User? =
-        userRepository.findByIdOrNull(id)
+        userRepository
+            .findByIdOrNull(id)
+            ?.toUser()
+
+    override fun getUserByEmail(email: String): User? =
+        userRepository
+            .findByEmail(email)
             ?.toUser()
 }

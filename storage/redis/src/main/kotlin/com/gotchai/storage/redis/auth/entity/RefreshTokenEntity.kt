@@ -12,9 +12,11 @@ class RefreshTokenEntity(
     val userId: Long,
     val deviceId: String?,
     val content: String,
-    @TimeToLive
-    val expiration: Duration,
+    val expiration: Duration
 ) {
+    @TimeToLive
+    private var ttl = expiration.toSeconds()
+
     companion object {
         fun from(creation: RefreshToken.Creation): RefreshTokenEntity =
             with(creation) {

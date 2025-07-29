@@ -9,13 +9,13 @@ data class Exam(
     val descriptionImage: String,
     val iconImage: String,
     val theme: String,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 ) {
     data class Creation(
         val title: String,
         val subTitle: String,
         val descriptionImage: String,
         val iconImage: String,
-        val theme: String,
+        val theme: String
     )
 }

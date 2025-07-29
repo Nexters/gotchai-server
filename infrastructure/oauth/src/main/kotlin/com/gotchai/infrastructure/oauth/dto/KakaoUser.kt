@@ -9,14 +9,14 @@ import com.gotchai.domain.user.entity.SocialProvider
 data class KakaoUser(
     val id: Long,
     @JsonProperty("kakao_account")
-    val account: Account,
+    val account: Account
 ) {
     data class Account(
         val email: String,
-        val profile: Profile?,
+        val profile: Profile?
     ) {
         data class Profile(
-            val nickname: String?,
+            val nickname: String?
         )
     }
 

@@ -4,7 +4,7 @@ import com.gotchai.domain.auth.dto.command.SocialLoginCommand
 import com.gotchai.domain.user.entity.SocialProvider
 
 data class AppleLoginRequest(
-    val idToken: String,
+    val idToken: String
 ) {
     fun toCommand(): SocialLoginCommand =
         SocialLoginCommand(

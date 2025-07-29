@@ -12,7 +12,7 @@ class UserSocialEntity(
     val socialId: String,
     @Enumerated(value = EnumType.STRING)
     @Column(name = "provider", columnDefinition = "varchar(50)")
-    private val provider: SocialProvider,
+    private val provider: SocialProvider
 ) : BaseEntity() {
     companion object {
         fun from(creation: UserSocial.Creation): UserSocialEntity =

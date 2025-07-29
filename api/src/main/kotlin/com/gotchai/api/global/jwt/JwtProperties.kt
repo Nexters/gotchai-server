@@ -10,5 +10,5 @@ data class JwtProperties(
     val accessTokenExpiration: Duration,
     val refreshTokenExpiration: Duration,
     val publicKey: RSAPublicKey,
-    val privateKey: RSAPrivateKey,
+    val privateKey: RSAPrivateKey
 )

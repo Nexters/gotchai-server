@@ -1,27 +1,54 @@
 package com.gotchai.domain.fixture
 
-import com.gotchai.domain.user.entity.SocialProvider
-import com.gotchai.domain.user.entity.User
+import com.gotchai.domain.user.entity.*
 import java.time.LocalDateTime
 
-private const val NAME = "정상윤"
-private const val EMAIL = "earlgrey02@apple.com"
-private const val SOCIAL_ID = "asdakjsadkkl"
-private val SOCIAL_TYPE = SocialProvider.APPLE
+const val EMAIL = "earlgrey02@apple.com"
+const val PASSWORD = "root"
+val ROLES = setOf(Role.MEMBER)
+const val NICKNAME = "우울한 얼그레이 #1"
+const val SOCIAL_ID = "asdakjsadkkl"
+val PROVIDER = SocialProvider.APPLE
 
 fun createUser(
     id: Long = ID,
-    name: String = NAME,
     email: String = EMAIL,
-    socialId: String? = SOCIAL_ID,
-    socialType: SocialProvider = SOCIAL_TYPE,
-    createdAt: LocalDateTime = CREATED_AT,
+    password: String? = PASSWORD,
+    roles: Set<Role> = ROLES,
+    createdAt: LocalDateTime = CREATED_AT
 ): User =
     User(
         id = id,
-        name = name,
         email = email,
+        password = password,
+        roles = roles,
+        createdAt = createdAt
+    )
+
+fun createProfile(
+    id: Long = ID,
+    userId: Long = ID,
+    nickname: String = NICKNAME,
+    createdAt: LocalDateTime = CREATED_AT
+): Profile =
+    Profile(
+        id = id,
+        userId = userId,
+        nickname = nickname,
+        createdAt = createdAt
+    )
+
+fun createUserSocial(
+    id: Long = ID,
+    userId: Long = ID,
+    socialId: String = SOCIAL_ID,
+    provider: SocialProvider = PROVIDER,
+    createdAt: LocalDateTime = CREATED_AT
+): UserSocial =
+    UserSocial(
+        id = id,
+        userId = userId,
         socialId = socialId,
-        socialType = socialType,
-        createdAt = createdAt,
+        provider = provider,
+        createdAt = createdAt
     )

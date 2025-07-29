@@ -9,7 +9,7 @@ import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class BadgeQueryAdapter(
-    private val badgeRepository: BadgeJpaRepository,
+    private val badgeRepository: BadgeJpaRepository
 ) : BadgeQueryPort {
     @ReadOnlyTransactional
     override fun getBadgeById(id: Long): Badge? =

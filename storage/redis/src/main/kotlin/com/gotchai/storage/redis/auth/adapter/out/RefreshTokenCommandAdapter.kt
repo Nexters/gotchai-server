@@ -8,10 +8,11 @@ import com.gotchai.storage.redis.global.annotation.Adapter
 
 @Adapter
 class RefreshTokenCommandAdapter(
-    private val refreshTokenRepository: RefreshTokenRedisRepository,
+    private val refreshTokenRepository: RefreshTokenRedisRepository
 ) : RefreshTokenCommandPort {
     override fun createRefreshToken(creation: RefreshToken.Creation): RefreshToken =
-        refreshTokenRepository.save(RefreshTokenEntity.from(creation))
+        refreshTokenRepository
+            .save(RefreshTokenEntity.from(creation))
             .toRefreshToken()
 
     override fun deleteRefreshTokenByUserId(userId: Long) {

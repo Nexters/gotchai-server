@@ -7,9 +7,10 @@ import com.gotchai.storage.rdb.user.repository.UserSocialJpaRepository
 
 @Adapter
 class UserSocialQueryAdapter(
-    private val userSocialRepository: UserSocialJpaRepository,
+    private val userSocialRepository: UserSocialJpaRepository
 ) : UserSocialQueryPort {
     override fun getUserSocialBySocialId(socialId: String): UserSocial? =
-        userSocialRepository.findBySocialId(socialId)
+        userSocialRepository
+            .findBySocialId(socialId)
             ?.toUserSocial()
 }

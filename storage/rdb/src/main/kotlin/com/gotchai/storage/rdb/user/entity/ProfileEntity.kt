@@ -11,7 +11,7 @@ import jakarta.persistence.Table
 class ProfileEntity(
     val userId: Long,
     @Column(length = 20)
-    val nickname: String,
+    val nickname: String
 ) : BaseEntity() {
     companion object {
         fun from(creation: Profile.Creation): ProfileEntity =

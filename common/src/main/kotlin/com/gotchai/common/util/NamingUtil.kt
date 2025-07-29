@@ -52,7 +52,7 @@ private val ANIMALS =
         "고슴도치",
         "박쥐",
         "기니피그",
-        "카피바라",
+        "카피바라"
     )
 
 private val ADJECTIVES =
@@ -173,7 +173,7 @@ private val ADJECTIVES =
         "고무고무",
         "노잼",
         "웃긴",
-        "예쁜",
+        "예쁜"
     )
 
 fun generateNickname(nicknames: List<String>): String {
@@ -181,8 +181,11 @@ fun generateNickname(nicknames: List<String>): String {
     val animal = ANIMALS.random()
     val nickname = "$adjective $animal"
     val tag =
-        if (nicknames.any { it.startsWith("$adjective $animal") }) "#${nicknames.count { it.startsWith("$adjective $animal") } + 1}"
-        else "#1"
+        if (nicknames.any { it.startsWith("$adjective $animal") }) {
+            "#${nicknames.count { it.startsWith("$adjective $animal") } + 1}"
+        } else {
+            "#1"
+        }
 
     return "$nickname $tag"
 }

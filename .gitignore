@@ -17,9 +17,11 @@ out/
 .kotlin
 
 ### ETC ###
+.*.env
+.env.*
+.env
 *.log
 .DS_Store
 api.yml
-application-env.yml
 **/.jqwik-database
 *.pem

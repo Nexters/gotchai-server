@@ -25,19 +25,22 @@ infix fun String.paramDesc(description: String): ParameterDescriptor =
         .description(description)
 
 fun List<FieldDescriptor>.toListFields(): List<FieldDescriptor> =
-    map { "[].${it.path}" bodyDesc it.description as String }
+    map {
+        "[].${it.path}" bodyDesc
+            it.description as String
+    }
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
-    init: DocumentDsl<T>.() -> Unit,
+    init: (DocumentDsl<T>.() -> Unit)? = null
 ): BodySpec<T, *> =
     DocumentDsl(identifier, this)
-        .apply(init)
+        .apply { init?.let { it() } }
         .build()
 
 class DocumentDsl<T>(
     private val identifier: String,
-    private val contentSpec: BodySpec<T, *>,
+    private val contentSpec: BodySpec<T, *>
 ) {
     private val snippets: MutableList<Snippet> = mutableListOf()
 
@@ -79,22 +82,22 @@ class DocumentDsl<T>(
                 identifier,
                 Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                 Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                *snippets.toTypedArray(),
-            ),
+                *snippets.toTypedArray()
+            )
         )
 
     private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> {
         val isArray = fields.all { it.path.startsWith("[]") }
-        val dataField = "${ApiResponse<*>::body.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
+        val dataField = "${ApiResponse<*>::data.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
 
         return (
             apiResponseFields + dataField +
                 fields.map {
-                    val path = ApiResponse<*>::body.name + ".".takeUnless { isArray }.orEmpty() + it.path
+                    val path = ApiResponse<*>::data.name + ".".takeUnless { isArray }.orEmpty() + it.path
                     val description = it.description as String
 
                     path bodyDesc description
                 }
-            )
+        )
     }
 }

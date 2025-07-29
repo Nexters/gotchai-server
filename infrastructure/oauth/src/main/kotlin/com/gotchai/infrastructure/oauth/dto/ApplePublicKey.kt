@@ -6,5 +6,5 @@ data class ApplePublicKey(
     val use: String,
     val alg: String,
     val n: String,
-    val e: String,
+    val e: String
 )

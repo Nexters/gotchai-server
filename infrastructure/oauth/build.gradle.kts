@@ -1,5 +1,6 @@
 dependencies {
-    implementation(libs.spring.boot.starter.webflux)
-
     implementation(project(":domain"))
+
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.nimbus.jose.jwt)
 }

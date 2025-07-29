@@ -7,11 +7,11 @@ data class UserSocial(
     val userId: Long,
     val socialId: String,
     val provider: SocialProvider,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 ) {
     data class Creation(
         val userId: Long,
         val socialId: String,
-        val provider: SocialProvider,
+        val provider: SocialProvider
     )
 }

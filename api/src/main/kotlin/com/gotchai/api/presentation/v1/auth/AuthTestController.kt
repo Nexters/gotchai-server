@@ -1,32 +1,36 @@
 package com.gotchai.api.presentation.v1.auth
 
-//class AuthTestController(
-//    private val authCommandUseCase: AuthCommandUseCase,
-//    private val oAuthQueryUseCase: OAuthQueryUseCase,
-//) {
-//    @PostMapping("/auth/test-login")
-//    fun testLogin(
-//        @RequestBody
-//        request: LoginRequest,
-//    ): AuthResponse.Token =
-//        AuthResponse.Token.of(
-//            authCommandUseCase.testLogin(
-//                request.email,
-//                request.password,
-//            ),
-//        )
-//
-//    @PostMapping("/auth/test-signup")
-//    fun testSignUp(
-//        @RequestBody
-//        request: SignUpRequest,
-//    ): AuthResponse.Message {
-//        authCommandUseCase.testSignUp(
-//            name = request.name,
-//            email = request.email,
-//            password = request.password,
-//        )
-//        return AuthResponse.Message("회원가입이 완료되었습니다.")
-//    }
-//
-//}
+import com.gotchai.api.global.annotation.ApiV1Controller
+import com.gotchai.api.presentation.v1.auth.request.TestLoginRequest
+import com.gotchai.api.presentation.v1.auth.request.TestSignUpRequest
+import com.gotchai.api.presentation.v1.auth.response.TestLoginResponse
+import com.gotchai.domain.auth.port.`in`.AuthCommandUseCase
+import org.springframework.context.annotation.Profile
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
+
+@Profile("local | dev")
+@ApiV1Controller
+class AuthTestController(
+    private val authCommandUseCase: AuthCommandUseCase
+) {
+    @PostMapping("/auth/test/login")
+    fun testLogin(
+        @RequestHeader(value = "X-DEVICE-ID")
+        deviceId: String?,
+        @RequestBody
+        request: TestLoginRequest
+    ): TestLoginResponse =
+        authCommandUseCase
+            .login(deviceId, request.toCommand())
+            .let { TestLoginResponse.from(it) }
+
+    @PostMapping("/auth/test/sign-up")
+    fun testSignUp(
+        @RequestBody
+        request: TestSignUpRequest
+    ) {
+        authCommandUseCase.signUp(request.toCommand())
+    }
+}

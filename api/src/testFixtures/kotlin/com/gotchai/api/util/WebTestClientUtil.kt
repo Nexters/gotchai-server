@@ -6,5 +6,4 @@ import org.springframework.test.web.reactive.server.WebTestClient.BodySpec
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec
 import org.springframework.test.web.reactive.server.expectBody
 
-fun ResponseSpec.expectError(): BodySpec<ApiResponse<ErrorResponse>, *> =
-    expectBody<ApiResponse<ErrorResponse>>()
+fun ResponseSpec.expectError(): BodySpec<ApiResponse<ErrorResponse>, *> = expectBody<ApiResponse<ErrorResponse>>()

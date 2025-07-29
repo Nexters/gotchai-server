@@ -10,16 +10,16 @@ import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.SignedJWT
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToMono
+import org.springframework.web.client.RestClient
+import org.springframework.web.client.requiredBody
 import java.text.ParseException
 import java.util.*
 
 @Component
 class AppleClient(
-    private val webClient: WebClient,
+    private val restClient: RestClient,
     private val objectMapper: ObjectMapper,
-    private val appleProperties: AppleProperties,
+    private val appleProperties: AppleProperties
 ) {
     companion object {
         private const val APPLE_URI = "https://appleid.apple.com"
@@ -32,7 +32,7 @@ class AppleClient(
 
             AppleUser(
                 id = jwtClaims.getStringClaim("sub"),
-                email = jwtClaims.getStringClaim("email"),
+                email = jwtClaims.getStringClaim("email")
             )
         } catch (ex: ParseException) {
             throw InvalidOAuthTokenException()
@@ -57,13 +57,12 @@ class AppleClient(
                 val publicKey = rsaKey.toRSAPublicKey()
 
                 RSASSAVerifier(publicKey)
-            }
-            .any { signedJWT.verify(it) }
+            }.any { signedJWT.verify(it) }
 
     private fun getPublicKeys(): List<ApplePublicKey> =
-        webClient.get()
+        restClient
+            .get()
             .uri("$APPLE_URI/auth/keys")
             .retrieve()
-            .bodyToMono<List<ApplePublicKey>>()
-            .block()!!
+            .requiredBody<List<ApplePublicKey>>()
 }

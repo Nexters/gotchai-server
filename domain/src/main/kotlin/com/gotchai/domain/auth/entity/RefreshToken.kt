@@ -6,12 +6,12 @@ data class RefreshToken(
     val userId: Long,
     val deviceId: String?,
     val content: String,
-    val expiration: Duration,
+    val expiration: Duration
 ) {
     data class Creation(
         val userId: Long,
         val deviceId: String?,
         val content: String,
-        val expiration: Duration,
+        val expiration: Duration
     )
 }

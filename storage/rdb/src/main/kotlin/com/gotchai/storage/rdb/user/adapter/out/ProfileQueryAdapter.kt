@@ -7,13 +7,15 @@ import com.gotchai.storage.rdb.user.repository.ProfileJpaRepository
 
 @Adapter
 class ProfileQueryAdapter(
-    private val profileRepository: ProfileJpaRepository,
+    private val profileRepository: ProfileJpaRepository
 ) : ProfileQueryPort {
     override fun getProfileByUserId(userId: Long): Profile? =
-        profileRepository.findByUserId(userId)
+        profileRepository
+            .findByUserId(userId)
             ?.toProfile()
 
     override fun getProfiles(): List<Profile> =
-        profileRepository.findAll()
+        profileRepository
+            .findAll()
             .map { it.toProfile() }
 }

@@ -8,9 +8,10 @@ import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class RefreshTokenQueryAdapter(
-    private val refreshTokenRepository: RefreshTokenRedisRepository,
+    private val refreshTokenRepository: RefreshTokenRedisRepository
 ) : RefreshTokenQueryPort {
     override fun getRefreshTokenByUserId(userId: Long): RefreshToken? =
-        refreshTokenRepository.findByIdOrNull(userId)
+        refreshTokenRepository
+            .findByIdOrNull(userId)
             ?.toRefreshToken()
 }

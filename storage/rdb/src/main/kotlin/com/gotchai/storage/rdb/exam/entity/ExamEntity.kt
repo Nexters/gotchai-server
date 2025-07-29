@@ -15,7 +15,7 @@ class ExamEntity(
     val subTitle: String,
     val descriptionImage: String,
     val iconImage: String,
-    val theme: String,
+    val theme: String
 ) : BaseEntity() {
     companion object {
         fun from(creation: Exam.Creation): ExamEntity =
@@ -25,7 +25,7 @@ class ExamEntity(
                     subTitle = subTitle,
                     descriptionImage = descriptionImage,
                     iconImage = iconImage,
-                    theme = theme,
+                    theme = theme
                 )
             }
     }
@@ -38,6 +38,6 @@ class ExamEntity(
             descriptionImage = descriptionImage,
             iconImage = iconImage,
             theme = theme,
-            createdAt = createdAt,
+            createdAt = createdAt
         )
 }

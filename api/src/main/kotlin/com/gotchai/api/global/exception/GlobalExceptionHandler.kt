@@ -27,14 +27,15 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         ex: MethodArgumentNotValidException,
         headers: HttpHeaders,
         status: HttpStatusCode,
-        request: WebRequest,
+        request: WebRequest
     ): ResponseEntity<Any> {
         log.error("MethodArgumentNotValidException : {}", ex.message, ex)
 
-        val message = ex.bindingResult.allErrors
-            .mapNotNull { it.defaultMessage }
-            .joinToString("; ")
-            .ifEmpty { "Validation failed" }
+        val message =
+            ex.bindingResult.allErrors
+                .mapNotNull { it.defaultMessage }
+                .joinToString("; ")
+                .ifEmpty { "Validation failed" }
         val errorResponse =
             ErrorResponse(
                 errorCode = ex.getErrorCode(),
@@ -42,30 +43,35 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             )
         val apiResponse = ApiResponse.fail(status.value(), errorResponse)
 
-        return ResponseEntity.status(apiResponse.status)
+        return ResponseEntity
+            .status(apiResponse.status)
             .body(apiResponse)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ApiResponse<ErrorResponse>> {
+    fun handleConstraintViolationException(
+        ex: ConstraintViolationException
+    ): ResponseEntity<ApiResponse<ErrorResponse>> {
         log.error("ConstraintViolationException: {}", ex.message, ex)
         val violations =
             ex.constraintViolations.associate {
                 it.propertyPath.toString().substringAfterLast(".", "unknown") to it.message
             }
-        val errorResponse = ErrorResponse(
-            errorCode = ex.getErrorCode(),
-            message = violations.toString()
-        )
+        val errorResponse =
+            ErrorResponse(
+                errorCode = ex.getErrorCode(),
+                message = violations.toString()
+            )
         val apiResponse = ApiResponse.fail(HttpStatus.BAD_REQUEST.value(), errorResponse)
 
-        return ResponseEntity.status(apiResponse.status)
+        return ResponseEntity
+            .status(apiResponse.status)
             .body(apiResponse)
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun handleMethodArgumentTypeMismatchException(
-        ex: MethodArgumentTypeMismatchException,
+        ex: MethodArgumentTypeMismatchException
     ): ResponseEntity<ApiResponse<ErrorResponse>> {
         log.error("MethodArgumentTypeMismatchException : {}", ex.message, ex)
 
@@ -76,7 +82,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             )
         val apiResponse = ApiResponse.fail(400, errorResponse)
 
-        return ResponseEntity.status(apiResponse.status)
+        return ResponseEntity
+            .status(apiResponse.status)
             .body(apiResponse)
     }
 
@@ -84,7 +91,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         ex: HttpRequestMethodNotSupportedException,
         headers: HttpHeaders,
         status: HttpStatusCode,
-        request: WebRequest,
+        request: WebRequest
     ): ResponseEntity<Any> {
         log.error("HttpRequestMethodNotSupportedException : {}", ex.message, ex)
 
@@ -95,7 +102,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             )
         val apiResponse = ApiResponse.fail(400, errorResponse)
 
-        return ResponseEntity.status(apiResponse.status)
+        return ResponseEntity
+            .status(apiResponse.status)
             .body(apiResponse)
     }
 
@@ -110,7 +118,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             )
         val apiResponse = ApiResponse.fail(ex.status, errorResponse)
 
-        return ResponseEntity.status(ex.status)
+        return ResponseEntity
+            .status(ex.status)
             .body(apiResponse)
     }
 
@@ -125,7 +134,8 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
             )
         val apiResponse = ApiResponse.fail(500, errorResponse)
 
-        return ResponseEntity.status(apiResponse.status)
+        return ResponseEntity
+            .status(apiResponse.status)
             .body(apiResponse)
     }
 

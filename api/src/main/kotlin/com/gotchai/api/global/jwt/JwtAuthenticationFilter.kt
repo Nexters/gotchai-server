@@ -10,14 +10,15 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtAuthenticationFilter(
-    private val jwtProvider: JwtProvider,
+    private val jwtProvider: JwtProvider
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain,
+        filterChain: FilterChain
     ) {
-        request.getHeader(HttpHeaders.AUTHORIZATION)
+        request
+            .getHeader(HttpHeaders.AUTHORIZATION)
             ?.run {
                 runCatching { jwtProvider.getAuthentication(getBearerToken()) }
                     .onSuccess { SecurityContextHolder.getContext().authentication = it }

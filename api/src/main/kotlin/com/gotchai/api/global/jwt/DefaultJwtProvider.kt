@@ -8,7 +8,7 @@ import java.time.Duration
 import java.util.*
 
 class DefaultJwtProvider(
-    private val jwtProperties: JwtProperties,
+    private val jwtProperties: JwtProperties
 ) : JwtProvider {
     override fun createAccessToken(authentication: GotchaiAuthentication) =
         createToken(jwtProperties.accessTokenExpiration, authentication.toPayload())
@@ -20,10 +20,14 @@ class DefaultJwtProvider(
         getPayload(token)
             .let { GotchaiAuthentication.from(it) }
 
-    private fun createToken(expiration: Duration, claims: Map<String, *>): String {
+    private fun createToken(
+        expiration: Duration,
+        claims: Map<String, *>
+    ): String {
         val now = Date()
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .issuedAt(now)
             .expiration(Date(now.time + expiration.toMillis()))
             .issuer("Gotchai")
@@ -33,7 +37,8 @@ class DefaultJwtProvider(
     }
 
     private fun getPayload(token: String): Map<String, *> =
-        Jwts.parser()
+        Jwts
+            .parser()
             .verifyWith(jwtProperties.publicKey)
             .build()
             .parseSignedClaims(token)

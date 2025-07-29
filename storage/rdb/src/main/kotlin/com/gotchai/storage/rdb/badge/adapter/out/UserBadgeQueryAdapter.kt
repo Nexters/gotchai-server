@@ -8,7 +8,7 @@ import com.gotchai.storage.rdb.global.annotation.Adapter
 
 @Adapter
 class UserBadgeQueryAdapter(
-    private val userBadgeRepository: UserBadgeJpaRepository,
+    private val userBadgeRepository: UserBadgeJpaRepository
 ) : UserBadgeQueryPort {
     override fun getUserBadgesByUserId(userId: Long): List<UserBadge> =
         userBadgeRepository

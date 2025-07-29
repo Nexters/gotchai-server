@@ -8,9 +8,10 @@ import com.gotchai.storage.rdb.user.repository.UserJpaRepository
 
 @Adapter
 class UserCommandAdapter(
-    private val userRepository: UserJpaRepository,
+    private val userRepository: UserJpaRepository
 ) : UserCommandPort {
     override fun createUser(creation: User.Creation): User =
-        userRepository.save(UserEntity.from(creation))
+        userRepository
+            .save(UserEntity.from(creation))
             .toUser()
 }

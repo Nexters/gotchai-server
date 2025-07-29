@@ -8,9 +8,10 @@ import com.gotchai.storage.rdb.user.repository.UserSocialJpaRepository
 
 @Adapter
 class UserSocialCommandAdapter(
-    private val userSocialRepository: UserSocialJpaRepository,
+    private val userSocialRepository: UserSocialJpaRepository
 ) : UserSocialCommandPort {
     override fun createUserSocial(creation: UserSocial.Creation): UserSocial =
-        userSocialRepository.save(UserSocialEntity.from(creation))
+        userSocialRepository
+            .save(UserSocialEntity.from(creation))
             .toUserSocial()
 }

@@ -17,24 +17,24 @@ class JacksonConfig {
             JavaTimeModule().apply {
                 addSerializer(
                     LocalDate::class.java,
-                    LocalDateSerializer(DateTimeFormatter.ISO_DATE),
+                    LocalDateSerializer(DateTimeFormatter.ISO_DATE)
                 )
                 addSerializer(
                     LocalDateTime::class.java,
-                    LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")),
+                    LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
                 )
                 addSerializer(
                     ZonedDateTime::class.java,
-                    ZonedDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")),
+                    ZonedDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
                 )
                 addSerializer(
                     LocalTime::class.java,
-                    LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss.SSS")),
+                    LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
                 )
                 addSerializer(
                     YearMonth::class.java,
-                    YearMonthSerializer(DateTimeFormatter.ofPattern("yyyy-MM")),
+                    YearMonthSerializer(DateTimeFormatter.ofPattern("yyyy-MM"))
                 )
-            },
+            }
         )
 }

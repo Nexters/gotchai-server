@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 class GotchaiAuthentication(
     val userId: Long,
-    val roles: Set<Role>,
+    val roles: Set<Role>
 ) : Authentication {
     companion object {
         fun from(user: User): GotchaiAuthentication =
@@ -23,13 +23,13 @@ class GotchaiAuthentication(
             with(payload) {
                 GotchaiAuthentication(
                     userId = (get("userId") as String).toLong(),
-                    roles = (get("roles") as String)
-                        .split(",")
-                        .map(Role::valueOf)
-                        .toHashSet()
+                    roles =
+                        (get("roles") as String)
+                            .split(",")
+                            .map(Role::valueOf)
+                            .toHashSet()
                 )
             }
-
     }
 
     override fun getAuthorities(): Set<GrantedAuthority> = roles.map { SimpleGrantedAuthority(it.name) }.toSet()
@@ -40,13 +40,11 @@ class GotchaiAuthentication(
 
     override fun getDetails(): Any? = null
 
-    override fun getPrincipal(): Any? = null
+    override fun getPrincipal(): Long = userId
 
     override fun isAuthenticated(): Boolean = true
 
-    override fun setAuthenticated(isAuthenticated: Boolean) {
-        throw UnsupportedOperationException()
-    }
+    override fun setAuthenticated(isAuthenticated: Boolean): Unit = throw UnsupportedOperationException()
 
     fun toPayload(): Map<String, String> =
         hashMapOf(

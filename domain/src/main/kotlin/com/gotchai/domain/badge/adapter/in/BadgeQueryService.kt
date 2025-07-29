@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class BadgeQueryService(
     private val badgeQueryPort: BadgeQueryPort,
-    private val userBadgeQueryPort: UserBadgeQueryPort,
+    private val userBadgeQueryPort: UserBadgeQueryPort
 ) : BadgeQueryUseCase {
     override fun getBadgeById(id: Long): Badge =
         badgeQueryPort.getBadgeById(id)

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ProfileQueryService(
-    private val profileQueryPort: ProfileQueryPort,
+    private val profileQueryPort: ProfileQueryPort
 ) : ProfileQueryUseCase {
     override fun getProfileByUserId(userId: Long): Profile? =
         profileQueryPort.getProfileByUserId(userId) ?: throw ProfileNotFoundException()

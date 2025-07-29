@@ -9,14 +9,14 @@ import jakarta.persistence.Table
 @Table(name = "user_badge")
 class UserBadgeEntity(
     val userId: Long,
-    val badgeId: Long,
+    val badgeId: Long
 ) : BaseEntity() {
     companion object {
         fun from(creation: UserBadge.Creation): UserBadgeEntity =
             with(creation) {
                 UserBadgeEntity(
                     userId = userId,
-                    badgeId = badgeId,
+                    badgeId = badgeId
                 )
             }
     }
@@ -26,6 +26,6 @@ class UserBadgeEntity(
             id = id!!,
             userId = userId,
             badgeId = badgeId,
-            createdAt = createdAt,
+            createdAt = createdAt
         )
 }

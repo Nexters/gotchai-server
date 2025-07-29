@@ -11,12 +11,12 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 
 class CustomAuthenticationEntryPoint(
-    private val objectMapper: ObjectMapper,
+    private val objectMapper: ObjectMapper
 ) : AuthenticationEntryPoint {
     override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authenticationException: AuthenticationException,
+        authenticationException: AuthenticationException
     ) {
         with(response) {
             status = HttpStatus.FORBIDDEN.value()
@@ -28,10 +28,10 @@ class CustomAuthenticationEntryPoint(
                         response =
                             ErrorResponse(
                                 errorCode = "UNAUTHENTICATED_USER",
-                                message = "인증되지 않은 사용자입니다.",
-                            ),
-                    ),
-                ),
+                                message = "인증되지 않은 사용자입니다."
+                            )
+                    )
+                )
             )
         }
     }

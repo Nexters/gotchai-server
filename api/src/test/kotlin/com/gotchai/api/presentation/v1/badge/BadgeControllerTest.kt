@@ -12,7 +12,6 @@ import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
 import com.gotchai.api.util.toListFields
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
-import com.gotchai.domain.badge.port.`in`.BadgeCommandUseCase
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createBadge
@@ -27,9 +26,6 @@ import org.springframework.test.web.reactive.server.expectBody
 class BadgeControllerTest : ControllerTest() {
     @MockkBean
     private lateinit var badgeQueryUseCase: BadgeQueryUseCase
-
-    @MockkBean
-    private lateinit var badgeCommandUseCase: BadgeCommandUseCase
 
     init {
         describe("getBadgeById()는") {
