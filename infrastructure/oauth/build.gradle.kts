@@ -1,5 +1,6 @@
 dependencies {
-    implementation(libs.bundles.openfeign)
-
     implementation(project(":domain"))
+
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.nimbus.jose.jwt)
 }

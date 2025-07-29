@@ -10,6 +10,6 @@ class HealthController {
     fun healthCheck(): PongResponse = PongResponse(LocalDateTime.now())
 
     data class PongResponse(
-        val now: LocalDateTime,
+        val now: LocalDateTime
     )
 }

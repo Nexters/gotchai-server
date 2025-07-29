@@ -1,0 +1,80 @@
+spring:
+  jpa:
+    open-in-view: false
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_log: true
+        format_sql: true
+datasource:
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/gotchai?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    pool-name: core-db-pool
+    maximum-pool-size: 10
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_log: true
+        format_sql: true
+datasource:
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: ${JDBC_URI}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    pool-name: core-db-pool
+    maximum-pool-size: 5
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_log: true
+datasource:
+  rdb:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbcUrl: ${JDBC_URI}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    pool-name: core-db-pool
+    maximum-pool-size: 10
+    connection-timeout: 1500
+    keepalive-time: 30000
+    validation-timeout: 1000
+    max-lifetime: 600000
+    data-source-properties:
+      rewriteBatchedStatements: true

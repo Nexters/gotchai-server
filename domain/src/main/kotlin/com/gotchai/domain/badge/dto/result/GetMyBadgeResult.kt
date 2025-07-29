@@ -12,12 +12,12 @@ data class GetMyBadgeResult(
     val description: String,
     val image: String,
     val tier: Tier,
-    val acquiredAt: LocalDateTime,
+    val acquiredAt: LocalDateTime
 ) {
     companion object {
         fun of(
             badge: Badge,
-            userBadge: UserBadge,
+            userBadge: UserBadge
         ): GetMyBadgeResult =
             GetMyBadgeResult(
                 id = badge.id,
@@ -26,7 +26,7 @@ data class GetMyBadgeResult(
                 description = badge.description,
                 image = badge.image,
                 tier = badge.tier,
-                acquiredAt = userBadge.createdAt,
+                acquiredAt = userBadge.createdAt
             )
     }
 }

@@ -11,7 +11,8 @@ val badgeResponseFields =
         BadgeResponse::name bodyDesc "이름",
         BadgeResponse::description bodyDesc "설명",
         BadgeResponse::image bodyDesc "이미지 URI",
-        BadgeResponse::createdAt bodyDesc "생성 날짜",
+        BadgeResponse::tier bodyDesc "등급",
+        BadgeResponse::createdAt bodyDesc "생성 날짜"
     )
 
 val getMyBadgeResponseFields =
@@ -22,5 +23,5 @@ val getMyBadgeResponseFields =
         GetMyBadgeResponse::description bodyDesc "설명",
         GetMyBadgeResponse::image bodyDesc "이미지 URI",
         GetMyBadgeResponse::tier bodyDesc "등급",
-        GetMyBadgeResponse::acquiredAt bodyDesc "취득 날짜",
+        GetMyBadgeResponse::acquiredAt bodyDesc "취득 날짜"
     )

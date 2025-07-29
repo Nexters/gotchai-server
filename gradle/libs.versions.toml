@@ -2,7 +2,7 @@
 
 # Kotlin
 kotlin = "2.1.0"
-ktlint = "12.1.2"
+ktlint = "13.0.0"
 ktlint-version-set = "1.5.0"
 
 # Spring
@@ -11,10 +11,6 @@ spring-dependency-management = "1.1.7"
 
 # JDSL
 line-kotlin-jdsl = "3.4.1"
-
-# OpenFeign
-spring-cloud-openfeign = "4.3.0"
-openfeign-micrometer = "13.6"
 
 # Kotest
 kotest = "5.9.1"
@@ -26,9 +22,7 @@ spring-mockk = "4.0.2"
 
 # JWT
 jwt = "0.12.6"
-
-# Redisson version
-redisson = "3.30.0"
+nimbus-jose-jwt = "10.4"
 
 # Jakarta
 jakarta-annotation = "3.0.0"
@@ -90,21 +84,17 @@ spring-restdocs-webtestclient = { group = "org.springframework.restdocs", name =
 
 # Security
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
-spring-boot-starter-oauth2-resource-server = { module = "org.springframework.boot:spring-boot-starter-oauth2-resource-server", version.ref = "spring-boot" }
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
 # JWT
 jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jwt" }
 jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jwt" }
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jwt" }
+nimbus-jose-jwt = { group = "com.nimbusds", name = "nimbus-jose-jwt", version.ref = "nimbus-jose-jwt" }
 
 # Jakarta
 jakarta-validation = { group = "jakarta.validation", name = "jakarta.validation-api" }
 jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation" }
-
-# OpenFeign Libraries
-spring-cloud-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
-openfeign-micrometer = { module = "io.github.openfeign:feign-micrometer", version.ref = "openfeign-micrometer" }
 
 # Kotest
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
@@ -130,9 +120,6 @@ spring-mockk = { group = "com.ninja-squad", name = "springmockk", version.ref = 
 mysql-connector = { group = "com.mysql", name = "mysql-connector-j", version.ref = "mysql" }
 h2 = { group = "com.h2database", name = "h2" }
 
-# Redisson Library
-redisson = { module = "org.redisson:redisson-spring-boot-starter", version.ref = "redisson" }
-
 # AWS
 aws-sdk-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws" }
 
@@ -141,7 +128,6 @@ restdocs-api-spec = { group = "com.epages", name = "restdocs-api-spec", version.
 restdocs-api-spec-webtestclient = { group = "com.epages", name = "restdocs-api-spec-webtestclient", version.ref = "restdocs-api-spec" }
 
 [bundles]
-openfeign = ["spring-cloud-openfeign", "openfeign-micrometer"]
 aws = ["aws-sdk-s3"]
 jdsl = [
     "line-kotlin-jdsl-jpql-dsl",
@@ -156,6 +142,7 @@ test = [
 spring-test = [
     "spring-boot-starter-test",
     "kotest-extensions-spring",
+    "spring-security-test",
     "spring-mockk"
 ]
 spring-rest-docs = [

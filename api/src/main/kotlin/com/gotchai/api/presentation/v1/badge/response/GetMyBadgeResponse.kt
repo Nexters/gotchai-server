@@ -11,7 +11,7 @@ data class GetMyBadgeResponse(
     val description: String,
     val image: String,
     val tier: Tier,
-    val acquiredAt: LocalDateTime,
+    val acquiredAt: LocalDateTime
 ) {
     companion object {
         fun from(result: GetMyBadgeResult): GetMyBadgeResponse =
@@ -23,7 +23,7 @@ data class GetMyBadgeResponse(
                     description = result.description,
                     image = image,
                     tier = tier,
-                    acquiredAt = acquiredAt,
+                    acquiredAt = acquiredAt
                 )
             }
     }
