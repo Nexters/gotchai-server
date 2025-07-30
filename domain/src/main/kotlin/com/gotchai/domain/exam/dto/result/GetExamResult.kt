@@ -10,13 +10,13 @@ data class GetExamResult(
     val descriptionImage: String,
     val iconImage: String,
     val theme: String,
-    val quizzesIds: List<Long>,
+    val quizIds: List<Long>,
     val createdAt: LocalDateTime
 ) {
     companion object {
         fun of(
             exam: Exam,
-            quizzesIds: List<Long>
+            quizIds: List<Long>
         ): GetExamResult =
             GetExamResult(
                 id = exam.id,
@@ -25,7 +25,7 @@ data class GetExamResult(
                 descriptionImage = exam.descriptionImage,
                 iconImage = exam.iconImage,
                 theme = exam.theme,
-                quizzesIds = quizzesIds,
+                quizIds = quizIds,
                 createdAt = exam.createdAt
             )
     }

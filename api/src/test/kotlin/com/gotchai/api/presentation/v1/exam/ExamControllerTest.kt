@@ -60,8 +60,8 @@ class ExamControllerTest : ControllerTest() {
         describe("getExamById()는") {
             context("조회하려는 시험이 존재하는 경우") {
                 val exam = createExam(id = 1L, title = "토익")
-                val quizzesIds = listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L)
-                val getExamResult = GetExamResult.of(exam, quizzesIds)
+                val quizIds = listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L)
+                val getExamResult = GetExamResult.of(exam, quizIds)
                 val examDetailResponse = ExamDetailResponse.from(getExamResult)
                 every { examQueryUseCase.getExamById(exam.id) } returns getExamResult
 

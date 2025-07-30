@@ -10,7 +10,7 @@ data class ExamDetailResponse(
     val descriptionImage: String,
     val iconImage: String,
     val theme: String,
-    val quizzesIds: List<Long>,
+    val quizIds: List<Long>,
     val createdAt: LocalDateTime
 ) {
     companion object {
@@ -22,7 +22,7 @@ data class ExamDetailResponse(
                 descriptionImage = examResult.descriptionImage,
                 iconImage = examResult.iconImage,
                 theme = examResult.theme,
-                quizzesIds = examResult.quizzesIds,
+                quizIds = examResult.quizIds,
                 createdAt = examResult.createdAt
             )
     }
