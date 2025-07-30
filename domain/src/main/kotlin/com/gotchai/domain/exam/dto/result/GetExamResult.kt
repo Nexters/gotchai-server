@@ -1,27 +1,32 @@
-package com.gotchai.api.presentation.v1.exam.response
+package com.gotchai.domain.exam.dto.result
 
 import com.gotchai.domain.exam.entity.Exam
 import java.time.LocalDateTime
 
-data class ExamResponse(
+data class GetExamResult(
     val id: Long,
     val title: String,
     val subTitle: String,
     val descriptionImage: String,
     val iconImage: String,
     val theme: String,
+    val quizIds: List<Long>,
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun from(exam: Exam): ExamResponse =
+        fun of(
+            exam: Exam,
+            quizIds: List<Long>
+        ): GetExamResult =
             with(exam) {
-                ExamResponse(
+                GetExamResult(
                     id = id,
                     title = title,
                     subTitle = subTitle,
                     descriptionImage = descriptionImage,
                     iconImage = iconImage,
                     theme = theme,
+                    quizIds = quizIds,
                     createdAt = createdAt
                 )
             }
