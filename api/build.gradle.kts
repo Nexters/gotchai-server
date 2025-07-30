@@ -1,4 +1,6 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Task
+import groovy.lang.Closure
+import io.swagger.v3.oas.models.servers.Server
 
 plugins {
     alias(libs.plugins.restdocs.api.spec)
@@ -69,8 +71,14 @@ openapi3 {
     format = "yml"
     outputFileNamePrefix = "api"
     outputDirectory = "src/main/resources/static/docs"
-}
-
-ext {
-    set("openapi3OutDirectory", "src/main/resources/static/docs")
+    setServers(
+        listOf(
+            "https://dev-api.gotchai-ai.com",
+            "http://localhost:8080",
+        ).map { url ->
+            object : Closure<Server>(this) {
+                fun doCall(): Server = Server().apply { this.url = url }
+            }
+        },
+    )
 }
