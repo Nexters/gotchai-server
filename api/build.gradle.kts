@@ -1,4 +1,6 @@
 import com.epages.restdocs.apispec.gradle.OpenApi3Task
+import groovy.lang.Closure
+import io.swagger.v3.oas.models.servers.Server
 
 plugins {
     alias(libs.plugins.restdocs.api.spec)
@@ -47,17 +49,36 @@ tasks {
         finalizedBy(withType<OpenApi3Task>())
     }
 
+    withType<OpenApi3Task> {
+        doFirst {
+            val outputDir = file("src/main/resources/static/docs")
+            if (!outputDir.exists()) {
+                outputDir.mkdirs()
+            }
+        }
+    }
+
     jib {
         from {
             image = "amazoncorretto:21-alpine"
         }
     }
+}
 
-    openapi3 {
-        title = "Gotchai API"
-        version = "v1"
-        format = "yml"
-        outputFileNamePrefix = "api"
-        outputDirectory = "src/main/resources/static/docs"
-    }
+openapi3 {
+    title = "Gotchai API"
+    version = "v1"
+    format = "yml"
+    outputFileNamePrefix = "api"
+    outputDirectory = "src/main/resources/static/docs"
+    setServers(
+        listOf(
+            "https://dev-api.gotchai-ai.com",
+            "http://localhost:8080",
+        ).map { url ->
+            object : Closure<Server>(this) {
+                fun doCall(): Server = Server().apply { this.url = url }
+            }
+        },
+    )
 }

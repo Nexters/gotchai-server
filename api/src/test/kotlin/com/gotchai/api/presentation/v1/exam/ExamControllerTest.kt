@@ -18,6 +18,7 @@ import com.gotchai.domain.global.exception.NotFoundDataException
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.restdocs.payload.PayloadDocumentation.responseBody
 import org.springframework.test.web.reactive.server.expectBody
 
 @WebMvcTest(ExamController::class)
@@ -47,6 +48,20 @@ class ExamControllerTest : ControllerTest() {
                         .document("시험 목록 조회 성공(200)") {
                             responseBody(examListResponseFields)
                         }
+                }
+            }
+
+            context("시험 목록이 비어있는 경우") {
+                every { examQueryUseCase.getExams() } returns emptyList()
+
+                it("상태 코드 200과 빈 리스트를 반환한다.") {
+                    webClient
+                        .get()
+                        .uri("/api/v1/exams")
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<ApiResponse<ExamListResponse>>()
                 }
             }
         }
