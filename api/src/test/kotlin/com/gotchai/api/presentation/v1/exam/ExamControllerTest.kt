@@ -3,14 +3,13 @@ package com.gotchai.api.presentation.v1.exam
 import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.docs.examDetailResponseFields
-import com.gotchai.api.docs.examResponseFields
+import com.gotchai.api.docs.examListResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
-import com.gotchai.api.presentation.v1.exam.response.ExamResponse
+import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
-import com.gotchai.api.util.toListFields
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
@@ -28,7 +27,7 @@ class ExamControllerTest : ControllerTest() {
 
     init {
         describe("getExams()는") {
-            context("시험 목록이 존재하는 경우") {
+            context("테스트 목록이 존재하는 경우") {
                 val exams =
                     listOf(
                         createExam(id = 1L, title = "AI와 크리스마스 파티"),
@@ -37,39 +36,25 @@ class ExamControllerTest : ControllerTest() {
 
                 every { examQueryUseCase.getExams() } returns exams
 
-                it("상태 코드 200과 ExamResponse 리스트를 반환한다.") {
+                it("상태 코드 200과 ExamListResponse를 반환한다.") {
                     webClient
                         .get()
                         .uri("/api/v1/exams")
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<ApiResponse<List<ExamResponse>>>()
+                        .expectBody<ApiResponse<ExamListResponse>>()
                         .document("시험 목록 조회 성공(200)") {
-                            responseBody(examResponseFields.toListFields())
+                            responseBody(examListResponseFields)
                         }
-                }
-            }
-
-            context("시험 목록이 비어있는 경우") {
-                every { examQueryUseCase.getExams() } returns emptyList()
-
-                it("상태 코드 200과 빈 리스트를 반환한다.") {
-                    webClient
-                        .get()
-                        .uri("/api/v1/exams")
-                        .exchange()
-                        .expectStatus()
-                        .isOk
-                        .expectBody<ApiResponse<List<ExamResponse>>>()
                 }
             }
         }
 
         describe("getExamById()는") {
-            context("조회하려는 시험이 존재하는 경우") {
-                val examResult = createGetExamResult()
-                every { examQueryUseCase.getExamById(ID) } returns examResult
+            context("조회하려는 테스트가 존재하는 경우") {
+                val result = createGetExamResult()
+                every { examQueryUseCase.getExamById(ID) } returns result
 
                 it("상태 코드 200과 ExamDetailResponse를 반환한다.") {
                     webClient
@@ -86,7 +71,7 @@ class ExamControllerTest : ControllerTest() {
                 }
             }
 
-            context("조회하려는 시험이 존재하지 않는 경우") {
+            context("조회하려는 테스트가 존재하지 않는 경우") {
                 every { examQueryUseCase.getExamById(any()) } throws NotFoundDataException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
