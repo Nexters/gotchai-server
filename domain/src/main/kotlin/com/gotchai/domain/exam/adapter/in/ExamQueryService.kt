@@ -14,7 +14,6 @@ class ExamQueryService(
 ) : ExamQueryUseCase {
     override fun getExamById(examId: Long): GetExamResult {
         val exam = examQueryPort.getExamById(examId)
-
         val quizzes = quizQueryPort.getQuizzesByExamId(examId)
 
         return GetExamResult.of(exam, quizzes.map { it.id })
