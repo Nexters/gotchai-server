@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":common"))
+    implementation(project(":common:util"))
     implementation(project(":infrastructure:oauth"))
     implementation(project(":storage:rdb"))
     implementation(project(":storage:redis"))
@@ -20,12 +20,13 @@ dependencies {
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.jackson)
     runtimeOnly(libs.jjwt.impl)
+    runtimeOnly(project(":common:logging"))
 
     testImplementation(testFixtures(project(":domain")))
     testImplementation(libs.bundles.spring.test)
     testImplementation(libs.bundles.spring.rest.docs)
 
-    testFixturesImplementation(testFixtures(project(":common")))
+    testFixturesImplementation(testFixtures(project(":common:util")))
     testFixturesImplementation(testFixtures(project(":domain")))
     testFixturesImplementation(libs.bundles.test)
     testFixturesImplementation(libs.bundles.spring.test)

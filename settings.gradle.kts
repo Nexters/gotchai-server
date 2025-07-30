@@ -19,7 +19,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "gotchai"
 
-include("api", "domain", "common")
+include("api", "domain")
+include("common:util", "common:logging")
 include("storage:rdb", "storage:redis")
 include(
     "infrastructure:aws",
