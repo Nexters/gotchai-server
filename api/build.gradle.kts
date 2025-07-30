@@ -52,12 +52,16 @@ tasks {
             image = "amazoncorretto:21-alpine"
         }
     }
+}
 
-    openapi3 {
-        title = "Gotchai API"
-        version = "v1"
-        format = "yml"
-        outputFileNamePrefix = "api"
-        outputDirectory = "src/main/resources/static/docs"
-    }
+openapi3 {
+    title = "Gotchai API"
+    version = "v1"
+    format = "yml"
+    outputFileNamePrefix = "api"
+    outputDirectory = "src/main/resources/static/docs"
+}
+
+ext {
+    set("openapi3OutDirectory", "src/main/resources/static/docs")
 }
