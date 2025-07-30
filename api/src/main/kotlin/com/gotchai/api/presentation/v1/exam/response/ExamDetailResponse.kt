@@ -14,16 +14,18 @@ data class ExamDetailResponse(
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun from(examResult: GetExamResult): ExamDetailResponse =
-            ExamDetailResponse(
-                id = examResult.id,
-                title = examResult.title,
-                subTitle = examResult.subTitle,
-                descriptionImage = examResult.descriptionImage,
-                iconImage = examResult.iconImage,
-                theme = examResult.theme,
-                quizIds = examResult.quizIds,
-                createdAt = examResult.createdAt
-            )
+        fun from(result: GetExamResult): ExamDetailResponse =
+            with(result) {
+                ExamDetailResponse(
+                    id = id,
+                    title = title,
+                    subTitle = subTitle,
+                    descriptionImage = descriptionImage,
+                    iconImage = iconImage,
+                    theme = theme,
+                    quizIds = quizIds,
+                    createdAt = createdAt
+                )
+            }
     }
 }

@@ -1,5 +1,6 @@
 package com.gotchai.domain.fixture
 
+import com.gotchai.domain.exam.dto.result.GetExamResult
 import com.gotchai.domain.exam.entity.Exam
 import java.time.LocalDateTime
 
@@ -21,3 +22,8 @@ fun createExam(
         theme = theme,
         createdAt = createdAt
     )
+
+fun createGetExamResult(
+    exam: Exam = createExam(),
+    quizIds: List<Long> = listOf(1L, 2L, 3L, 4L, 5L, 6L, 7L)
+): GetExamResult = GetExamResult.of(exam, quizIds)

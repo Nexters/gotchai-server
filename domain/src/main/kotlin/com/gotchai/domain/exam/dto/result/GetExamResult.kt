@@ -18,15 +18,17 @@ data class GetExamResult(
             exam: Exam,
             quizIds: List<Long>
         ): GetExamResult =
-            GetExamResult(
-                id = exam.id,
-                title = exam.title,
-                subTitle = exam.subTitle,
-                descriptionImage = exam.descriptionImage,
-                iconImage = exam.iconImage,
-                theme = exam.theme,
-                quizIds = quizIds,
-                createdAt = exam.createdAt
-            )
+            with(exam) {
+                GetExamResult(
+                    id = id,
+                    title = title,
+                    subTitle = subTitle,
+                    descriptionImage = descriptionImage,
+                    iconImage = iconImage,
+                    theme = theme,
+                    quizIds = quizIds,
+                    createdAt = createdAt
+                )
+            }
     }
 }
