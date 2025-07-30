@@ -10,7 +10,7 @@ fun createExam(
     descriptionImage: String = "https://example.com/description.jpg",
     iconImage: String = "https://example.com/icon.jpg",
     theme: String = "blue",
-    createdAt: LocalDateTime = CREATED_AT,
+    createdAt: LocalDateTime = CREATED_AT
 ): Exam =
     Exam(
         id = id,
@@ -19,5 +19,5 @@ fun createExam(
         descriptionImage = descriptionImage,
         iconImage = iconImage,
         theme = theme,
-        createdAt = createdAt,
+        createdAt = createdAt
     )

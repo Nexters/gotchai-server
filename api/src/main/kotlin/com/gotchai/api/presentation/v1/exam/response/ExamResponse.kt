@@ -10,7 +10,7 @@ data class ExamResponse(
     val descriptionImage: String,
     val iconImage: String,
     val theme: String,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 ) {
     companion object {
         fun from(exam: Exam): ExamResponse =
@@ -22,7 +22,7 @@ data class ExamResponse(
                     descriptionImage = descriptionImage,
                     iconImage = iconImage,
                     theme = theme,
-                    createdAt = createdAt,
+                    createdAt = createdAt
                 )
             }
     }

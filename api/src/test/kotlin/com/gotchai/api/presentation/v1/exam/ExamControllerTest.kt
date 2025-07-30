@@ -21,7 +21,7 @@ class ExamControllerTest : ControllerTest() {
                 val exams =
                     listOf(
                         createExam(id = 1L, title = "AI와 크리스마스 파티"),
-                        createExam(id = 2L, title = "Gotchai 팀 화이팅!"),
+                        createExam(id = 2L, title = "Gotchai 팀 화이팅!")
                     )
 
                 every { examQueryUseCase.getExams() } returns exams
