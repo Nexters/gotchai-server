@@ -88,7 +88,7 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
           aws secretsmanager get-secret-value --secret-id ${{ github.ref_name }}-env --region ap-northeast-2 --query SecretString --output text | jq -r '. | to_entries | map("\(.key)=\(.value)") | .[]' > .env
-          aws cp s3://${{ secrets.API_SPECIFICATION_BUCKET }}/api.yml
+          aws s3 cp s3://${{ secrets.API_SPECIFICATION_BUCKET }}/api.yml .
           export IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
           docker-compose --env-file .env up -d --build
   notify-discord:
