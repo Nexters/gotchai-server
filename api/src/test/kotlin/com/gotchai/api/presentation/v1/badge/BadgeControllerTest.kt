@@ -10,7 +10,6 @@ import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeListResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
-import com.gotchai.api.util.toListFields
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID

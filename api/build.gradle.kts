@@ -47,6 +47,15 @@ tasks {
         finalizedBy(withType<OpenApi3Task>())
     }
 
+    withType<OpenApi3Task> {
+        doFirst {
+            val outputDir = file("src/main/resources/static/docs")
+            if (!outputDir.exists()) {
+                outputDir.mkdirs()
+            }
+        }
+    }
+
     jib {
         from {
             image = "amazoncorretto:21-alpine"
