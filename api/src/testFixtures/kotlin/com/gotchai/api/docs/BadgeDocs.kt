@@ -3,9 +3,11 @@ package com.gotchai.api.docs
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
 import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.api.util.bodyDesc
+import com.gotchai.api.util.fieldsOf
+import com.gotchai.api.util.listFieldsOf
 
 val badgeResponseFields =
-    listOf(
+    fieldsOf(
         BadgeResponse::id bodyDesc "식별자",
         BadgeResponse::examId bodyDesc "테스트 식별자",
         BadgeResponse::name bodyDesc "이름",
@@ -15,8 +17,9 @@ val badgeResponseFields =
         BadgeResponse::createdAt bodyDesc "생성 날짜"
     )
 
-val getMyBadgeResponseFields =
-    listOf(
+val getMyBadgeListResponseFields =
+    listFieldsOf(
+        description = "뱃지 리스트",
         GetMyBadgeResponse::id bodyDesc "식별자",
         GetMyBadgeResponse::examId bodyDesc "테스트 식별자",
         GetMyBadgeResponse::name bodyDesc "이름",

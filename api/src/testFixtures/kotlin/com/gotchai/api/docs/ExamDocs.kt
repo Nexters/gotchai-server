@@ -3,9 +3,12 @@ package com.gotchai.api.docs
 import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamResponse
 import com.gotchai.api.util.bodyDesc
+import com.gotchai.api.util.fieldsOf
+import com.gotchai.api.util.listFieldsOf
 
-val examResponseFields =
-    listOf(
+val examListResponseFields =
+    listFieldsOf(
+        description = "테스트 리스트",
         ExamResponse::id bodyDesc "식별자",
         ExamResponse::title bodyDesc "제목",
         ExamResponse::subTitle bodyDesc "부제목",
@@ -16,7 +19,7 @@ val examResponseFields =
     )
 
 val examDetailResponseFields =
-    listOf(
+    fieldsOf(
         ExamDetailResponse::id bodyDesc "식별자",
         ExamDetailResponse::title bodyDesc "제목",
         ExamDetailResponse::subTitle bodyDesc "부제목",

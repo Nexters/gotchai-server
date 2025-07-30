@@ -3,14 +3,13 @@ package com.gotchai.api.presentation.v1.badge
 import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.badgeResponseFields
 import com.gotchai.api.docs.errorResponseFields
-import com.gotchai.api.docs.getMyBadgeResponseFields
+import com.gotchai.api.docs.getMyBadgeListResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeListResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
-import com.gotchai.api.util.toListFields
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID
@@ -84,9 +83,9 @@ class BadgeControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<ApiResponse<List<GetMyBadgeResponse>>>()
+                        .expectBody<ApiResponse<GetMyBadgeListResponse>>()
                         .document("내가 취득한 뱃지 리스트 조회 성공(200)") {
-                            responseBody(getMyBadgeResponseFields.toListFields())
+                            responseBody(getMyBadgeListResponseFields)
                         }
                 }
             }

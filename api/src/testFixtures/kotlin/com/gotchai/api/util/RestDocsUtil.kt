@@ -24,11 +24,13 @@ infix fun String.paramDesc(description: String): ParameterDescriptor =
     parameterWithName(this)
         .description(description)
 
-fun List<FieldDescriptor>.toListFields(): List<FieldDescriptor> =
-    map {
-        "[].${it.path}" bodyDesc
-            it.description as String
-    }
+fun fieldsOf(vararg field: FieldDescriptor): List<FieldDescriptor> = field.asList()
+
+fun listFieldsOf(
+    description: String,
+    vararg field: FieldDescriptor
+): List<FieldDescriptor> =
+    field.map { "list[].${it.path}" bodyDesc it.description as String } + ("list" bodyDesc description)
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
@@ -86,18 +88,12 @@ class DocumentDsl<T>(
             )
         )
 
-    private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> {
-        val isArray = fields.all { it.path.startsWith("[]") }
-        val dataField = "${ApiResponse<*>::data.name}${"[]".takeIf { isArray }.orEmpty()}" bodyDesc "응답 데이터"
+    private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> =
+        apiResponseFields +
+            fields.map {
+                val path = "${ApiResponse<*>::data.name}.${it.path}"
+                val description = it.description as String
 
-        return (
-            apiResponseFields + dataField +
-                fields.map {
-                    val path = ApiResponse<*>::data.name + ".".takeUnless { isArray }.orEmpty() + it.path
-                    val description = it.description as String
-
-                    path bodyDesc description
-                }
-        )
-    }
+                path bodyDesc description
+            }
 }

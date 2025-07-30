@@ -6,30 +6,31 @@ import com.gotchai.api.presentation.v1.auth.request.RefreshRequest
 import com.gotchai.api.presentation.v1.auth.response.RefreshResponse
 import com.gotchai.api.presentation.v1.auth.response.SocialLoginResponse
 import com.gotchai.api.util.bodyDesc
+import com.gotchai.api.util.fieldsOf
 
 val appleLoginRequestFields =
-    listOf(
+    fieldsOf(
         AppleLoginRequest::idToken bodyDesc "ID 토큰"
     )
 
 val kakaoLoginRequestFields =
-    listOf(
+    fieldsOf(
         KakaoLoginRequest::accessToken bodyDesc "카카오 액세스 토큰"
     )
 
 val refreshRequestFields =
-    listOf(
+    fieldsOf(
         RefreshRequest::refreshToken bodyDesc "리프레시 토큰"
     )
 
 val refreshResponseFields =
-    listOf(
+    fieldsOf(
         RefreshResponse::accessToken bodyDesc "액세스 토큰",
         RefreshResponse::refreshToken bodyDesc "리프레시 토큰"
     )
 
 val socialLoginResponseFields =
-    listOf(
+    fieldsOf(
         SocialLoginResponse::accessToken bodyDesc "액세스 토큰",
         SocialLoginResponse::refreshToken bodyDesc "리프레시 토큰"
     )
