@@ -10,7 +10,7 @@ allOpen {
 
 dependencies {
     compileOnly(project(":domain"))
-    implementation(project(":common"))
+    implementation(project(":common:util"))
 
     api(libs.spring.boot.starter.data.jpa)
     implementation(libs.bundles.jdsl)

@@ -1,5 +1,5 @@
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":common:util"))
 
     compileOnly(libs.spring.context)
     compileOnly(libs.spring.tx)
@@ -7,5 +7,5 @@ dependencies {
     compileOnly(libs.spring.boot.starter.security)
 
     testImplementation(libs.spring.boot.starter.security)
-    testFixturesImplementation(project(":common"))
+    testFixturesImplementation(project(":common:util"))
 }

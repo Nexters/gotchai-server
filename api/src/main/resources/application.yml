@@ -9,6 +9,7 @@ spring:
     - oauth
     - rdb
     - redis
+    - logging
   web.resources.add-mappings: false
 server:
   tomcat:
