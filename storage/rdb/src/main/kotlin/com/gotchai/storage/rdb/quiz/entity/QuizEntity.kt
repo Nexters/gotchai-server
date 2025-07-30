@@ -12,7 +12,7 @@ class QuizEntity(
     val examId: Long,
     val contents: String,
     @Column(name = "order")
-    val order: Int,
+    val order: Int
 ) : BaseEntity() {
     companion object {
         fun from(creation: Quiz.Creation): QuizEntity =
@@ -20,7 +20,7 @@ class QuizEntity(
                 QuizEntity(
                     examId = examId,
                     contents = contents,
-                    order = order,
+                    order = order
                 )
             }
     }
@@ -31,6 +31,6 @@ class QuizEntity(
             examId = examId,
             contents = contents,
             order = order,
-            createdAt = createdAt,
+            createdAt = createdAt
         )
 }

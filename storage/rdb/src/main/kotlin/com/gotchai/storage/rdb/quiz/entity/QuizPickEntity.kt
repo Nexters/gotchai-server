@@ -16,7 +16,7 @@ class QuizPickEntity(
     val contents: String,
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(10)")
-    val answerType: AnswerType,
+    val answerType: AnswerType
 ) : BaseEntity() {
     companion object {
         fun from(creation: QuizPick.Creation): QuizPickEntity =
@@ -24,7 +24,7 @@ class QuizPickEntity(
                 QuizPickEntity(
                     quizId = quizId,
                     contents = contents,
-                    answerType = answerType,
+                    answerType = answerType
                 )
             }
     }
@@ -34,6 +34,6 @@ class QuizPickEntity(
             id = id!!,
             quizId = quizId,
             contents = contents,
-            type = answerType,
+            type = answerType
         )
 }

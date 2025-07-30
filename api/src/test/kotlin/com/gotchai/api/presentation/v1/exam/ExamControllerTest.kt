@@ -1,10 +1,21 @@
 package com.gotchai.api.presentation.v1.exam
 
 import com.gotchai.api.common.ControllerTest
+import com.gotchai.api.docs.errorResponseFields
+import com.gotchai.api.docs.examDetailResponseFields
+import com.gotchai.api.docs.examResponseFields
 import com.gotchai.api.global.dto.ApiResponse
+import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamResponse
+import com.gotchai.api.util.document
+import com.gotchai.api.util.expectError
+import com.gotchai.api.util.paramDesc
+import com.gotchai.api.util.toListFields
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
+import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
+import com.gotchai.domain.fixture.createGetExamResult
+import com.gotchai.domain.global.exception.NotFoundDataException
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -21,7 +32,7 @@ class ExamControllerTest : ControllerTest() {
                 val exams =
                     listOf(
                         createExam(id = 1L, title = "AI와 크리스마스 파티"),
-                        createExam(id = 2L, title = "Gotchai 팀 화이팅!"),
+                        createExam(id = 2L, title = "Gotchai 팀 화이팅!")
                     )
 
                 every { examQueryUseCase.getExams() } returns exams
@@ -34,6 +45,9 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<List<ExamResponse>>>()
+                        .document("시험 목록 조회 성공(200)") {
+                            responseBody(examResponseFields.toListFields())
+                        }
                 }
             }
 
@@ -48,6 +62,45 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<List<ExamResponse>>>()
+                }
+            }
+        }
+
+        describe("getExamById()는") {
+            context("조회하려는 시험이 존재하는 경우") {
+                val examResult = createGetExamResult()
+                every { examQueryUseCase.getExamById(ID) } returns examResult
+
+                it("상태 코드 200과 ExamDetailResponse를 반환한다.") {
+                    webClient
+                        .get()
+                        .uri("/api/v1/exams/{id}", ID)
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<ApiResponse<ExamDetailResponse>>()
+                        .document("시험 단일 조회 성공(200)") {
+                            pathParams("id" paramDesc "시험 식별자")
+                            responseBody(examDetailResponseFields)
+                        }
+                }
+            }
+
+            context("조회하려는 시험이 존재하지 않는 경우") {
+                every { examQueryUseCase.getExamById(any()) } throws NotFoundDataException()
+
+                it("상태 코드 404와 ErrorResponse를 반환한다.") {
+                    webClient
+                        .get()
+                        .uri("/api/v1/exams/{id}", ID)
+                        .exchange()
+                        .expectStatus()
+                        .isNotFound
+                        .expectError()
+                        .document("시험 단일 조회 실패(404)") {
+                            pathParams("id" paramDesc "시험 식별자")
+                            responseBody(errorResponseFields)
+                        }
                 }
             }
         }
