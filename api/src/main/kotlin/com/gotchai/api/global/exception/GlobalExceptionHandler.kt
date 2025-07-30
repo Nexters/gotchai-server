@@ -143,6 +143,6 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         this::class.simpleName?.run {
             replace(Regex("([a-z])([A-Z])"), "$1_$2")
                 .uppercase()
-                .replace(Regex("Exception$"), "")
+                .removeSuffix("_EXCEPTION")
         } ?: "INTERNAL_SERVER_ERROR"
 }
