@@ -1,7 +1,0 @@
-rsa:
-  public-key: ${RSA_PUBLIC_KEY:classpath:/keys/public-key.pem}
-  private-key: ${RSA_PRIVATE_KEY:classpath:/keys/private-key.pem}
-
-jwt-token:
-  access-token-expiration-seconds: ${ACCESS_TOKEN_EXPIRATION_SECONDS:172800} # 2(일) * 24 * 60
-  refresh-token-expiration-seconds: ${REFRESH_TOKEN_EXPIRATION_SECONDS:2592000} # 30(일) * 24 * 60

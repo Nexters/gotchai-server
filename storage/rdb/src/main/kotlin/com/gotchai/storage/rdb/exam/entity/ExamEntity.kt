@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.exam.entity
 
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.storage.rdb.global.common.BaseEntity
+import com.gotchai.storage.rdb.global.entity.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
@@ -15,7 +15,7 @@ class ExamEntity(
     val subTitle: String,
     val descriptionImage: String,
     val iconImage: String,
-    val theme: String,
+    val theme: String
 ) : BaseEntity() {
     companion object {
         fun from(creation: Exam.Creation): ExamEntity =
@@ -25,7 +25,7 @@ class ExamEntity(
                     subTitle = subTitle,
                     descriptionImage = descriptionImage,
                     iconImage = iconImage,
-                    theme = theme,
+                    theme = theme
                 )
             }
     }
@@ -38,6 +38,6 @@ class ExamEntity(
             descriptionImage = descriptionImage,
             iconImage = iconImage,
             theme = theme,
-            createdAt = createdAt,
+            createdAt = createdAt
         )
 }

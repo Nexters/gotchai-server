@@ -15,6 +15,6 @@ class DataSourceConfig {
 
     @Bean
     fun coreDataSource(
-        @Qualifier("coreHikariConfig") config: HikariConfig,
+        @Qualifier("coreHikariConfig") config: HikariConfig
     ): HikariDataSource = HikariDataSource(config)
 }

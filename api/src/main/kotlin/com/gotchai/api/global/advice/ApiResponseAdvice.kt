@@ -20,7 +20,7 @@ class ApiResponseAdvice : ResponseBodyAdvice<Any> {
 
     override fun supports(
         returnType: MethodParameter,
-        converterType: Class<out HttpMessageConverter<*>>,
+        converterType: Class<out HttpMessageConverter<*>>
     ): Boolean = true
 
     override fun beforeBodyWrite(
@@ -29,7 +29,7 @@ class ApiResponseAdvice : ResponseBodyAdvice<Any> {
         selectedContentType: MediaType,
         selectedConverterType: Class<out HttpMessageConverter<*>>,
         request: ServerHttpRequest,
-        response: ServerHttpResponse,
+        response: ServerHttpResponse
     ): Any? {
         val servletResponse = (response as? ServletServerHttpResponse)?.servletResponse ?: return body
         val status = servletResponse.status

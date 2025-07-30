@@ -1,6 +1,7 @@
 package com.gotchai.api.presentation.v1.badge.response
 
 import com.gotchai.domain.badge.entity.Badge
+import com.gotchai.domain.badge.entity.Tier
 import java.time.LocalDateTime
 
 data class BadgeResponse(
@@ -9,7 +10,8 @@ data class BadgeResponse(
     val name: String,
     val description: String,
     val image: String,
-    val createdAt: LocalDateTime,
+    val tier: Tier,
+    val createdAt: LocalDateTime
 ) {
     companion object {
         fun from(badge: Badge): BadgeResponse =
@@ -20,7 +22,8 @@ data class BadgeResponse(
                     name = name,
                     description = description,
                     image = image,
-                    createdAt = createdAt,
+                    tier = tier,
+                    createdAt = createdAt
                 )
             }
     }

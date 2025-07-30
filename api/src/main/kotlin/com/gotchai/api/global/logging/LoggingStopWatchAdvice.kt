@@ -29,13 +29,13 @@ class LoggingStopWatchAdvice {
 
         if (timeMs > MAX_AFFORDABLE_TIME) {
             log.warn(
-                "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms",
+                "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms"
             )
             return proceed
         }
 
         log.info(
-            "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms",
+            "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms"
         )
 
         return proceed

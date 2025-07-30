@@ -5,14 +5,13 @@ import com.gotchai.api.docs.badgeResponseFields
 import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.docs.getMyBadgeResponseFields
 import com.gotchai.api.global.dto.ApiResponse
-import com.gotchai.api.global.dto.ErrorResponse
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
 import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeResponse
 import com.gotchai.api.util.document
+import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
 import com.gotchai.api.util.toListFields
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
-import com.gotchai.domain.badge.port.`in`.BadgeCommandUseCase
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createBadge
@@ -27,9 +26,6 @@ import org.springframework.test.web.reactive.server.expectBody
 class BadgeControllerTest : ControllerTest() {
     @MockkBean
     private lateinit var badgeQueryUseCase: BadgeQueryUseCase
-
-    @MockkBean
-    private lateinit var badgeCommandUseCase: BadgeCommandUseCase
 
     init {
         describe("getBadgeById()는") {
@@ -65,7 +61,7 @@ class BadgeControllerTest : ControllerTest() {
                         .exchange()
                         .expectStatus()
                         .isNotFound
-                        .expectBody<ApiResponse<ErrorResponse>>()
+                        .expectError()
                         .document("식별자 기반 뱃지 단일 조회 실패(404)") {
                             pathParams("id" paramDesc "식별자")
                             responseBody(errorResponseFields)

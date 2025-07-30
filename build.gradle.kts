@@ -47,7 +47,6 @@ subprojects {
     }
 
     dependencies {
-        api(libs.spring.boot.starter.oauth2.resource.server)
         implementation(libs.kotlin.reflect)
         implementation(libs.jackson.kotlin)
 
@@ -59,6 +58,9 @@ subprojects {
 
     configure<KtlintExtension> {
         version.set(libs.versions.ktlint.version.set)
+        filter {
+            exclude("no-wildcard-imports")
+        }
     }
 
     tasks.getByName("bootJar") {

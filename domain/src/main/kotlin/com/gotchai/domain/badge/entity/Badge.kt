@@ -9,13 +9,13 @@ data class Badge(
     val description: String,
     val image: String,
     val tier: Tier,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 ) {
     data class Creation(
         val examId: Long,
         val name: String,
         val description: String,
         val image: String,
-        val tier: Tier,
+        val tier: Tier
     )
 }

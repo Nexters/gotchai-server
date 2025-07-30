@@ -19,7 +19,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: temurin
+        distribution: corretto
         java-version: 21
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -46,7 +46,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: temurin
+        distribution: corretto
         java-version: 21
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -125,7 +125,7 @@ jobs:
                   "name": "Author",
                   "value": "[${{ github.actor }}](${{ github.event.sender.html_url }})",
                   "inline": true
-                } 
+                }
               ]
             }
           ]

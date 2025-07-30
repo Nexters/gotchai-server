@@ -1,2 +1,15 @@
-[*.{kt,kts}]
+root = true
+
+[{*.kt,kts}]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = true
+ij_kotlin_allow_trailing_comma = false
+ij_kotlin_allow_trailing_comma_on_call_site = false
+ktlint_standard_no-wildcard-imports = disabled
 ktlint_standard_package-name = disabled

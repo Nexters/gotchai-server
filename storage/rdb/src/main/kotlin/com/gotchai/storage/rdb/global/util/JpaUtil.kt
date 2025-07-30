@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.global.util
 
 import com.gotchai.domain.global.exception.NotFoundDataException
-import com.gotchai.storage.rdb.global.common.BaseEntity
+import com.gotchai.storage.rdb.global.entity.BaseEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 

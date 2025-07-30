@@ -2,12 +2,8 @@ package com.gotchai.storage.rdb.badge.entity
 
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
-import com.gotchai.storage.rdb.global.common.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Table
+import com.gotchai.storage.rdb.global.entity.BaseEntity
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "badge")
@@ -17,8 +13,8 @@ class BadgeEntity(
     val description: String,
     val image: String,
     @Enumerated(value = EnumType.STRING)
-    @Column(columnDefinition = "varchar(20)")
-    val tier: Tier,
+    @Column(name = "tier", columnDefinition = "varchar(20)")
+    val tier: Tier
 ) : BaseEntity() {
     companion object {
         fun from(creation: Badge.Creation): BadgeEntity =
@@ -28,7 +24,7 @@ class BadgeEntity(
                     name = name,
                     description = description,
                     image = image,
-                    tier = tier,
+                    tier = tier
                 )
             }
     }
@@ -41,6 +37,6 @@ class BadgeEntity(
             description = description,
             image = image,
             tier = tier,
-            createdAt = createdAt,
+            createdAt = createdAt
         )
 }

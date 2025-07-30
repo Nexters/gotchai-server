@@ -1,0 +1,3 @@
+oauth:
+  apple:
+    bundle-id: ${APPLE_BUNDLE_ID}

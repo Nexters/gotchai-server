@@ -6,10 +6,10 @@ data class UserBadge(
     val id: Long,
     val userId: Long,
     val badgeId: Long,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 ) {
     data class Creation(
         val userId: Long,
-        val badgeId: Long,
+        val badgeId: Long
     )
 }
