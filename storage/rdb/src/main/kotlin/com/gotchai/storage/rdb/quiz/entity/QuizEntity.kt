@@ -11,7 +11,7 @@ import jakarta.persistence.Table
 class QuizEntity(
     val examId: Long,
     val contents: String,
-    @Column(name = "order")
+    @Column(name = "\"order\"")
     val order: Int
 ) : BaseEntity() {
     companion object {
