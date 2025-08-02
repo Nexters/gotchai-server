@@ -1,3 +1,7 @@
 package com.gotchai.domain.quiz.port.out
 
-interface QuizPickQueryPort
+import com.gotchai.domain.quiz.entity.QuizPick
+
+interface QuizPickQueryPort {
+    fun getQuizPicksByQuizId(quizId: Long): List<QuizPick>
+}

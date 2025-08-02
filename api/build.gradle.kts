@@ -67,18 +67,12 @@ tasks {
 
 openapi3 {
     title = "Gotchai API"
+    description = "Gotchai API Documentation"
     version = "v1"
     format = "yml"
     outputFileNamePrefix = "api"
     outputDirectory = "src/main/resources/static/docs"
-    setServers(
-        listOf(
-            "https://dev-api.gotchai-ai.com",
-            "http://localhost:8080",
-        ).map { url ->
-            object : Closure<Server>(this) {
-                fun doCall(): Server = Server().apply { this.url = url }
-            }
-        },
-    )
+
+    fun toServer(url: String): Closure<Server> = closureOf<Server> { this.url = url } as Closure<Server>
+    setServers(listOf(toServer("https://dev-api.gotchai-ai.com"), toServer("http://localhost:8080")))
 }
