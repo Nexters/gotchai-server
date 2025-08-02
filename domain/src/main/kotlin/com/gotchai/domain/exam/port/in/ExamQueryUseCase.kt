@@ -9,4 +9,6 @@ interface ExamQueryUseCase {
     fun getExamsByUserId(userId: Long): List<Exam>
 
     fun getExams(): List<Exam>
+
+    fun getExamParticipantCountById(id: Long): Int
 }

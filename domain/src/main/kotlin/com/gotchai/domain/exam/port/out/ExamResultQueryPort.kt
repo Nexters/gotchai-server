@@ -4,4 +4,6 @@ import com.gotchai.domain.exam.entity.ExamResult
 
 interface ExamResultQueryPort {
     fun getExamResultsByUserId(userId: Long): List<ExamResult>
+
+    fun countExamResultsByExamId(examId: Long): Int
 }
