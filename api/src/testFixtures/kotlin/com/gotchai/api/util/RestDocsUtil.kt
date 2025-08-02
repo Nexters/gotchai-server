@@ -24,12 +24,6 @@ infix fun String.paramDesc(description: String): ParameterDescriptor =
     parameterWithName(this)
         .description(description)
 
-fun pathParamsOf(vararg param: ParameterDescriptor): List<ParameterDescriptor> = param.asList()
-
-fun queryParamsOf(vararg param: ParameterDescriptor): List<ParameterDescriptor> = param.asList()
-
-fun headerParamsOf(vararg param: ParameterDescriptor): List<ParameterDescriptor> = param.asList()
-
 fun fieldsOf(vararg field: FieldDescriptor): List<FieldDescriptor> = field.asList()
 
 fun listFieldsOf(
@@ -44,27 +38,6 @@ fun arrayFieldsOf(
     vararg field: FieldDescriptor
 ): List<FieldDescriptor> =
     field.map { "$arrayName[].${it.path}" bodyDesc it.description as String } + (arrayName bodyDesc description)
-
-fun nestedFieldsOf(
-    parentPath: String,
-    vararg field: FieldDescriptor
-): List<FieldDescriptor> = field.map { "$parentPath.${it.path}" bodyDesc it.description as String }
-
-fun optionalFieldsOf(vararg field: FieldDescriptor): List<FieldDescriptor> = field.map { it.optional() }
-
-fun pageFieldsOf(
-    contentDescription: String,
-    vararg contentField: FieldDescriptor
-): List<FieldDescriptor> =
-    fieldsOf(
-        "totalElements" bodyDesc "전체 요소 수",
-        "totalPages" bodyDesc "전체 페이지 수",
-        "size" bodyDesc "페이지 크기",
-        "number" bodyDesc "현재 페이지 번호",
-        "first" bodyDesc "첫 페이지 여부",
-        "last" bodyDesc "마지막 페이지 여부",
-        "empty" bodyDesc "빈 페이지 여부"
-    ) + arrayFieldsOf("content", contentDescription, *contentField)
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
