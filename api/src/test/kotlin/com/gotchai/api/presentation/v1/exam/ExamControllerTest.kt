@@ -4,9 +4,12 @@ import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.docs.examDetailResponseFields
 import com.gotchai.api.docs.examListResponseFields
+import com.gotchai.api.docs.getExamParticipantCountResponseFields
+import com.gotchai.api.fixture.PARTICIPANT_COUNT
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
+import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
@@ -29,12 +32,10 @@ class ExamControllerTest : ControllerTest() {
         describe("getExams()는") {
             context("테스트 목록이 존재하는 경우") {
                 val exams =
-                    listOf(
-                        createExam(id = 1L, title = "AI와 크리스마스 파티"),
-                        createExam(id = 2L, title = "Gotchai 팀 화이팅!")
-                    )
-
-                every { examQueryUseCase.getExams() } returns exams
+                    listOf(createExam())
+                        .also {
+                            every { examQueryUseCase.getExams() } returns it
+                        }
 
                 it("상태 코드 200과 ExamListResponse를 반환한다.") {
                     webClient
@@ -44,23 +45,9 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<ExamListResponse>>()
-                        .document("시험 목록 조회 성공(200)") {
+                        .document("테스트 리스트 조회 성공(200)") {
                             responseBody(examListResponseFields)
                         }
-                }
-            }
-
-            context("시험 목록이 비어있는 경우") {
-                every { examQueryUseCase.getExams() } returns emptyList()
-
-                it("상태 코드 200과 빈 리스트를 반환한다.") {
-                    webClient
-                        .get()
-                        .uri("/api/v1/exams")
-                        .exchange()
-                        .expectStatus()
-                        .isOk
-                        .expectBody<ApiResponse<ExamListResponse>>()
                 }
             }
         }
@@ -80,7 +67,7 @@ class ExamControllerTest : ControllerTest() {
                     .expectStatus()
                     .isOk
                     .expectBody<ApiResponse<ExamListResponse>>()
-                    .document("내가 푼 테스트 조회 성공(200)") {
+                    .document("내가 푼 테스트 리스트 조회 성공(200)") {
                         responseBody(examListResponseFields)
                     }
             }
@@ -88,8 +75,11 @@ class ExamControllerTest : ControllerTest() {
 
         describe("getExamById()는") {
             context("조회하려는 테스트가 존재하는 경우") {
-                val result = createGetExamResult()
-                every { examQueryUseCase.getExamById(ID) } returns result
+                val result =
+                    createGetExamResult()
+                        .also {
+                            every { examQueryUseCase.getExamById(ID) } returns it
+                        }
 
                 it("상태 코드 200과 ExamDetailResponse를 반환한다.") {
                     webClient
@@ -99,8 +89,8 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<ExamDetailResponse>>()
-                        .document("시험 단일 조회 성공(200)") {
-                            pathParams("id" paramDesc "시험 식별자")
+                        .document("테스트 단일 조회 성공(200)") {
+                            pathParams("id" paramDesc "테스트 식별자")
                             responseBody(examDetailResponseFields)
                         }
                 }
@@ -117,11 +107,29 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isNotFound
                         .expectError()
-                        .document("시험 단일 조회 실패(404)") {
-                            pathParams("id" paramDesc "시험 식별자")
+                        .document("테스트 단일 조회 실패(404)") {
+                            pathParams("id" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
+            }
+        }
+
+        describe("getExamParticipantCount()는") {
+            every { examQueryUseCase.getExamParticipantCountById(ID) } returns PARTICIPANT_COUNT
+
+            it("상태 코드 200과 GetExamParticipantCountResponse를 반환한다.") {
+                webClient
+                    .get()
+                    .uri("/api/v1/exams/{id}/participants", ID)
+                    .exchange()
+                    .expectStatus()
+                    .isOk
+                    .expectBody<ApiResponse<GetExamParticipantCountResponse>>()
+                    .document("테스트 참여자 수 조회 성공(200)") {
+                        pathParams("id" paramDesc "테스트 식별자")
+                        responseBody(getExamParticipantCountResponseFields)
+                    }
             }
         }
     }

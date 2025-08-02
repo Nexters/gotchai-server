@@ -28,5 +28,7 @@ class ExamQueryService(
         return exams
     }
 
+    override fun getExamParticipantCountById(id: Long): Int = examResultQueryPort.countExamResultsByExamId(id)
+
     override fun getExams(): List<Exam> = examQueryPort.getExams()
 }
