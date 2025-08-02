@@ -3,7 +3,7 @@ package com.gotchai.infrastructure.oauth.client
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.domain.auth.exception.InvalidOAuthTokenException
 import com.gotchai.infrastructure.oauth.config.AppleProperties
-import com.gotchai.infrastructure.oauth.dto.ApplePublicKey
+import com.gotchai.infrastructure.oauth.dto.ApplePublicKeyResponse
 import com.gotchai.infrastructure.oauth.dto.AppleUser
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.JWK
@@ -52,6 +52,7 @@ class AppleClient(
 
     private fun isSignatureValid(signedJWT: SignedJWT): Boolean =
         getPublicKeys()
+            .keys
             .map {
                 val rsaKey = JWK.parse(objectMapper.writeValueAsString(it)) as RSAKey
                 val publicKey = rsaKey.toRSAPublicKey()
@@ -59,10 +60,10 @@ class AppleClient(
                 RSASSAVerifier(publicKey)
             }.any { signedJWT.verify(it) }
 
-    private fun getPublicKeys(): List<ApplePublicKey> =
+    private fun getPublicKeys(): ApplePublicKeyResponse =
         restClient
             .get()
             .uri("$APPLE_URI/auth/keys")
             .retrieve()
-            .requiredBody<List<ApplePublicKey>>()
+            .requiredBody<ApplePublicKeyResponse>()
 }
