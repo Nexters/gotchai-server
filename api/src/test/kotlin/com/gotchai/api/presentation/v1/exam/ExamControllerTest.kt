@@ -73,7 +73,8 @@ class ExamControllerTest : ControllerTest() {
                     }
 
             it("상태 코드 200과 ExamListResponse를 반환한다.") {
-                webClient.get()
+                webClient
+                    .get()
                     .uri("/api/v1/users/me/exam/solved")
                     .exchange()
                     .expectStatus()

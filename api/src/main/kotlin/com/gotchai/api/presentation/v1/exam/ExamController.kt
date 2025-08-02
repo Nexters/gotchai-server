@@ -31,6 +31,7 @@ class ExamController(
         @AuthenticationPrincipal
         userId: Long
     ): ExamListResponse =
-        examQueryUseCase.getExamsByUserId(userId)
+        examQueryUseCase
+            .getExamsByUserId(userId)
             .let { ExamListResponse.from(it) }
 }

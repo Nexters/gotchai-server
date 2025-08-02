@@ -10,6 +10,7 @@ class ExamResultQueryAdapter(
     private val examResultJpaRepository: ExamResultJpaRepository
 ) : ExamResultQueryPort {
     override fun getExamResultsByUserId(userId: Long): List<ExamResult> =
-        examResultJpaRepository.findExamResultsByUserId(userId)
+        examResultJpaRepository
+            .findExamResultsByUserId(userId)
             .map { it.toExamResult() }
 }

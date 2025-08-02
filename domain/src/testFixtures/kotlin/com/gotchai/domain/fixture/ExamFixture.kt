@@ -54,7 +54,7 @@ fun createGetExamResult(
     iconImage: String = ICON_IMAGE,
     theme: String = THEME,
     quizIds: List<Long> = listOf(ID),
-    createdAt: LocalDateTime = CREATED_AT,
+    createdAt: LocalDateTime = CREATED_AT
 ): GetExamResult =
     GetExamResult(
         id = id,
