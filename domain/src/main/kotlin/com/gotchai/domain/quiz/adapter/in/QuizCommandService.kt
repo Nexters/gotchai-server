@@ -13,7 +13,7 @@ class QuizCommandService(
     private val quizPickQueryPort: QuizPickQueryPort,
     private val quizPickCommandPort: QuizCommandPort,
 ): QuizCommandUseCase {
-    override fun scoreQuiz(quizId: Long, userId: Long): Boolean{
+    override fun scoreQuiz(quizId: Long, userId: Long): Boolean {
         TODO()
     }
 }

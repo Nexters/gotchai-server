@@ -13,7 +13,8 @@ class ExamEntity(
     val title: String,
     @Column(length = 50)
     val subTitle: String,
-    val descriptionImage: String,
+    val description: String,
+    val backgroundImage: String,
     val iconImage: String,
     val theme: String
 ) : BaseEntity() {
@@ -23,7 +24,8 @@ class ExamEntity(
                 ExamEntity(
                     title = title,
                     subTitle = subTitle,
-                    descriptionImage = descriptionImage,
+                    description = description,
+                    backgroundImage = backgroundImage,
                     iconImage = iconImage,
                     theme = theme
                 )
@@ -35,7 +37,8 @@ class ExamEntity(
             id = id!!,
             title = title,
             subTitle = subTitle,
-            descriptionImage = descriptionImage,
+            description = description,
+            backgroundImage = backgroundImage,
             iconImage = iconImage,
             theme = theme,
             createdAt = createdAt

@@ -6,7 +6,8 @@ data class Exam(
     val id: Long,
     val title: String,
     val subTitle: String,
-    val descriptionImage: String,
+    val description: String,
+    val backgroundImage: String,
     val iconImage: String,
     val theme: String,
     val createdAt: LocalDateTime
@@ -14,8 +15,9 @@ data class Exam(
     data class Creation(
         val title: String,
         val subTitle: String,
-        val descriptionImage: String,
+        val description: String,
+        val backgroundImage: String,
         val iconImage: String,
-        val theme: String
+        val theme: String,
     )
 }
