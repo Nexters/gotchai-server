@@ -6,4 +6,6 @@ interface ExamQueryPort {
     fun getExamById(examId: Long): Exam
 
     fun getExams(): List<Exam>
+
+    fun getExamsByInIn(ids: Collection<Long>): List<Exam>
 }

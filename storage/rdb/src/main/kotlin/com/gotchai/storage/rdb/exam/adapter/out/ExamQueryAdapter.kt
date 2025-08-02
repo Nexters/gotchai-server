@@ -3,11 +3,11 @@ package com.gotchai.storage.rdb.exam.adapter.out
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.repository.ExamJpaRepository
+import com.gotchai.storage.rdb.global.annotation.Adapter
 import com.gotchai.storage.rdb.global.annotation.ReadOnlyTransactional
 import com.gotchai.storage.rdb.global.util.findByIdOrElseThrow
-import org.springframework.stereotype.Repository
 
-@Repository
+@Adapter
 class ExamQueryAdapter(
     private val examJpaRepository: ExamJpaRepository
 ) : ExamQueryPort {
@@ -16,4 +16,9 @@ class ExamQueryAdapter(
 
     @ReadOnlyTransactional
     override fun getExams(): List<Exam> = examJpaRepository.findAll().map { it.toExam() }
+
+    @ReadOnlyTransactional
+    override fun getExamsByInIn(ids: Collection<Long>): List<Exam> =
+        examJpaRepository.findByIdIn(ids)
+            .map { it.toExam() }
 }
