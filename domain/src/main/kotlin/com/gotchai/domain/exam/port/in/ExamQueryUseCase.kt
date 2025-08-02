@@ -6,5 +6,7 @@ import com.gotchai.domain.exam.entity.Exam
 interface ExamQueryUseCase {
     fun getExamById(examId: Long): GetExamResult
 
+    fun getExamsByUserId(userId: Long): List<Exam>
+
     fun getExams(): List<Exam>
 }

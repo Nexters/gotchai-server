@@ -18,7 +18,6 @@ import com.gotchai.domain.global.exception.NotFoundDataException
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.restdocs.payload.PayloadDocumentation.responseBody
 import org.springframework.test.web.reactive.server.expectBody
 
 @WebMvcTest(ExamController::class)
@@ -63,6 +62,26 @@ class ExamControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<ExamListResponse>>()
                 }
+            }
+        }
+
+        describe("getMyExams()는") {
+            val exams =
+                listOf(createExam())
+                    .also {
+                        every { examQueryUseCase.getExamsByUserId(ID) } returns it
+                    }
+
+            it("상태 코드 200과 ExamListResponse를 반환한다.") {
+                webClient.get()
+                    .uri("/api/v1/users/me/exam/solved")
+                    .exchange()
+                    .expectStatus()
+                    .isOk
+                    .expectBody<ApiResponse<ExamListResponse>>()
+                    .document("내가 푼 테스트 조회 성공(200)") {
+                        responseBody(examListResponseFields)
+                    }
             }
         }
 
