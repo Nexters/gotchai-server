@@ -77,7 +77,4 @@ subprojects {
             classpath += files(sourceSets.main.map { it.output })
         }
     }
-
-
-
 }

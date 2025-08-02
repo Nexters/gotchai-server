@@ -4,7 +4,6 @@ import com.gotchai.domain.quiz.entity.AnswerType
 import com.gotchai.domain.quiz.entity.QuizPick
 
 data class QuizPickResponse(
-    val quizId: Long,
     val contents: String,
     val type: AnswerType
 ) {
@@ -12,7 +11,6 @@ data class QuizPickResponse(
         fun from(quizPick: QuizPick): QuizPickResponse =
             with(quizPick) {
                 QuizPickResponse(
-                    quizId = quizId,
                     contents = contents,
                     type = type
                 )
