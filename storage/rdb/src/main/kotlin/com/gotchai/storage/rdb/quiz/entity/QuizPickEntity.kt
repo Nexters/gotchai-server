@@ -29,7 +29,7 @@ class QuizPickEntity(
             }
     }
 
-    fun toQuizContents() =
+    fun toQuizPick() =
         QuizPick(
             id = id!!,
             quizId = quizId,
