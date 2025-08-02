@@ -16,6 +16,5 @@ val quizDetailResponseFields =
             "quizPicks",
             "퀴즈 선택지 목록",
             QuizPickResponse::id bodyDesc "선택지 식별자",
-            QuizPickResponse::contents bodyDesc "선택지 내용",
-            QuizPickResponse::type bodyDesc "답안 타입"
+            QuizPickResponse::contents bodyDesc "선택지 내용"
         )
