@@ -2,6 +2,7 @@ package com.gotchai.api.docs
 
 import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamResponse
+import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
 import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
 import com.gotchai.api.util.listFieldsOf
@@ -28,4 +29,9 @@ val examDetailResponseFields =
         ExamDetailResponse::theme bodyDesc "테마",
         ExamDetailResponse::quizIds bodyDesc "퀴즈 식별자 목록",
         ExamDetailResponse::createdAt bodyDesc "생성 날짜"
+    )
+
+val getExamParticipantCountResponseFields =
+    fieldsOf(
+        GetExamParticipantCountResponse::participantCount bodyDesc "참여자 수"
     )

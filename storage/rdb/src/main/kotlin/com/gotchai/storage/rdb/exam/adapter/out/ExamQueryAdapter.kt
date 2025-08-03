@@ -19,6 +19,7 @@ class ExamQueryAdapter(
 
     @ReadOnlyTransactional
     override fun getExamsByInIn(ids: Collection<Long>): List<Exam> =
-        examJpaRepository.findByIdIn(ids)
+        examJpaRepository
+            .findByIdIn(ids)
             .map { it.toExam() }
 }

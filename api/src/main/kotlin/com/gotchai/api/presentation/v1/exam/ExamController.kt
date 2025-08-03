@@ -3,6 +3,7 @@ package com.gotchai.api.presentation.v1.exam
 import com.gotchai.api.global.annotation.ApiV1Controller
 import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
+import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,6 +32,14 @@ class ExamController(
         @AuthenticationPrincipal
         userId: Long
     ): ExamListResponse =
-        examQueryUseCase.getExamsByUserId(userId)
+        examQueryUseCase
+            .getExamsByUserId(userId)
             .let { ExamListResponse.from(it) }
+
+    @GetMapping("/exams/{id}/participants")
+    fun getExamParticipantCount(
+        @PathVariable
+        id: Long
+    ): GetExamParticipantCountResponse =
+        GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(id))
 }
