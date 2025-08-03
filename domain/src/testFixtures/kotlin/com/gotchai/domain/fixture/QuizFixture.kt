@@ -1,6 +1,7 @@
 package com.gotchai.domain.fixture
 
 import com.gotchai.domain.quiz.dto.result.GetQuizResult
+import com.gotchai.domain.quiz.dto.result.QuizPickResult
 import com.gotchai.domain.quiz.entity.AnswerType
 import com.gotchai.domain.quiz.entity.Quiz
 import com.gotchai.domain.quiz.entity.QuizPick
@@ -54,4 +55,13 @@ fun createGetQuizResult(
         contents = contents,
         createdAt = createdAt,
         quizPicks = quizPicks
+    )
+
+fun createQuizPickResult(
+    contents: String = DEFAULT_QUIZ_CONTENTS,
+    isAnswer: Boolean = true
+): QuizPickResult =
+    QuizPickResult(
+        contents = contents,
+        isAnswer = isAnswer
     )

@@ -7,7 +7,7 @@ import com.gotchai.domain.badge.entity.UserBadge
 import java.time.LocalDateTime
 
 const val NAME = "AI 산타 감별사"
-const val DESCRIPTION = "크리스마스엔 선물보다 눈치가 중요하다는 걸 증명했어요!"
+const val DESCRIPTION_BADGE = "크리스마스엔 선물보다 눈치가 중요하다는 걸 증명했어요!"
 const val IMAGE = "https://gotchai.com/image.png"
 val TIER = Tier.GOLD
 
@@ -15,7 +15,7 @@ fun createBadge(
     id: Long = ID,
     examId: Long = ID,
     name: String = NAME,
-    description: String = DESCRIPTION,
+    description: String = DESCRIPTION_BADGE,
     image: String = IMAGE,
     tier: Tier = TIER,
     createdAt: LocalDateTime = CREATED_AT
@@ -47,7 +47,7 @@ fun createGetMyBadgeResult(
     id: Long = ID,
     examId: Long = ID,
     name: String = NAME,
-    description: String = DESCRIPTION,
+    description: String = DESCRIPTION_BADGE,
     image: String = IMAGE,
     tier: Tier = TIER,
     acquiredAt: LocalDateTime = CREATED_AT

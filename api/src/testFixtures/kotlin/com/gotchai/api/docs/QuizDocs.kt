@@ -1,5 +1,7 @@
 package com.gotchai.api.docs
 
+import com.gotchai.api.presentation.v1.quiz.request.GradeQuizRequest
+import com.gotchai.api.presentation.v1.quiz.response.GradeQuizResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizDetailResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizPickResponse
 import com.gotchai.api.util.arrayFieldsOf
@@ -18,3 +20,15 @@ val quizDetailResponseFields =
             QuizPickResponse::id bodyDesc "선택지 식별자",
             QuizPickResponse::contents bodyDesc "선택지 내용"
         )
+
+val gradeQuizResponseFields =
+    fieldsOf(
+        GradeQuizResponse::contents bodyDesc "퀴즈 선택지 내용",
+        GradeQuizResponse::isAnswer bodyDesc "true"
+    )
+
+val gradeQuizRequestFields =
+    fieldsOf(
+        GradeQuizRequest::examId bodyDesc "테스트 식별자",
+        GradeQuizRequest::quizPickId bodyDesc "퀴즈 선택지 식별자"
+    )
