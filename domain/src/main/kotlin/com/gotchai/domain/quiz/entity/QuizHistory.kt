@@ -2,6 +2,7 @@ package com.gotchai.domain.quiz.entity
 
 data class QuizHistory(
     val examHistoryId: String,
+    val quizId: Long,
     val quizPickId: Long,
     val isAnswer: Boolean
 ) {
@@ -14,6 +15,7 @@ data class QuizHistory(
             QuizHistory(
                 examHistoryId = "exam:$examId:$userId",
                 quizPickId = quizPick.id,
+                quizId = quizPick.quizId,
                 isAnswer = quizPick.type == AnswerType.AI
             )
     }

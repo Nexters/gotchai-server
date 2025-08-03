@@ -10,7 +10,9 @@ import jakarta.persistence.Table
 class ExamResultEntity(
     val examId: Long,
     val userId: Long,
-    val answerCount: Int
+    val takeQuizIds: String,
+    val answerQuizIds: String?,
+    val failedQuizIds: String?
 ) : BaseEntity() {
     companion object {
         fun from(creation: ExamResult.Creation): ExamResultEntity =
@@ -18,7 +20,9 @@ class ExamResultEntity(
                 ExamResultEntity(
                     examId = examId,
                     userId = userId,
-                    answerCount = answerCount
+                    takeQuizIds = takeQuizIds,
+                    answerQuizIds = answerQuizIds,
+                    failedQuizIds = failedQuizIds
                 )
             }
     }
@@ -28,7 +32,9 @@ class ExamResultEntity(
             id = id!!,
             examId = examId,
             userId = userId,
-            answerCount = answerCount,
+            takeQuizIds = takeQuizIds,
+            answerQuizIds = answerQuizIds,
+            failedQuizIds = failedQuizIds,
             createdAt = createdAt
         )
 }

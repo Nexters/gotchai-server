@@ -1,5 +1,6 @@
 package com.gotchai.domain.quiz.adapter.`in`
 
+import com.gotchai.domain.exam.entity.ExamHistory
 import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
 import com.gotchai.domain.quiz.dto.result.QuizPickResult
@@ -42,11 +43,13 @@ class QuizCommandService(
 
         if (examHistory == null) {
             examHistoryCommandPort.create(
-                quizHistory.examHistoryId,
-                updatedHistories,
-                examId,
-                LocalDateTime.now(),
-                Duration.ofDays(1)
+                ExamHistory.Creation(
+                    quizHistory.examHistoryId,
+                    updatedHistories,
+                    examId,
+                    LocalDateTime.now(),
+                    Duration.ofDays(1)
+                )
             )
         } else {
             examHistoryCommandPort.updateHistory(quizHistory.examHistoryId, updatedHistories)

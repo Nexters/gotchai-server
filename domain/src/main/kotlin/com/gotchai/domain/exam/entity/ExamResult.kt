@@ -6,12 +6,23 @@ data class ExamResult(
     val id: Long,
     val examId: Long,
     val userId: Long,
-    val answerCount: Int,
+    val takeQuizIds: String,
+    val answerQuizIds: String?,
+    val failedQuizIds: String?,
     val createdAt: LocalDateTime
 ) {
     data class Creation(
         val examId: Long,
         val userId: Long,
-        val answerCount: Int
-    )
+        val takeQuizIds: String,
+        val answerQuizIds: String?,
+        val failedQuizIds: String?
+    ) {
+        fun getAnswerQuizIdsList(): List<Long> =
+            answerQuizIds
+                ?.takeIf { it.isNotBlank() }
+                ?.split(",")
+                ?.mapNotNull { it.trim().toLongOrNull() }
+                ?: emptyList()
+    }
 }

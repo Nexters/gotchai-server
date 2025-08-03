@@ -1,6 +1,7 @@
 package com.gotchai.storage.rdb.badge.adapter.out
 
 import com.gotchai.domain.badge.entity.Badge
+import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.storage.rdb.badge.repository.BadgeJpaRepository
 import com.gotchai.storage.rdb.global.annotation.Adapter
@@ -22,4 +23,13 @@ class BadgeQueryAdapter(
         badgeRepository
             .findAllByIdIn(ids)
             .map { it.toBadge() }
+
+    @ReadOnlyTransactional
+    override fun getBadgeByExamIdAndTier(
+        examId: Long,
+        badgeTier: Tier
+    ): Badge? =
+        badgeRepository
+            .findByExamIdAndTier(examId, badgeTier)
+            ?.toBadge()
 }
