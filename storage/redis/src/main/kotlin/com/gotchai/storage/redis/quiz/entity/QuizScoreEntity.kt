@@ -11,14 +11,14 @@ import org.springframework.data.redis.core.TimeToLive
 @RedisHash
 class QuizScoreEntity (
     @Id
-    val quizScoreId: String,
-    val scores: List<QuizPickScore>,
-    val startQuizId: Long? = null,
-    val createdAt: LocalDateTime,
+    val quizScoreId: String, // ex) exam:$examId:$userId
+    var scores: List<QuizPickScore>,
+    val examId: Long,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     val expiration: Duration
 ) {
     @TimeToLive
-    private val ttl = expiration.toSeconds()
+    private var ttl: Long = expiration.toSeconds()
 
     companion object {
         fun from(creation: QuizScore.Creation): QuizScoreEntity =
@@ -26,7 +26,7 @@ class QuizScoreEntity (
                 QuizScoreEntity(
                     quizScoreId = quizScoreId,
                     scores = scores,
-                    startQuizId = startQuizId,
+                    examId = examId,
                     createdAt = createdAt,
                     expiration = expiration,
                 )
@@ -37,8 +37,12 @@ class QuizScoreEntity (
         QuizScore(
             quizScoreId = quizScoreId,
             scores = scores,
-            startQuizId = startQuizId,
+            examId = examId,
             createdAt = createdAt,
             expiration = expiration,
         )
+
+    fun updateScores(scores: List<QuizPickScore>) {
+        this.scores = scores
+    }
 }

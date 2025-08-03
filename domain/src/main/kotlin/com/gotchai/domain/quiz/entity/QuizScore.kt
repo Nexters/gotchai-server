@@ -6,14 +6,14 @@ import java.time.LocalDateTime
 data class QuizScore(
     val quizScoreId: String,
     val scores: List<QuizPickScore>,
-    val startQuizId: Long? = null,
+    val examId: Long,
     val createdAt: LocalDateTime,
     val expiration: Duration
 ) {
     data class Creation(
         val quizScoreId: String,
         val scores: List<QuizPickScore>,
-        val startQuizId: Long? = null,
+        val examId: Long,
         val createdAt: LocalDateTime,
         val expiration: Duration
     )
