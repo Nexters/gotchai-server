@@ -7,8 +7,9 @@ import java.time.LocalDateTime
 
 const val TITLE = "AI와 크리스마스 파티"
 const val SUB_TITLE = "산타는 누구야?"
-const val DESCRIPTION_EXAM = "때는 2072년...\u2028이제는 AI인지 사람인지 분간이 전혀 가질 않는다.\u2028그런데… 그런 세상 속에서 이상형처럼\u2028딱 맞는 그 사람을 만났다!\n" +
-    "설마… 저 사람, AI는 아니겠지?"
+const val DESCRIPTION_EXAM =
+    "때는 2072년...\u2028이제는 AI인지 사람인지 분간이 전혀 가질 않는다.\u2028그런데… 그런 세상 속에서 이상형처럼\u2028딱 맞는 그 사람을 만났다!\n" +
+        "설마… 저 사람, AI는 아니겠지?"
 const val BACKGROUND_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam/icon/image"
 const val ICON_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam/description/image"
 const val THEME = "blue"

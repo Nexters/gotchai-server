@@ -18,6 +18,6 @@ data class Exam(
         val description: String,
         val backgroundImage: String,
         val iconImage: String,
-        val theme: String,
+        val theme: String
     )
 }

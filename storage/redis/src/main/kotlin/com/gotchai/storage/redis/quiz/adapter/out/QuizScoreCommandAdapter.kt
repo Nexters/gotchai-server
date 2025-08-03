@@ -11,9 +11,13 @@ import java.time.LocalDateTime
 
 @Adapter
 class QuizScoreCommandAdapter(
-    private val quizScoreRedisRepository: QuizScoreRedisRepository,
-): QuizScoreCommandPort {
-    override fun create(quizScoreId: String, scores: List<QuizPickScore>, examId: Long) {
+    private val quizScoreRedisRepository: QuizScoreRedisRepository
+) : QuizScoreCommandPort {
+    override fun create(
+        quizScoreId: String,
+        scores: List<QuizPickScore>,
+        examId: Long
+    ) {
         quizScoreRedisRepository.save(
             QuizScoreEntity.from(
                 QuizScore.Creation(
@@ -27,7 +31,10 @@ class QuizScoreCommandAdapter(
         )
     }
 
-    override fun updateScore(quizScoreId: String, scores: List<QuizPickScore>) {
+    override fun updateScore(
+        quizScoreId: String,
+        scores: List<QuizPickScore>
+    ) {
         quizScoreRedisRepository.findById(quizScoreId).ifPresent {
             it.updateScores(scores)
             quizScoreRedisRepository.save(it)

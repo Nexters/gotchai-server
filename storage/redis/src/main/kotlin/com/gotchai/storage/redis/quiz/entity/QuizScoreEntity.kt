@@ -2,14 +2,14 @@ package com.gotchai.storage.redis.quiz.entity
 
 import com.gotchai.domain.quiz.entity.QuizPickScore
 import com.gotchai.domain.quiz.entity.QuizScore
-import java.time.Duration
-import java.time.LocalDateTime
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive
+import java.time.Duration
+import java.time.LocalDateTime
 
 @RedisHash
-class QuizScoreEntity (
+class QuizScoreEntity(
     @Id
     val quizScoreId: String, // ex) exam:$examId:$userId
     var scores: List<QuizPickScore>,
@@ -28,7 +28,7 @@ class QuizScoreEntity (
                     scores = scores,
                     examId = examId,
                     createdAt = createdAt,
-                    expiration = expiration,
+                    expiration = expiration
                 )
             }
     }
@@ -39,7 +39,7 @@ class QuizScoreEntity (
             scores = scores,
             examId = examId,
             createdAt = createdAt,
-            expiration = expiration,
+            expiration = expiration
         )
 
     fun updateScores(scores: List<QuizPickScore>) {

@@ -7,13 +7,12 @@ data class ScoreQuizResponse(
     val isAnswer: Boolean
 ) {
     companion object {
-        fun from(result: QuizPickResult): ScoreQuizResponse {
+        fun from(result: QuizPickResult): ScoreQuizResponse =
             with(result) {
                 ScoreQuizResponse(
                     contents = contents,
                     isAnswer = isAnswer
                 )
             }
-        }
     }
 }

@@ -8,7 +8,7 @@ import com.gotchai.storage.redis.quiz.repository.QuizScoreRedisRepository
 @Adapter
 class QuizScoreQueryAdapter(
     private val quizScoreRedisRepository: QuizScoreRedisRepository
-): QuizScoreQueryPort {
+) : QuizScoreQueryPort {
     override fun getScoreById(quizScoreId: String): QuizScore? =
         quizScoreRedisRepository.findByQuizScoreId(quizScoreId)?.toQuizScore()
 }

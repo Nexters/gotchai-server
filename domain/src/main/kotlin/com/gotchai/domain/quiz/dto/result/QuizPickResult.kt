@@ -2,13 +2,15 @@ package com.gotchai.domain.quiz.dto.result
 
 data class QuizPickResult(
     val contents: String,
-    val isAnswer: Boolean,
+    val isAnswer: Boolean
 ) {
     companion object {
-        fun of(contents: String, isAnswer: Boolean) =
-            QuizPickResult(
-                contents = contents,
-                isAnswer = isAnswer
-            )
+        fun of(
+            contents: String,
+            isAnswer: Boolean
+        ) = QuizPickResult(
+            contents = contents,
+            isAnswer = isAnswer
+        )
     }
 }

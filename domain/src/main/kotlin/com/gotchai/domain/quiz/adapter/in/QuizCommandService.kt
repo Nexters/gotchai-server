@@ -13,9 +13,13 @@ import org.springframework.stereotype.Service
 class QuizCommandService(
     private val quizPickQueryPort: QuizPickQueryPort,
     private val quizScoreCommandPort: QuizScoreCommandPort,
-    private val quizScoreQueryPort: QuizScoreQueryPort,
+    private val quizScoreQueryPort: QuizScoreQueryPort
 ) : QuizCommandUseCase {
-    override fun scoreQuiz(examId: Long, quizPickId: Long, userId: Long): QuizPickResult {
+    override fun scoreQuiz(
+        examId: Long,
+        quizPickId: Long,
+        userId: Long
+    ): QuizPickResult {
         val quizPick = quizPickQueryPort.getQuizPickBy(quizPickId)
         val isAnswer = quizPick.type == AnswerType.AI
 
@@ -27,7 +31,11 @@ class QuizCommandService(
         return QuizPickResult.of(quizPick.contents, isAnswer)
     }
 
-    private fun updateQuizScore(quizScoreId: String, quizPickScore: QuizPickScore, examId: Long) {
+    private fun updateQuizScore(
+        quizScoreId: String,
+        quizPickScore: QuizPickScore,
+        examId: Long
+    ) {
         val quizScore = quizScoreQueryPort.getScoreById(quizScoreId)
         val updatedScores = (quizScore?.scores ?: emptyList()) + quizPickScore
 

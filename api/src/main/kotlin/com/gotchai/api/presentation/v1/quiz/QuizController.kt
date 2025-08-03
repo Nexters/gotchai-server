@@ -29,11 +29,12 @@ class QuizController(
         @RequestBody request: ScoreQuizRequest,
         @AuthenticationPrincipal
         userId: Long
-    ): ScoreQuizResponse = ScoreQuizResponse.from(
-        quizCommandUseCase.scoreQuiz(
-            request.examId,
-            request.quizPickId,
-            userId
+    ): ScoreQuizResponse =
+        ScoreQuizResponse.from(
+            quizCommandUseCase.scoreQuiz(
+                request.examId,
+                request.quizPickId,
+                userId
+            )
         )
-    )
 }
