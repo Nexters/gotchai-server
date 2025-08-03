@@ -7,6 +7,7 @@ data class Exam(
     val title: String,
     val subTitle: String,
     val description: String,
+    val prompt: String,
     val backgroundImage: String,
     val iconImage: String,
     val theme: String,
@@ -16,6 +17,7 @@ data class Exam(
         val title: String,
         val subTitle: String,
         val description: String,
+        val prompt: String,
         val backgroundImage: String,
         val iconImage: String,
         val theme: String

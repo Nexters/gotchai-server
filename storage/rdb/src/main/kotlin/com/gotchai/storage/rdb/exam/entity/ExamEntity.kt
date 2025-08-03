@@ -14,6 +14,8 @@ class ExamEntity(
     @Column(length = 50)
     val subTitle: String,
     val description: String,
+    @Column(columnDefinition = "TEXT")
+    val prompt: String,
     val backgroundImage: String,
     val iconImage: String,
     val theme: String
@@ -25,6 +27,7 @@ class ExamEntity(
                     title = title,
                     subTitle = subTitle,
                     description = description,
+                    prompt = prompt,
                     backgroundImage = backgroundImage,
                     iconImage = iconImage,
                     theme = theme
@@ -38,6 +41,7 @@ class ExamEntity(
             title = title,
             subTitle = subTitle,
             description = description,
+            prompt = prompt,
             backgroundImage = backgroundImage,
             iconImage = iconImage,
             theme = theme,
