@@ -13,6 +13,7 @@ const val DESCRIPTION_EXAM =
 const val BACKGROUND_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam/icon/image"
 const val ICON_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam/description/image"
 const val THEME = "blue"
+const val PROMPT = "AI 산타 캐릭터를 만들거야. MBTI는 ESFP이고, 20대 초중반 정도의 젊은 산타였으면 좋겠어. 선물 고르는 센스가 남다르고, 공감을 잘하는 성격을 가진 캐릭터로 설정해줘."
 const val ANSWER_COUNT = 1
 
 fun createExam(
@@ -20,6 +21,7 @@ fun createExam(
     title: String = TITLE,
     subTitle: String = SUB_TITLE,
     description: String = DESCRIPTION_EXAM,
+    prompt: String = PROMPT,
     backgroundImage: String = BACKGROUND_IMAGE,
     iconImage: String = ICON_IMAGE,
     theme: String = THEME,
@@ -30,6 +32,7 @@ fun createExam(
         title = title,
         subTitle = subTitle,
         description = description,
+        prompt = prompt,
         backgroundImage = backgroundImage,
         iconImage = iconImage,
         theme = theme,
@@ -56,6 +59,7 @@ fun createGetExamResult(
     title: String = TITLE,
     subTitle: String = SUB_TITLE,
     description: String = DESCRIPTION_EXAM,
+    prompt: String = PROMPT,
     backgroundImage: String = BACKGROUND_IMAGE,
     iconImage: String = ICON_IMAGE,
     theme: String = THEME,
@@ -67,6 +71,7 @@ fun createGetExamResult(
         title = title,
         subTitle = subTitle,
         description = description,
+        prompt = prompt,
         backgroundImage = backgroundImage,
         iconImage = iconImage,
         theme = theme,
