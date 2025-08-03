@@ -4,16 +4,16 @@ import com.gotchai.domain.quiz.entity.QuizPick
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
 import com.gotchai.storage.rdb.global.annotation.Adapter
 import com.gotchai.storage.rdb.global.annotation.ReadOnlyTransactional
-import com.gotchai.storage.rdb.global.util.findByIdAndDeletedAtIsNullOrElseThrow
 import com.gotchai.storage.rdb.quiz.repository.QuizPickJpaRepository
+import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class QuizPickQueryAdapter(
     private val quizPickJpaRepository: QuizPickJpaRepository
 ) : QuizPickQueryPort {
     @ReadOnlyTransactional
-    override fun getQuizPickBy(quizPickId: Long): QuizPick =
-        quizPickJpaRepository.findByIdAndDeletedAtIsNullOrElseThrow(quizPickId).toQuizPick()
+    override fun getQuizPickBy(quizPickId: Long): QuizPick? =
+        quizPickJpaRepository.findByIdOrNull(quizPickId)?.toQuizPick()
 
     @ReadOnlyTransactional
     override fun getQuizPicksByQuizId(quizId: Long): List<QuizPick> =

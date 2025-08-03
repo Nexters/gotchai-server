@@ -1,7 +1,7 @@
-package com.gotchai.storage.redis.quiz.entity
+package com.gotchai.storage.redis.exam.entity
 
-import com.gotchai.domain.quiz.entity.QuizPickScore
-import com.gotchai.domain.quiz.entity.QuizScore
+import com.gotchai.domain.exam.entity.ExamHistory
+import com.gotchai.domain.quiz.entity.QuizHistory
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive
@@ -9,10 +9,10 @@ import java.time.Duration
 import java.time.LocalDateTime
 
 @RedisHash
-class QuizScoreEntity(
+class ExamHistoryEntity(
     @Id
-    val quizScoreId: String, // ex) exam:$examId:$userId
-    var scores: List<QuizPickScore>,
+    val historyId: String, // ex) exam:$examId:$userId
+    var histories: List<QuizHistory>,
     val examId: Long,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val expiration: Duration
@@ -21,11 +21,11 @@ class QuizScoreEntity(
     private var ttl: Long = expiration.toSeconds()
 
     companion object {
-        fun from(creation: QuizScore.Creation): QuizScoreEntity =
+        fun from(creation: ExamHistory.Creation): ExamHistoryEntity =
             with(creation) {
-                QuizScoreEntity(
-                    quizScoreId = quizScoreId,
-                    scores = scores,
+                ExamHistoryEntity(
+                    historyId = historyId,
+                    histories = histories,
                     examId = examId,
                     createdAt = createdAt,
                     expiration = expiration
@@ -33,16 +33,16 @@ class QuizScoreEntity(
             }
     }
 
-    fun toQuizScore(): QuizScore =
-        QuizScore(
-            quizScoreId = quizScoreId,
-            scores = scores,
+    fun toExamHistory(): ExamHistory =
+        ExamHistory(
+            historyId = historyId,
+            histories = histories,
             examId = examId,
             createdAt = createdAt,
             expiration = expiration
         )
 
-    fun updateScores(scores: List<QuizPickScore>) {
-        this.scores = scores
+    fun updateHistories(histories: List<QuizHistory>) {
+        this.histories = histories
     }
 }

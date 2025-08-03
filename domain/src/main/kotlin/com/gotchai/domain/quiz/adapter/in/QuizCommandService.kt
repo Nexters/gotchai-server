@@ -1,48 +1,55 @@
 package com.gotchai.domain.quiz.adapter.`in`
 
+import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
+import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
 import com.gotchai.domain.quiz.dto.result.QuizPickResult
-import com.gotchai.domain.quiz.entity.AnswerType
-import com.gotchai.domain.quiz.entity.QuizPickScore
+import com.gotchai.domain.quiz.entity.QuizHistory
+import com.gotchai.domain.quiz.exception.QuizPickNotFoundException
 import com.gotchai.domain.quiz.port.`in`.QuizCommandUseCase
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
-import com.gotchai.domain.quiz.port.out.QuizScoreCommandPort
-import com.gotchai.domain.quiz.port.out.QuizScoreQueryPort
 import org.springframework.stereotype.Service
+import java.time.Duration
+import java.time.LocalDateTime
 
 @Service
 class QuizCommandService(
     private val quizPickQueryPort: QuizPickQueryPort,
-    private val quizScoreCommandPort: QuizScoreCommandPort,
-    private val quizScoreQueryPort: QuizScoreQueryPort
+    private val examHistoryCommandPort: ExamHistoryCommandPort,
+    private val examHistoryQueryPort: ExamHistoryQueryPort
 ) : QuizCommandUseCase {
-    override fun scoreQuiz(
+    override fun gradeQuiz(
         examId: Long,
         quizPickId: Long,
         userId: Long
     ): QuizPickResult {
-        val quizPick = quizPickQueryPort.getQuizPickBy(quizPickId)
-        val isAnswer = quizPick.type == AnswerType.AI
+        val quizPick =
+            quizPickQueryPort.getQuizPickBy(quizPickId)
+                ?: throw QuizPickNotFoundException()
 
-        val quizPickScoreId = "exam:$examId:$userId"
-        val quizPickScore = QuizPickScore(quizPick.id, isAnswer)
+        val examHistory = QuizHistory.from(userId, examId, quizPick)
 
-        updateQuizScore(quizPickScoreId, quizPickScore, examId)
+        setExamHistory(examHistory, examId)
 
-        return QuizPickResult.of(quizPick.contents, isAnswer)
+        return QuizPickResult(quizPick.contents, examHistory.isAnswer)
     }
 
-    private fun updateQuizScore(
-        quizScoreId: String,
-        quizPickScore: QuizPickScore,
+    private fun setExamHistory(
+        quizHistory: QuizHistory,
         examId: Long
     ) {
-        val quizScore = quizScoreQueryPort.getScoreById(quizScoreId)
-        val updatedScores = (quizScore?.scores ?: emptyList()) + quizPickScore
+        val examHistory = examHistoryQueryPort.getHistoryById(quizHistory.examHistoryId)
+        val updatedHistories = (examHistory?.histories ?: emptyList()) + quizHistory
 
-        if (quizScore == null) {
-            quizScoreCommandPort.create(quizScoreId, updatedScores, examId)
+        if (examHistory == null) {
+            examHistoryCommandPort.create(
+                quizHistory.examHistoryId,
+                updatedHistories,
+                examId,
+                LocalDateTime.now(),
+                Duration.ofDays(1)
+            )
         } else {
-            quizScoreCommandPort.updateScore(quizScoreId, updatedScores)
+            examHistoryCommandPort.updateHistory(quizHistory.examHistoryId, updatedHistories)
         }
     }
 }

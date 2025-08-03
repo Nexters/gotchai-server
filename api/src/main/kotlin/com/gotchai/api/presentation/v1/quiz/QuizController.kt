@@ -1,9 +1,9 @@
 package com.gotchai.api.presentation.v1.quiz
 
 import com.gotchai.api.global.annotation.ApiV1Controller
-import com.gotchai.api.presentation.v1.quiz.request.ScoreQuizRequest
+import com.gotchai.api.presentation.v1.quiz.request.GradeQuizRequest
+import com.gotchai.api.presentation.v1.quiz.response.GradeQuizResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizDetailResponse
-import com.gotchai.api.presentation.v1.quiz.response.ScoreQuizResponse
 import com.gotchai.domain.quiz.port.`in`.QuizCommandUseCase
 import com.gotchai.domain.quiz.port.`in`.QuizQueryUseCase
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -24,14 +24,14 @@ class QuizController(
         userId: Long
     ): QuizDetailResponse = QuizDetailResponse.from(quizQueryUseCase.getQuizById(quizId))
 
-    @PostMapping("/quizzes/score")
-    fun scoreQuiz(
-        @RequestBody request: ScoreQuizRequest,
+    @PostMapping("/quizzes/grade")
+    fun gradeQuiz(
+        @RequestBody request: GradeQuizRequest,
         @AuthenticationPrincipal
         userId: Long
-    ): ScoreQuizResponse =
-        ScoreQuizResponse.from(
-            quizCommandUseCase.scoreQuiz(
+    ): GradeQuizResponse =
+        GradeQuizResponse.from(
+            quizCommandUseCase.gradeQuiz(
                 request.examId,
                 request.quizPickId,
                 userId
