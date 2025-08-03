@@ -21,41 +21,44 @@ class ExamCommandService(
     private val badgeCommandUseCase: BadgeCommandUseCase
 ) : ExamCommandUseCase {
     companion object {
-        const val EXAM_REDIS_KEY = "exam"
+        private const val EXAM_REDIS_KEY = "exam"
     }
 
     override fun submit(
         userId: Long,
         examId: Long
     ) {
-        val historyId = "$EXAM_REDIS_KEY:$examId:$userId"
         val examHistory =
-            examHistoryQueryPort.getHistoryById(historyId)
-                ?: throw ExamHistoryNotFoundException()
-        val takeQuizIds = examHistory.histories.map { it.quizId }
-        val answerQuizIds = examHistory.histories.filter { it.isAnswer }.map { it.quizId }
-        val failedQuizIds = examHistory.histories.filter { !it.isAnswer }.map { it.quizId }
+            examHistoryQueryPort.getHistoryById(
+                historyId = "$EXAM_REDIS_KEY:$examId:$userId"
+            ) ?: throw ExamHistoryNotFoundException()
+
+        val (takeQuizIds, answerQuizIds, failedQuizIds) =
+            examHistory.histories.run {
+                Triple(
+                    map { it.quizId },
+                    filter { it.isAnswer }.map { it.quizId },
+                    filter { !it.isAnswer }.map { it.quizId }
+                )
+            }
 
         val creation =
             ExamResult.Creation(
                 examId = examId,
                 userId = userId,
-                takeQuizIds = takeQuizIds.joinToString(separator = ","),
-                answerQuizIds = if (answerQuizIds.isNotEmpty()) answerQuizIds.joinToString(separator = ",") else null,
-                failedQuizIds = if (failedQuizIds.isNotEmpty()) failedQuizIds.joinToString(separator = ",") else null
+                takeQuizIds = takeQuizIds.joinToString(","),
+                answerQuizIds = answerQuizIds.takeIf { it.isNotEmpty() }?.joinToString(","),
+                failedQuizIds = failedQuizIds.takeIf { it.isNotEmpty() }?.joinToString(",")
             )
         examResultCommandPort.createExamResult(creation)
 
-        val badgeTier = badgeCommandUseCase.determineTierByCorrectAnswers(creation.getAnswerQuizIdsList().size)
+        val badgeTier = badgeCommandUseCase.determineTierByCorrectAnswers(answerQuizIds.size)
         val badge =
             badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
                 ?: throw BadgeNotFoundException()
 
         userBadgeCommandPort.createUserBadge(
-            UserBadge.Creation(
-                userId = userId,
-                badgeId = badge.id
-            )
+            UserBadge.Creation(userId = userId, badgeId = badge.id)
         )
     }
 }
