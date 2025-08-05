@@ -7,9 +7,8 @@ import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
 import com.gotchai.api.util.listFieldsOf
 
-val examListResponseFields =
-    listFieldsOf(
-        description = "테스트 리스트",
+val examResponseFields =
+    fieldsOf(
         ExamResponse::id bodyDesc "식별자",
         ExamResponse::title bodyDesc "제목",
         ExamResponse::subTitle bodyDesc "부제목",
@@ -19,6 +18,12 @@ val examListResponseFields =
         ExamResponse::iconImage bodyDesc "아이콘 이미지 URI",
         ExamResponse::theme bodyDesc "테마",
         ExamResponse::createdAt bodyDesc "생성 날짜"
+    )
+
+val examListResponseFields =
+    listFieldsOf(
+        "list" bodyDesc "테스트 리스트",
+        *examResponseFields.toTypedArray()
     )
 
 val examDetailResponseFields =

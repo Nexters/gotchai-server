@@ -1,6 +1,5 @@
 package com.gotchai.api.common
 
-import com.gotchai.api.config.SecurityTestConfig
 import com.gotchai.domain.fixture.createUser
 import com.gotchai.domain.global.security.GotchaiAuthentication
 import io.kotest.core.extensions.Extension
@@ -12,13 +11,13 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.client.MockMvcWebTestClient
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.web.context.WebApplicationContext
 
 @AutoConfigureRestDocs
-@ContextConfiguration(classes = [SecurityTestConfig::class])
 abstract class ControllerTest : DescribeSpec() {
     override fun extensions(): List<Extension> = listOf(SpringExtension)
 
@@ -36,6 +35,7 @@ abstract class ControllerTest : DescribeSpec() {
         MockMvcWebTestClient
             .bindToApplicationContext(webApplicationContext)
             .apply(springSecurity())
+            .defaultRequest(post("/**").with(csrf()))
             .configureClient()
             .filter(WebTestClientRestDocumentation.documentationConfiguration(restDocumentationContextProvider))
             .build()
