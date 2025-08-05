@@ -2,6 +2,7 @@ package com.gotchai.domain.exam.adapter.`in`
 
 import com.gotchai.domain.exam.dto.result.GetExamResult
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.domain.exam.port.out.ExamResultQueryPort
@@ -14,8 +15,10 @@ class ExamQueryService(
     private val examResultQueryPort: ExamResultQueryPort,
     private val quizQueryPort: QuizQueryPort
 ) : ExamQueryUseCase {
-    override fun getExamById(examId: Long): GetExamResult {
-        val exam = examQueryPort.getExamById(examId)
+    override fun getExamId(examId: Long): Exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
+
+    override fun getExamDetailById(examId: Long): GetExamResult {
+        val exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
         val quizzes = quizQueryPort.getQuizzesByExamId(examId)
 
         return GetExamResult.of(exam, quizzes.map { it.id })

@@ -1,10 +1,12 @@
 package com.gotchai.domain.exam.adapter.`in`
 
+import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.entity.UserBadge
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
-import com.gotchai.domain.badge.port.`in`.BadgeCommandUseCase
+import com.gotchai.domain.badge.exception.InvalidBadgeTierException
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.domain.badge.port.out.UserBadgeCommandPort
+import com.gotchai.domain.exam.dto.result.ExamSubmitResult
 import com.gotchai.domain.exam.entity.ExamResult
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
@@ -16,21 +18,17 @@ import org.springframework.stereotype.Service
 class ExamCommandService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
     private val examResultCommandPort: ExamResultCommandPort,
-    private val badgeQueryPort: BadgeQueryPort,
+    // TODO(): Exam 도메인에 Badge가 껴있음.
     private val userBadgeCommandPort: UserBadgeCommandPort,
-    private val badgeCommandUseCase: BadgeCommandUseCase
+    private val badgeQueryPort: BadgeQueryPort
 ) : ExamCommandUseCase {
-    companion object {
-        private const val EXAM_REDIS_KEY = "exam"
-    }
-
     override fun submit(
         userId: Long,
         examId: Long
-    ) {
+    ): ExamSubmitResult {
         val examHistory =
             examHistoryQueryPort.getHistoryById(
-                historyId = "$EXAM_REDIS_KEY:$examId:$userId"
+                historyId = "exam:$examId:$userId"
             ) ?: throw ExamHistoryNotFoundException()
 
         val (takeQuizIds, answerQuizIds, failedQuizIds) =
@@ -50,15 +48,33 @@ class ExamCommandService(
                 answerQuizIds = answerQuizIds.takeIf { it.isNotEmpty() }?.joinToString(","),
                 failedQuizIds = failedQuizIds.takeIf { it.isNotEmpty() }?.joinToString(",")
             )
+
         examResultCommandPort.createExamResult(creation)
 
-        val badgeTier = badgeCommandUseCase.determineTierByCorrectAnswers(answerQuizIds.size)
+        // TODO(): Exam 도메인에 Badge가 껴있음.
+        val badgeTier = calculateTierByCorrectAnswers(answerQuizIds.size)
         val badge =
             badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
                 ?: throw BadgeNotFoundException()
-
         userBadgeCommandPort.createUserBadge(
-            UserBadge.Creation(userId = userId, badgeId = badge.id)
+            UserBadge.Creation(
+                userId = userId,
+                badgeId = badge.id
+            )
+        )
+
+        return ExamSubmitResult(
+            correctAnswerCount = answerQuizIds.size,
+            badge = badge
         )
     }
+
+    // TODO: 정답률 기준으로 티어 산정 예정
+    private fun calculateTierByCorrectAnswers(correctAnswerCount: Int): Tier =
+        when (correctAnswerCount) {
+            in 0..2 -> Tier.BRONZE
+            in 3..5 -> Tier.SILVER
+            in 6..7 -> Tier.GOLD
+            else -> throw InvalidBadgeTierException()
+        }
 }

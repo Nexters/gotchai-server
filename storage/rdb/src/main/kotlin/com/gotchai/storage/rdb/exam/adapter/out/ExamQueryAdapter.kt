@@ -5,14 +5,14 @@ import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.repository.ExamJpaRepository
 import com.gotchai.storage.rdb.global.annotation.Adapter
 import com.gotchai.storage.rdb.global.annotation.ReadOnlyTransactional
-import com.gotchai.storage.rdb.global.util.findByIdOrElseThrow
+import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class ExamQueryAdapter(
     private val examJpaRepository: ExamJpaRepository
 ) : ExamQueryPort {
     @ReadOnlyTransactional
-    override fun getExamById(examId: Long): Exam = examJpaRepository.findByIdOrElseThrow(examId).toExam()
+    override fun getExamById(examId: Long): Exam? = examJpaRepository.findByIdOrNull(examId)?.toExam()
 
     @ReadOnlyTransactional
     override fun getExams(): List<Exam> = examJpaRepository.findAll().map { it.toExam() }

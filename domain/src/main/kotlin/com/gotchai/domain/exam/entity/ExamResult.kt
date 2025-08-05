@@ -17,12 +17,5 @@ data class ExamResult(
         val takeQuizIds: String,
         val answerQuizIds: String?,
         val failedQuizIds: String?
-    ) {
-        fun getAnswerQuizIdsList(): List<Long> =
-            answerQuizIds
-                ?.takeIf { it.isNotBlank() }
-                ?.split(",")
-                ?.mapNotNull { it.trim().toLongOrNull() }
-                ?: emptyList()
-    }
+    )
 }

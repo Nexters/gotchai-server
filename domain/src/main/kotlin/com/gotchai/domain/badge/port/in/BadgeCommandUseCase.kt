@@ -1,7 +1,7 @@
 package com.gotchai.domain.badge.port.`in`
 
-import com.gotchai.domain.badge.entity.Tier
+import com.gotchai.domain.badge.entity.UserBadge
 
 interface BadgeCommandUseCase {
-    fun determineTierByCorrectAnswers(correctAnswerCount: Int): Tier
+    fun createUserBadge(creation: UserBadge.Creation)
 }

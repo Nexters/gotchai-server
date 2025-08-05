@@ -29,7 +29,7 @@ class ExamController(
         userId: Long,
         @PathVariable(name = "id")
         examId: Long
-    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamById(examId))
+    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamDetailById(examId))
 
     @GetMapping("/users/me/exam/solved")
     fun getMyExams(

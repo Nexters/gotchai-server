@@ -78,7 +78,7 @@ class ExamControllerTest : ControllerTest() {
                 val result =
                     createGetExamResult()
                         .also {
-                            every { examQueryUseCase.getExamById(ID) } returns it
+                            every { examQueryUseCase.getExamDetailById(ID) } returns it
                         }
 
                 it("상태 코드 200과 ExamDetailResponse를 반환한다.") {
@@ -97,7 +97,7 @@ class ExamControllerTest : ControllerTest() {
             }
 
             context("조회하려는 테스트가 존재하지 않는 경우") {
-                every { examQueryUseCase.getExamById(any()) } throws NotFoundDataException()
+                every { examQueryUseCase.getExamDetailById(any()) } throws NotFoundDataException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
