@@ -24,20 +24,12 @@ infix fun String.paramDesc(description: String): ParameterDescriptor =
     parameterWithName(this)
         .description(description)
 
-fun fieldsOf(vararg field: FieldDescriptor): List<FieldDescriptor> = field.asList()
+fun fieldsOf(vararg fields: FieldDescriptor): List<FieldDescriptor> = fields.asList()
 
 fun listFieldsOf(
-    description: String,
-    vararg field: FieldDescriptor
-): List<FieldDescriptor> =
-    field.map { "list[].${it.path}" bodyDesc it.description as String } + ("list" bodyDesc description)
-
-fun arrayFieldsOf(
-    arrayName: String,
-    description: String,
-    vararg field: FieldDescriptor
-): List<FieldDescriptor> =
-    field.map { "$arrayName[].${it.path}" bodyDesc it.description as String } + (arrayName bodyDesc description)
+    listField: FieldDescriptor,
+    vararg fields: FieldDescriptor
+): List<FieldDescriptor> = fields.map { "${listField.path}[].${it.path}" bodyDesc it.description as String } + listField
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,

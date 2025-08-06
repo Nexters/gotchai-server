@@ -2,6 +2,8 @@ package com.gotchai.domain.exam.adapter.`in`
 
 import com.gotchai.domain.exam.dto.result.GetExamResult
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamType
+import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.domain.exam.port.out.ExamResultQueryPort
@@ -14,9 +16,9 @@ class ExamQueryService(
     private val examResultQueryPort: ExamResultQueryPort,
     private val quizQueryPort: QuizQueryPort
 ) : ExamQueryUseCase {
-    override fun getExamById(examId: Long): GetExamResult {
-        val exam = examQueryPort.getExamById(examId)
-        val quizzes = quizQueryPort.getQuizzesByExamId(examId)
+    override fun getExamById(id: Long): GetExamResult {
+        val exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
+        val quizzes = quizQueryPort.getQuizzesByExamId(id)
 
         return GetExamResult.of(exam, quizzes.map { it.id })
     }
@@ -28,7 +30,7 @@ class ExamQueryService(
         return exams
     }
 
-    override fun getExamParticipantCountById(id: Long): Int = examResultQueryPort.countExamResultsByExamId(id)
+    override fun getExams(): List<Exam> = examQueryPort.getExamsByTypeNot(ExamType.ONBOARDING)
 
-    override fun getExams(): List<Exam> = examQueryPort.getExams()
+    override fun getExamParticipantCountById(id: Long): Int = examResultQueryPort.countExamResultsByExamId(id)
 }

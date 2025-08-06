@@ -13,11 +13,11 @@ import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResp
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
+import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
 import com.gotchai.domain.fixture.createGetExamResult
-import com.gotchai.domain.global.exception.NotFoundDataException
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -97,7 +97,7 @@ class ExamControllerTest : ControllerTest() {
             }
 
             context("조회하려는 테스트가 존재하지 않는 경우") {
-                every { examQueryUseCase.getExamById(any()) } throws NotFoundDataException()
+                every { examQueryUseCase.getExamById(any()) } throws ExamNotFoundException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient

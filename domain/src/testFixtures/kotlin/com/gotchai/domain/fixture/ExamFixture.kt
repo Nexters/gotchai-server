@@ -3,6 +3,7 @@ package com.gotchai.domain.fixture
 import com.gotchai.domain.exam.dto.result.GetExamResult
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.entity.ExamResult
+import com.gotchai.domain.exam.entity.ExamType
 import java.time.LocalDateTime
 
 const val TITLE = "AI와 크리스마스 파티"
@@ -15,6 +16,7 @@ const val ICON_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam
 const val THEME = "blue"
 const val PROMPT = "AI 산타 캐릭터를 만들거야. MBTI는 ESFP이고, 20대 초중반 정도의 젊은 산타였으면 좋겠어. 선물 고르는 센스가 남다르고, 공감을 잘하는 성격을 가진 캐릭터로 설정해줘."
 const val ANSWER_COUNT = 1
+val TYPE = ExamType.NORMAL
 
 fun createExam(
     id: Long = ID,
@@ -25,6 +27,7 @@ fun createExam(
     backgroundImage: String = BACKGROUND_IMAGE,
     iconImage: String = ICON_IMAGE,
     theme: String = THEME,
+    type: ExamType = TYPE,
     createdAt: LocalDateTime = CREATED_AT
 ): Exam =
     Exam(
@@ -36,6 +39,7 @@ fun createExam(
         backgroundImage = backgroundImage,
         iconImage = iconImage,
         theme = theme,
+        type = type,
         createdAt = createdAt
     )
 
