@@ -11,6 +11,7 @@ data class Exam(
     val backgroundImage: String,
     val iconImage: String,
     val theme: String,
+    val type: ExamType,
     val createdAt: LocalDateTime
 ) {
     data class Creation(
@@ -20,6 +21,7 @@ data class Exam(
         val prompt: String,
         val backgroundImage: String,
         val iconImage: String,
-        val theme: String
+        val theme: String,
+        val type: ExamType
     )
 }

@@ -1,10 +1,9 @@
 package com.gotchai.storage.rdb.exam.entity
 
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamType
 import com.gotchai.storage.rdb.global.entity.BaseEntity
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "exam")
@@ -18,7 +17,10 @@ class ExamEntity(
     val prompt: String,
     val backgroundImage: String,
     val iconImage: String,
-    val theme: String
+    val theme: String,
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(15)")
+    val type: ExamType
 ) : BaseEntity() {
     companion object {
         fun from(creation: Exam.Creation): ExamEntity =
@@ -30,7 +32,8 @@ class ExamEntity(
                     prompt = prompt,
                     backgroundImage = backgroundImage,
                     iconImage = iconImage,
-                    theme = theme
+                    theme = theme,
+                    type = type
                 )
             }
     }
@@ -45,6 +48,7 @@ class ExamEntity(
             backgroundImage = backgroundImage,
             iconImage = iconImage,
             theme = theme,
+            type = type,
             createdAt = createdAt
         )
 }

@@ -24,7 +24,7 @@ class QuizCommandService(
         userId: Long
     ): QuizPickResult {
         val quizPick =
-            quizPickQueryPort.getQuizPickBy(quizPickId)
+            quizPickQueryPort.getQuizPickById(quizPickId)
                 ?: throw QuizPickNotFoundException()
 
         val examHistory = QuizHistory.from(userId, examId, quizPick)

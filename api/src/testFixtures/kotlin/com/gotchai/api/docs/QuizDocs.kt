@@ -4,9 +4,9 @@ import com.gotchai.api.presentation.v1.quiz.request.GradeQuizRequest
 import com.gotchai.api.presentation.v1.quiz.response.GradeQuizResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizDetailResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizPickResponse
-import com.gotchai.api.util.arrayFieldsOf
 import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
+import com.gotchai.api.util.listFieldsOf
 
 val quizDetailResponseFields =
     fieldsOf(
@@ -14,9 +14,8 @@ val quizDetailResponseFields =
         QuizDetailResponse::contents bodyDesc "퀴즈 내용",
         QuizDetailResponse::createdAt bodyDesc "생성 날짜"
     ) +
-        arrayFieldsOf(
-            "quizPicks",
-            "퀴즈 선택지 목록",
+        listFieldsOf(
+            "quizPicks" bodyDesc "퀴즈 선택지 목록",
             QuizPickResponse::id bodyDesc "선택지 식별자",
             QuizPickResponse::contents bodyDesc "선택지 내용"
         )

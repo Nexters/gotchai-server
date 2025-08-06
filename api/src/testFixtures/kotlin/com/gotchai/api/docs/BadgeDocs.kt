@@ -19,7 +19,7 @@ val badgeResponseFields =
 
 val getMyBadgeListResponseFields =
     listFieldsOf(
-        description = "뱃지 리스트",
+        "list" bodyDesc "뱃지 리스트",
         GetMyBadgeResponse::id bodyDesc "식별자",
         GetMyBadgeResponse::examId bodyDesc "테스트 식별자",
         GetMyBadgeResponse::name bodyDesc "이름",
