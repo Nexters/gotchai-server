@@ -32,9 +32,9 @@ class ExamResultEntity(
             id = id!!,
             examId = examId,
             userId = userId,
-            takeQuizIds = takeQuizIds,
-            answerQuizIds = answerQuizIds,
-            failedQuizIds = failedQuizIds,
+            takeQuizIds = takeQuizIds.split(",").map { it.toLong() },
+            answerQuizIds = answerQuizIds?.split(",")?.map { it.toLong() },
+            failedQuizIds = failedQuizIds?.split(",")?.map { it.toLong() },
             createdAt = createdAt
         )
 }

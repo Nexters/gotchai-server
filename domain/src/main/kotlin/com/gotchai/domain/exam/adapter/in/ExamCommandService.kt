@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service
 class ExamCommandService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
     private val examResultCommandPort: ExamResultCommandPort,
-    // TODO(): Exam 도메인에 Badge가 껴있음.
     private val userBadgeCommandPort: UserBadgeCommandPort,
     private val badgeQueryPort: BadgeQueryPort
 ) : ExamCommandUseCase {
@@ -28,7 +27,8 @@ class ExamCommandService(
     ): ExamSubmitResult {
         val examHistory =
             examHistoryQueryPort.getHistoryById(
-                historyId = "exam:$examId:$userId"
+                userId = userId,
+                examId = examId
             ) ?: throw ExamHistoryNotFoundException()
 
         val (takeQuizIds, answerQuizIds, failedQuizIds) =
@@ -51,7 +51,6 @@ class ExamCommandService(
 
         examResultCommandPort.createExamResult(creation)
 
-        // TODO(): Exam 도메인에 Badge가 껴있음.
         val badgeTier = calculateTierByCorrectAnswers(answerQuizIds.size)
         val badge =
             badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
@@ -69,7 +68,6 @@ class ExamCommandService(
         )
     }
 
-    // TODO: 정답률 기준으로 티어 산정 예정
     private fun calculateTierByCorrectAnswers(correctAnswerCount: Int): Tier =
         when (correctAnswerCount) {
             in 0..2 -> Tier.BRONZE

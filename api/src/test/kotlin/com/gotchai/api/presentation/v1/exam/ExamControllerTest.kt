@@ -13,6 +13,7 @@ import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResp
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
+import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
@@ -27,6 +28,9 @@ import org.springframework.test.web.reactive.server.expectBody
 class ExamControllerTest : ControllerTest() {
     @MockkBean
     private lateinit var examQueryUseCase: ExamQueryUseCase
+
+    @MockkBean
+    private lateinit var examCommandUseCase: ExamCommandUseCase
 
     init {
         describe("getExams()는") {
@@ -62,7 +66,7 @@ class ExamControllerTest : ControllerTest() {
             it("상태 코드 200과 ExamListResponse를 반환한다.") {
                 webClient
                     .get()
-                    .uri("/api/v1/users/me/exam/solved")
+                    .uri("/api/v1/users/me/exams/solved")
                     .exchange()
                     .expectStatus()
                     .isOk

@@ -29,16 +29,17 @@ class QuizCommandService(
 
         val examHistory = QuizHistory.from(userId, examId, quizPick)
 
-        setExamHistory(examHistory, examId)
+        setExamHistory(examHistory, examId, userId)
 
         return QuizPickResult(quizPick.contents, examHistory.isAnswer)
     }
 
     private fun setExamHistory(
         quizHistory: QuizHistory,
-        examId: Long
+        examId: Long,
+        userId: Long
     ) {
-        val examHistory = examHistoryQueryPort.getHistoryById(quizHistory.examHistoryId)
+        val examHistory = examHistoryQueryPort.getHistoryById(userId, examId)
         val updatedHistories = (examHistory?.histories ?: emptyList()) + quizHistory
 
         if (examHistory == null) {

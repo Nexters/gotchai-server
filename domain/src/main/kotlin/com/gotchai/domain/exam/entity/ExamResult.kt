@@ -6,9 +6,9 @@ data class ExamResult(
     val id: Long,
     val examId: Long,
     val userId: Long,
-    val takeQuizIds: String,
-    val answerQuizIds: String?,
-    val failedQuizIds: String?,
+    val takeQuizIds: List<Long>,
+    val answerQuizIds: List<Long>?,
+    val failedQuizIds: List<Long>?,
     val createdAt: LocalDateTime
 ) {
     data class Creation(
