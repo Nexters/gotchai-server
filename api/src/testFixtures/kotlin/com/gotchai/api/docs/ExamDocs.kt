@@ -1,8 +1,8 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamResponse
 import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
+import com.gotchai.api.presentation.v1.exam.response.StartExamResponse
 import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
 import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
@@ -28,12 +28,14 @@ val examListResponseFields =
         *examResponseFields.toTypedArray()
     )
 
-val examDetailResponseFields =
-    fieldsOf(ExamDetailResponse::quizIds bodyDesc "퀴즈 식별자 목록") + examResponseFields
-
 val getExamParticipantCountResponseFields =
     fieldsOf(
         GetExamParticipantCountResponse::participantCount bodyDesc "참여자 수"
+    )
+
+val startExamResponseFields =
+    fieldsOf(
+        StartExamResponse::quizIds bodyDesc "퀴즈 식별자 리스트"
     )
 
 val submitExamResponseFields =

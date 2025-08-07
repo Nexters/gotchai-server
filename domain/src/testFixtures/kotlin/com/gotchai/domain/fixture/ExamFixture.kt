@@ -1,7 +1,7 @@
 package com.gotchai.domain.fixture
 
 import com.gotchai.domain.badge.entity.Badge
-import com.gotchai.domain.exam.dto.result.GetExamResult
+import com.gotchai.domain.exam.dto.result.StartExamResult
 import com.gotchai.domain.exam.dto.result.SubmitExamResult
 import com.gotchai.domain.exam.entity.Exam
 import java.time.LocalDateTime
@@ -39,30 +39,7 @@ fun createExam(
         createdAt = createdAt
     )
 
-fun createGetExamResult(
-    id: Long = ID,
-    title: String = TITLE,
-    subTitle: String = SUB_TITLE,
-    description: String = DESCRIPTION,
-    prompt: String = PROMPT,
-    backgroundImage: String = BACKGROUND_IMAGE,
-    iconImage: String = ICON_IMAGE,
-    theme: String = THEME,
-    quizIds: List<Long> = listOf(ID),
-    createdAt: LocalDateTime = CREATED_AT
-): GetExamResult =
-    GetExamResult(
-        id = id,
-        title = title,
-        subTitle = subTitle,
-        description = description,
-        prompt = prompt,
-        backgroundImage = backgroundImage,
-        iconImage = iconImage,
-        theme = theme,
-        quizIds = quizIds,
-        createdAt = createdAt
-    )
+fun createStartExamResult(quizIds: List<Long> = listOf(ID)): StartExamResult = StartExamResult(quizIds = quizIds)
 
 fun createSubmitExamResult(
     correctAnswerCount: Int = CORRECT_ANSWER_COUNT,

@@ -4,10 +4,7 @@ import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.*
 import com.gotchai.api.fixture.PARTICIPANT_COUNT
 import com.gotchai.api.global.dto.ApiResponse
-import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
-import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
-import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
-import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
+import com.gotchai.api.presentation.v1.exam.response.*
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.api.util.paramDesc
@@ -19,7 +16,7 @@ import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
-import com.gotchai.domain.fixture.createGetExamResult
+import com.gotchai.domain.fixture.createStartExamResult
 import com.gotchai.domain.fixture.createSubmitExamResult
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -71,19 +68,19 @@ class ExamControllerTest : ControllerTest() {
 
         describe("getExamById()는") {
             context("조회하려는 테스트가 존재하는 경우") {
-                every { examQueryUseCase.getExamById(ID) } returns createGetExamResult()
+                every { examQueryUseCase.getExamById(ID) } returns createExam()
 
-                it("상태 코드 200과 ExamDetailResponse를 반환한다.") {
+                it("상태 코드 200과 ExamResponse를 반환한다.") {
                     webClient
                         .get()
                         .uri("/api/v1/exams/{id}", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
-                        .expectBody<ApiResponse<ExamDetailResponse>>()
+                        .expectBody<ApiResponse<ExamResponse>>()
                         .document("테스트 단일 조회 성공(200)") {
                             pathParams("id" paramDesc "테스트 식별자")
-                            responseBody(examDetailResponseFields)
+                            responseBody(examResponseFields)
                         }
                 }
             }
@@ -125,6 +122,44 @@ class ExamControllerTest : ControllerTest() {
             }
         }
 
+        describe("startExam()은") {
+            context("유효한 테스트를 시작하면") {
+                every { examCommandUseCase.startExam(ID, ID) } returns createStartExamResult()
+
+                it("상태 코드 200과 StartExamResponse를 반환한다.") {
+                    webClient
+                        .post()
+                        .uri("/api/v1/exams/{id}/start", ID)
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<ApiResponse<StartExamResponse>>()
+                        .document("테스트 시작 성공(200)") {
+                            pathParams("id" paramDesc "테스트 식별자")
+                            responseBody(startExamResponseFields)
+                        }
+                }
+            }
+
+            context("이미 푼 테스트를 시작하면") {
+                every { examCommandUseCase.startExam(ID, ID) } throws ExamAlreadySolvedException()
+
+                it("상태 코드 400과 ErrorResponse를 반환한다.") {
+                    webClient
+                        .post()
+                        .uri("/api/v1/exams/{id}/start", ID)
+                        .exchange()
+                        .expectStatus()
+                        .isBadRequest
+                        .expectError()
+                        .document("테스트 시작 실패(400)") {
+                            pathParams("id" paramDesc "테스트 식별자")
+                            responseBody(errorResponseFields)
+                        }
+                }
+            }
+        }
+
         describe("submitExam()는") {
             context("유효한 테스트를 제출하면") {
                 every { examCommandUseCase.submitExam(ID, ID) } returns createSubmitExamResult()
@@ -145,7 +180,7 @@ class ExamControllerTest : ControllerTest() {
             }
 
             context("시작하지 않은 테스트를 제출하는 경우") {
-                every { examCommandUseCase.submitExam(ID, ID) } throws ExamHistoryNotFoundException()
+                every { examCommandUseCase.submitExam(ID, ID) } throws ExamNotFoundException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
@@ -156,6 +191,24 @@ class ExamControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 1)") {
+                            pathParams("id" paramDesc "테스트 식별자")
+                            responseBody(errorResponseFields)
+                        }
+                }
+            }
+
+            context("시작하지 않은 테스트를 제출하는 경우") {
+                every { examCommandUseCase.submitExam(ID, ID) } throws ExamHistoryNotFoundException()
+
+                it("상태 코드 404와 ErrorResponse를 반환한다.") {
+                    webClient
+                        .post()
+                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .exchange()
+                        .expectStatus()
+                        .isNotFound
+                        .expectError()
+                        .document("테스트 제출 실패(404 - 2)") {
                             pathParams("id" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
@@ -191,7 +244,7 @@ class ExamControllerTest : ControllerTest() {
                         .expectStatus()
                         .isNotFound
                         .expectError()
-                        .document("테스트 제출 실패(404 - 2)") {
+                        .document("테스트 제출 실패(404 - 3)") {
                             pathParams("id" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }

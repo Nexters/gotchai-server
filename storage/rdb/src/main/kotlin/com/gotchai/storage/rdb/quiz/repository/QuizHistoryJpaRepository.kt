@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface QuizHistoryJpaRepository : JpaRepository<QuizHistoryEntity, Long> {
     fun findAllByExamHistoryId(examHistoryId: Long): List<QuizHistoryEntity>
+
+    fun deleteAllByExamHistoryId(examHistoryId: Long)
 }

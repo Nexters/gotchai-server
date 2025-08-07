@@ -12,7 +12,7 @@ class ExamHistoryEntity(
     val examId: Long,
     val userId: Long,
     @ElementCollection
-    val quizIds: List<Long>,
+    var quizIds: List<Long>,
     var correctAnswerCount: Int,
     var isSolved: Boolean
 ) : BaseEntity() {
@@ -50,12 +50,4 @@ class ExamHistoryEntity(
             isSolved = isSolved,
             createdAt = createdAt
         )
-
-    fun update(
-        correctAnswerCount: Int,
-        isSolved: Boolean
-    ) {
-        this.correctAnswerCount = correctAnswerCount
-        this.isSolved = isSolved
-    }
 }

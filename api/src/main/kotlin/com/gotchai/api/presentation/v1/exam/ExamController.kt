@@ -1,10 +1,7 @@
 package com.gotchai.api.presentation.v1.exam
 
 import com.gotchai.api.global.annotation.ApiV1Controller
-import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
-import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
-import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
-import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
+import com.gotchai.api.presentation.v1.exam.response.*
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -29,7 +26,7 @@ class ExamController(
         userId: Long,
         @PathVariable
         id: Long
-    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamById(id))
+    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(id))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
@@ -46,6 +43,14 @@ class ExamController(
         id: Long
     ): GetExamParticipantCountResponse =
         GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(id))
+
+    @PostMapping("/exams/{id}/start")
+    fun startExam(
+        @AuthenticationPrincipal
+        userId: Long,
+        @PathVariable
+        id: Long
+    ): StartExamResponse = StartExamResponse.from(examCommandUseCase.startExam(userId, id))
 
     @PostMapping("/exams/{id}/submit")
     fun submitExam(

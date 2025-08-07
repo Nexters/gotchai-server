@@ -13,4 +13,8 @@ class QuizHistoryQueryAdapter(
         quizHistoryJpaRepository
             .findAllByExamHistoryId(examHistoryId)
             .map { it.toQuizHistory() }
+
+    override fun deleteQuizHistoriesByExamHistoryId(examHistoryId: Long) {
+        quizHistoryJpaRepository.deleteAllByExamHistoryId(examHistoryId)
+    }
 }

@@ -20,10 +20,11 @@ class ExamHistoryCommandAdapter(
         with(examHistory) {
             val examHistoryEntity = examHistoryJpaRepository.findByIdOrElseThrow(id)
 
-            examHistoryEntity.update(
-                correctAnswerCount = correctAnswerCount,
-                isSolved = isSolved
-            )
+            examHistoryEntity.also {
+                it.quizIds = quizIds
+                it.correctAnswerCount = correctAnswerCount
+                it.isSolved = isSolved
+            }
 
             examHistoryJpaRepository
                 .save(examHistoryEntity)
