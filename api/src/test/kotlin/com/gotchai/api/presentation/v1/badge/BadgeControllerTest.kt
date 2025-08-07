@@ -32,13 +32,13 @@ class BadgeControllerTest : ControllerTest() {
                 it("상태 코드 200과 BadgeResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/badges/{id}", ID)
+                        .uri("/api/v1/badges/{badgeId}", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<BadgeResponse>>()
                         .document("식별자 기반 뱃지 단일 조회 성공(200)") {
-                            pathParams("id" paramDesc "식별자")
+                            pathParams("badgeId" paramDesc "뱃지 식별자")
                             responseBody(badgeResponseFields)
                         }
                 }
@@ -50,13 +50,13 @@ class BadgeControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/badges/{id}", ID)
+                        .uri("/api/v1/badges/{badgeId}", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("식별자 기반 뱃지 단일 조회 실패(404)") {
-                            pathParams("id" paramDesc "식별자")
+                            pathParams("badgeId" paramDesc "뱃지 식별자")
                             responseBody(errorResponseFields)
                         }
                 }

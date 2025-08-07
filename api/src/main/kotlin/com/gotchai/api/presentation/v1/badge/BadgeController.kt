@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable
 class BadgeController(
     private val badgeQueryUseCase: BadgeQueryUseCase
 ) {
-    @GetMapping("/badges/{id}")
+    @GetMapping("/badges/{badgeId}")
     fun getBadgeById(
-        @PathVariable("id")
+        @PathVariable
         badgeId: Long
     ): BadgeResponse =
         badgeQueryUseCase

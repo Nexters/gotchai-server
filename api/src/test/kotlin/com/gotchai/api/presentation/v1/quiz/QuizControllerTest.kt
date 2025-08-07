@@ -43,13 +43,13 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 200과 QuizDetailResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/quizzes/{id}", ID)
+                        .uri("/api/v1/quizzes/{quizId}", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<QuizDetailResponse>>()
                         .document("퀴즈 단일 조회 성공(200)") {
-                            pathParams("id" paramDesc "퀴즈 식별자")
+                            pathParams("quizId" paramDesc "퀴즈 식별자")
                             responseBody(quizDetailResponseFields)
                         }
                 }
@@ -61,13 +61,13 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/quizzes/{id}", ID)
+                        .uri("/api/v1/quizzes/{quizId}", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("퀴즈 단일 조회 실패(404)") {
-                            pathParams("id" paramDesc "퀴즈 식별자")
+                            pathParams("quizId" paramDesc "퀴즈 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -85,7 +85,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 200과 GradeQuizResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -108,7 +108,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -131,7 +131,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -154,7 +154,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -177,7 +177,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -200,7 +200,7 @@ class QuizControllerTest : ControllerTest() {
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .uri("/api/v1/quizzes/{quizId}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()

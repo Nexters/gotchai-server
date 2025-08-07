@@ -73,13 +73,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 200과 ExamResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/exams/{id}", ID)
+                        .uri("/api/v1/exams/{examId}", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<ExamResponse>>()
                         .document("테스트 단일 조회 성공(200)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(examResponseFields)
                         }
                 }
@@ -91,13 +91,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .get()
-                        .uri("/api/v1/exams/{id}", ID)
+                        .uri("/api/v1/exams/{examId}", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("테스트 단일 조회 실패(404)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -110,13 +110,13 @@ class ExamControllerTest : ControllerTest() {
             it("상태 코드 200과 GetExamParticipantCountResponse를 반환한다.") {
                 webClient
                     .get()
-                    .uri("/api/v1/exams/{id}/participants", ID)
+                    .uri("/api/v1/exams/{examId}/participants", ID)
                     .exchange()
                     .expectStatus()
                     .isOk
                     .expectBody<ApiResponse<GetExamParticipantCountResponse>>()
                     .document("테스트 참여자 수 조회 성공(200)") {
-                        pathParams("id" paramDesc "테스트 식별자")
+                        pathParams("examId" paramDesc "테스트 식별자")
                         responseBody(getExamParticipantCountResponseFields)
                     }
             }
@@ -129,13 +129,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 200과 StartExamResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/start", ID)
+                        .uri("/api/v1/exams/{examId}/start", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<StartExamResponse>>()
                         .document("테스트 시작 성공(200)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(startExamResponseFields)
                         }
                 }
@@ -147,13 +147,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/start", ID)
+                        .uri("/api/v1/exams/{examId}/start", ID)
                         .exchange()
                         .expectStatus()
                         .isBadRequest
                         .expectError()
                         .document("테스트 시작 실패(400)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -167,13 +167,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 200과 SubmitExamResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{examId}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
                         .expectBody<ApiResponse<SubmitExamResponse>>()
                         .document("테스트 제출 성공(200)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(submitExamResponseFields)
                         }
                 }
@@ -185,13 +185,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{examId}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 1)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -203,13 +203,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{examId}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 2)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -221,13 +221,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{examId}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isBadRequest
                         .expectError()
                         .document("테스트 제출 실패(400)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -239,13 +239,13 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{examId}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 3)") {
-                            pathParams("id" paramDesc "테스트 식별자")
+                            pathParams("examId" paramDesc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
