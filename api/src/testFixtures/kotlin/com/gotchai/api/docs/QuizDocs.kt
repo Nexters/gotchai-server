@@ -23,11 +23,8 @@ val quizDetailResponseFields =
 val gradeQuizResponseFields =
     fieldsOf(
         GradeQuizResponse::contents bodyDesc "퀴즈 선택지 내용",
-        GradeQuizResponse::isAnswer bodyDesc "true"
+        GradeQuizResponse::isAnswer bodyDesc "정답 여부"
     )
 
 val gradeQuizRequestFields =
-    fieldsOf(
-        GradeQuizRequest::examId bodyDesc "테스트 식별자",
-        GradeQuizRequest::quizPickId bodyDesc "퀴즈 선택지 식별자"
-    )
+    fieldsOf(GradeQuizRequest::quizPickId bodyDesc "퀴즈 선택지 식별자")

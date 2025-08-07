@@ -31,6 +31,11 @@ fun listFieldsOf(
     vararg fields: FieldDescriptor
 ): List<FieldDescriptor> = fields.map { "${listField.path}[].${it.path}" bodyDesc it.description as String } + listField
 
+fun objectFieldsOf(
+    objectField: FieldDescriptor,
+    vararg fields: FieldDescriptor
+): List<FieldDescriptor> = fields.map { "${objectField.path}.${it.path}" bodyDesc it.description as String } + objectField
+
 fun <T> BodySpec<T, *>.document(
     identifier: String,
     init: (DocumentDsl<T>.() -> Unit)? = null

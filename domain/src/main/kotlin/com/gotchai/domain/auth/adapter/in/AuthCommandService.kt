@@ -44,7 +44,6 @@ class AuthCommandService(
     @Value("\${jwt.refresh-token-expiration}")
     private val refreshTokenExpiration: Duration
 ) : AuthCommandUseCase {
-    @Transactional
     override fun login(
         deviceId: String?,
         command: LoginCommand
@@ -104,6 +103,7 @@ class AuthCommandService(
             )
         }
 
+    @Transactional
     override fun signUp(command: SignUpCommand): User =
         with(command) {
             userQueryPort

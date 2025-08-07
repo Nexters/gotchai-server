@@ -12,7 +12,10 @@ class QuizQueryAdapter(
     private val quizJpaRepository: QuizJpaRepository
 ) : QuizQueryPort {
     @ReadOnlyTransactional
-    override fun getQuizBy(quizId: Long): Quiz? = quizJpaRepository.findByIdOrNull(quizId)?.toQuiz()
+    override fun getQuizById(id: Long): Quiz? =
+        quizJpaRepository
+            .findByIdOrNull(id)
+            ?.toQuiz()
 
     @ReadOnlyTransactional
     override fun getQuizzesByExamId(examId: Long): List<Quiz> =

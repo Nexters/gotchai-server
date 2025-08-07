@@ -14,7 +14,7 @@ class QuizQueryService(
     private val quizPickQueryPort: QuizPickQueryPort
 ) : QuizQueryUseCase {
     override fun getQuizById(quizId: Long): GetQuizResult {
-        val quiz = quizQueryPort.getQuizBy(quizId) ?: throw QuizNotFoundException()
+        val quiz = quizQueryPort.getQuizById(quizId) ?: throw QuizNotFoundException()
         val quizPicks = quizPickQueryPort.getQuizPicksByQuizId(quiz.id)
 
         val (aiPick, humanPick) =

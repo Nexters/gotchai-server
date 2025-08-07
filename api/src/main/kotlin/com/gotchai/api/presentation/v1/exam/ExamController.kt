@@ -1,10 +1,7 @@
 package com.gotchai.api.presentation.v1.exam
 
 import com.gotchai.api.global.annotation.ApiV1Controller
-import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
-import com.gotchai.api.presentation.v1.exam.response.ExamListResponse
-import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
-import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
+import com.gotchai.api.presentation.v1.exam.response.*
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -23,13 +20,13 @@ class ExamController(
         userId: Long
     ): ExamListResponse = ExamListResponse.from(examQueryUseCase.getExams())
 
-    @GetMapping("/exams/{id}")
+    @GetMapping("/exams/{examId}")
     fun getExamById(
         @AuthenticationPrincipal
         userId: Long,
-        @PathVariable(name = "id")
+        @PathVariable
         examId: Long
-    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamDetailById(examId))
+    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(examId))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
@@ -40,17 +37,26 @@ class ExamController(
             .getExamsByUserId(userId)
             .let { ExamListResponse.from(it) }
 
-    @GetMapping("/exams/{id}/participants")
-    fun getExamParticipantCount(
+    @GetMapping("/exams/{examId}/participants")
+    fun getExamParticipantCountById(
         @PathVariable
-        id: Long
+        examId: Long
     ): GetExamParticipantCountResponse =
-        GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(id))
+        GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(examId))
 
-    @PostMapping("/exams/{id}/submit")
-    fun submitExam(
-        @PathVariable(name = "id") examId: Long,
+    @PostMapping("/exams/{examId}/start")
+    fun startExam(
         @AuthenticationPrincipal
-        userId: Long
-    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submit(userId, examId))
+        userId: Long,
+        @PathVariable
+        examId: Long
+    ): StartExamResponse = StartExamResponse.from(examCommandUseCase.startExam(userId, examId))
+
+    @PostMapping("/exams/{examId}/submit")
+    fun submitExam(
+        @AuthenticationPrincipal
+        userId: Long,
+        @PathVariable
+        examId: Long
+    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submitExam(userId, examId))
 }

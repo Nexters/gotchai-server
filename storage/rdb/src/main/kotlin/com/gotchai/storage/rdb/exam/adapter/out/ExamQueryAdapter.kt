@@ -1,7 +1,6 @@
 package com.gotchai.storage.rdb.exam.adapter.out
 
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.domain.exam.entity.ExamType
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.repository.ExamJpaRepository
 import com.gotchai.storage.rdb.global.annotation.Adapter
@@ -19,15 +18,9 @@ class ExamQueryAdapter(
             ?.toExam()
 
     @ReadOnlyTransactional
-    override fun getExamByType(type: ExamType): Exam? =
+    override fun getExams(): List<Exam> =
         examJpaRepository
-            .findByType(type)
-            ?.toExam()
-
-    @ReadOnlyTransactional
-    override fun getExamsByTypeNot(type: ExamType): List<Exam> =
-        examJpaRepository
-            .findAllByTypeNot(type)
+            .findAll()
             .map { it.toExam() }
 
     @ReadOnlyTransactional

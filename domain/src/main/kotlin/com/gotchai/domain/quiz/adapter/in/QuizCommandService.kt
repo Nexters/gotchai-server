@@ -1,59 +1,66 @@
 package com.gotchai.domain.quiz.adapter.`in`
 
-import com.gotchai.domain.exam.entity.ExamHistory
+import com.gotchai.domain.exam.exception.ExamAlreadySolvedException
+import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
-import com.gotchai.domain.quiz.dto.result.QuizPickResult
+import com.gotchai.domain.quiz.dto.command.GradeQuizCommand
 import com.gotchai.domain.quiz.entity.QuizHistory
+import com.gotchai.domain.quiz.entity.QuizPick
+import com.gotchai.domain.quiz.exception.InvalidQuizPickException
+import com.gotchai.domain.quiz.exception.QuizNotFoundException
 import com.gotchai.domain.quiz.exception.QuizPickNotFoundException
 import com.gotchai.domain.quiz.port.`in`.QuizCommandUseCase
+import com.gotchai.domain.quiz.port.out.QuizHistoryCommandPort
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
+import com.gotchai.domain.quiz.port.out.QuizQueryPort
 import org.springframework.stereotype.Service
-import java.time.Duration
-import java.time.LocalDateTime
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class QuizCommandService(
+    private val quizQueryPort: QuizQueryPort,
     private val quizPickQueryPort: QuizPickQueryPort,
-    private val examHistoryCommandPort: ExamHistoryCommandPort,
-    private val examHistoryQueryPort: ExamHistoryQueryPort
+    private val quizHistoryCommandPort: QuizHistoryCommandPort,
+    private val examHistoryQueryPort: ExamHistoryQueryPort,
+    private val examHistoryCommandPort: ExamHistoryCommandPort
 ) : QuizCommandUseCase {
+    @Transactional
     override fun gradeQuiz(
-        examId: Long,
-        quizPickId: Long,
-        userId: Long
-    ): QuizPickResult {
-        val quizPick =
-            quizPickQueryPort.getQuizPickById(quizPickId)
-                ?: throw QuizPickNotFoundException()
+        userId: Long,
+        quizId: Long,
+        command: GradeQuizCommand
+    ): QuizPick =
+        with(command) {
+            val quiz = quizQueryPort.getQuizById(quizId) ?: throw QuizNotFoundException()
+            val examHistory =
+                examHistoryQueryPort.getExamHistoryByExamIdAndUserId(quiz.examId, userId)
+                    ?: throw ExamHistoryNotFoundException()
+            val quizPick = quizPickQueryPort.getQuizPickById(quizPickId) ?: throw QuizPickNotFoundException()
 
-        val examHistory = QuizHistory.from(userId, examId, quizPick)
+            if (examHistory.isSolved) throw ExamAlreadySolvedException()
+            if (quiz.id !in examHistory.quizIds) throw InvalidQuizPickException()
 
-        setExamHistory(examHistory, examId, userId)
-
-        return QuizPickResult(quizPick.contents, examHistory.isAnswer)
-    }
-
-    private fun setExamHistory(
-        quizHistory: QuizHistory,
-        examId: Long,
-        userId: Long
-    ) {
-        val examHistory = examHistoryQueryPort.getHistoryById(userId, examId)
-        val updatedHistories = (examHistory?.histories ?: emptyList()) + quizHistory
-
-        if (examHistory == null) {
-            examHistoryCommandPort.create(
-                ExamHistory.Creation(
-                    quizHistory.examHistoryId,
-                    updatedHistories,
-                    examId,
-                    LocalDateTime.now(),
-                    Duration.ofDays(1)
+            if (quizPick.isAnswer) {
+                examHistoryCommandPort.updateExamHistory(
+                    examHistory.run {
+                        copy(
+                            correctAnswerCount =
+                                correctAnswerCount + 1
+                        )
+                    }
                 )
-            )
-        } else {
-            examHistoryCommandPort.updateHistory(quizHistory.examHistoryId, updatedHistories)
+            }
+
+            quizPick.apply {
+                quizHistoryCommandPort.createQuizHistory(
+                    QuizHistory.Creation(
+                        examHistoryId = examHistory.id,
+                        quizId = quizId,
+                        quizPickId = id,
+                        isAnswer = isAnswer
+                    )
+                )
+            }
         }
-    }
 }

@@ -1,11 +1,12 @@
 package com.gotchai.domain.quiz.port.`in`
 
-import com.gotchai.domain.quiz.dto.result.QuizPickResult
+import com.gotchai.domain.quiz.dto.command.GradeQuizCommand
+import com.gotchai.domain.quiz.entity.QuizPick
 
 interface QuizCommandUseCase {
     fun gradeQuiz(
-        examId: Long,
-        quizPickId: Long,
-        userId: Long
-    ): QuizPickResult
+        userId: Long,
+        quizId: Long,
+        command: GradeQuizCommand
+    ): QuizPick
 }

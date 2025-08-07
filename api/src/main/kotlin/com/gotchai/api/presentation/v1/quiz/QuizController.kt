@@ -17,24 +17,21 @@ class QuizController(
     private val quizQueryUseCase: QuizQueryUseCase,
     private val quizCommandUseCase: QuizCommandUseCase
 ) {
-    @GetMapping("/quizzes/{id}")
+    @GetMapping("/quizzes/{quizId}")
     fun getQuizById(
-        @PathVariable(name = "id") quizId: Long,
         @AuthenticationPrincipal
-        userId: Long
+        userId: Long,
+        @PathVariable
+        quizId: Long
     ): QuizDetailResponse = QuizDetailResponse.from(quizQueryUseCase.getQuizById(quizId))
 
-    @PostMapping("/quizzes/grade")
+    @PostMapping("/quizzes/{quizId}/grade")
     fun gradeQuiz(
-        @RequestBody request: GradeQuizRequest,
         @AuthenticationPrincipal
-        userId: Long
-    ): GradeQuizResponse =
-        GradeQuizResponse.from(
-            quizCommandUseCase.gradeQuiz(
-                request.examId,
-                request.quizPickId,
-                userId
-            )
-        )
+        userId: Long,
+        @PathVariable
+        quizId: Long,
+        @RequestBody
+        request: GradeQuizRequest
+    ): GradeQuizResponse = GradeQuizResponse.from(quizCommandUseCase.gradeQuiz(userId, quizId, request.toCommand()))
 }

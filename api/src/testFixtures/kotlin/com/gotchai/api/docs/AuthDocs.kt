@@ -9,19 +9,13 @@ import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
 
 val appleLoginRequestFields =
-    fieldsOf(
-        AppleLoginRequest::idToken bodyDesc "ID 토큰"
-    )
+    fieldsOf(AppleLoginRequest::idToken bodyDesc "ID 토큰")
 
 val kakaoLoginRequestFields =
-    fieldsOf(
-        KakaoLoginRequest::accessToken bodyDesc "카카오 액세스 토큰"
-    )
+    fieldsOf(KakaoLoginRequest::accessToken bodyDesc "카카오 액세스 토큰")
 
 val refreshRequestFields =
-    fieldsOf(
-        RefreshRequest::refreshToken bodyDesc "리프레시 토큰"
-    )
+    fieldsOf(RefreshRequest::refreshToken bodyDesc "리프레시 토큰")
 
 val refreshResponseFields =
     fieldsOf(

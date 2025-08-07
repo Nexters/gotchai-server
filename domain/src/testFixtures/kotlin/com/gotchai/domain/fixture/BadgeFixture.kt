@@ -1,6 +1,5 @@
 package com.gotchai.domain.fixture
 
-import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.entity.UserBadge
@@ -41,23 +40,4 @@ fun createUserBadge(
         userId = userId,
         badgeId = badgeId,
         createdAt = createdAt
-    )
-
-fun createGetMyBadgeResult(
-    id: Long = ID,
-    examId: Long = ID,
-    name: String = NAME,
-    description: String = DESCRIPTION_BADGE,
-    image: String = IMAGE,
-    tier: Tier = TIER,
-    acquiredAt: LocalDateTime = CREATED_AT
-): GetMyBadgeResult =
-    GetMyBadgeResult(
-        id = id,
-        examId = examId,
-        name = name,
-        description = description,
-        image = image,
-        tier = tier,
-        acquiredAt = acquiredAt
     )

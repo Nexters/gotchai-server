@@ -37,11 +37,8 @@ class SecurityConfig {
             }
             authorizeHttpRequests {
                 it
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/ping",
-                        "/api/v1/onboarding/**"
-                    ).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/ping")
+                    .permitAll()
                     .requestMatchers(
                         HttpMethod.POST,
                         "/api/v1/auth/login/**",
@@ -60,8 +57,7 @@ class SecurityConfig {
         CustomAuthenticationEntryPoint(objectMapper)
 
     @Bean
-    fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler =
-        CustomAccessDeniedHandler(objectMapper)
+    fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler = CustomAccessDeniedHandler(objectMapper)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()

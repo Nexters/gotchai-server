@@ -1,11 +1,13 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.exam.response.ExamDetailResponse
 import com.gotchai.api.presentation.v1.exam.response.ExamResponse
 import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
+import com.gotchai.api.presentation.v1.exam.response.StartExamResponse
+import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
 import com.gotchai.api.util.bodyDesc
 import com.gotchai.api.util.fieldsOf
 import com.gotchai.api.util.listFieldsOf
+import com.gotchai.api.util.objectFieldsOf
 
 val examResponseFields =
     fieldsOf(
@@ -26,21 +28,16 @@ val examListResponseFields =
         *examResponseFields.toTypedArray()
     )
 
-val examDetailResponseFields =
-    fieldsOf(
-        ExamDetailResponse::id bodyDesc "식별자",
-        ExamDetailResponse::title bodyDesc "제목",
-        ExamDetailResponse::subTitle bodyDesc "부제목",
-        ExamDetailResponse::description bodyDesc "테스트 설명",
-        ExamDetailResponse::prompt bodyDesc "테스트 프롬프트",
-        ExamDetailResponse::backgroundImage bodyDesc "설명 이미지 URI",
-        ExamDetailResponse::iconImage bodyDesc "아이콘 이미지 URI",
-        ExamDetailResponse::theme bodyDesc "테마",
-        ExamDetailResponse::quizIds bodyDesc "퀴즈 식별자 목록",
-        ExamDetailResponse::createdAt bodyDesc "생성 날짜"
-    )
-
 val getExamParticipantCountResponseFields =
     fieldsOf(
         GetExamParticipantCountResponse::participantCount bodyDesc "참여자 수"
     )
+
+val startExamResponseFields =
+    fieldsOf(
+        StartExamResponse::quizIds bodyDesc "퀴즈 식별자 리스트"
+    )
+
+val submitExamResponseFields =
+    fieldsOf(SubmitExamResponse::answerCount bodyDesc "정답 개수") +
+        objectFieldsOf("badge" bodyDesc "뱃지", *badgeResponseFields.toTypedArray())
