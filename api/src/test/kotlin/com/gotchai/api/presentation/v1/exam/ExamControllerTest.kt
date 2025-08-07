@@ -149,7 +149,7 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 200과 SubmitExamResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/users/me/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{id}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isOk
@@ -167,7 +167,7 @@ class ExamControllerTest : ControllerTest() {
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/users/me/exams/{id}/submit", ID)
+                        .uri("/api/v1/exams/{id}/submit", ID)
                         .exchange()
                         .expectStatus()
                         .isNotFound

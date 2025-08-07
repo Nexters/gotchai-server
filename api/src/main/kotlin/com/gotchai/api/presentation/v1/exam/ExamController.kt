@@ -47,7 +47,7 @@ class ExamController(
     ): GetExamParticipantCountResponse =
         GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(id))
 
-    @PostMapping("/users/me/exams/{id}/submit")
+    @PostMapping("/exams/{id}/submit")
     fun submitExam(
         @PathVariable(name = "id") examId: Long,
         @AuthenticationPrincipal

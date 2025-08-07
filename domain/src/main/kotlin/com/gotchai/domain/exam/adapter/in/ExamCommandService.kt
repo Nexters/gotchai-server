@@ -3,7 +3,6 @@ package com.gotchai.domain.exam.adapter.`in`
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.entity.UserBadge
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
-import com.gotchai.domain.badge.exception.InvalidBadgeTierException
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.domain.badge.port.out.UserBadgeCommandPort
 import com.gotchai.domain.exam.dto.result.ExamSubmitResult
@@ -51,7 +50,7 @@ class ExamCommandService(
 
         examResultCommandPort.createExamResult(creation)
 
-        val badgeTier = calculateTierByCorrectAnswers(answerQuizIds.size)
+        val badgeTier = Tier.calculateTierByCorrectAnswers(answerQuizIds.size)
         val badge =
             badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
                 ?: throw BadgeNotFoundException()
@@ -67,12 +66,4 @@ class ExamCommandService(
             badge = badge
         )
     }
-
-    private fun calculateTierByCorrectAnswers(correctAnswerCount: Int): Tier =
-        when (correctAnswerCount) {
-            in 0..2 -> Tier.BRONZE
-            in 3..5 -> Tier.SILVER
-            in 6..7 -> Tier.GOLD
-            else -> throw InvalidBadgeTierException()
-        }
 }
