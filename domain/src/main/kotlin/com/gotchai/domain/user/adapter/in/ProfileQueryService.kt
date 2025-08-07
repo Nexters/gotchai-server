@@ -5,11 +5,13 @@ import com.gotchai.domain.user.exception.ProfileNotFoundException
 import com.gotchai.domain.user.port.`in`.ProfileQueryUseCase
 import com.gotchai.domain.user.port.out.ProfileQueryPort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProfileQueryService(
     private val profileQueryPort: ProfileQueryPort
 ) : ProfileQueryUseCase {
+    @Transactional(readOnly = true)
     override fun getProfileByUserId(userId: Long): Profile? =
         profileQueryPort.getProfileByUserId(userId) ?: throw ProfileNotFoundException()
 }
