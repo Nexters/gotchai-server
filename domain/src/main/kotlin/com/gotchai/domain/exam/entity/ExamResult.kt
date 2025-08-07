@@ -7,8 +7,8 @@ data class ExamResult(
     val examId: Long,
     val userId: Long,
     val takeQuizIds: List<Long>,
-    val answerQuizIds: List<Long>?,
-    val failedQuizIds: List<Long>?,
+    val answerQuizIds: List<Long> = emptyList(),
+    val failedQuizIds: List<Long> = emptyList(),
     val createdAt: LocalDateTime
 ) {
     data class Creation(

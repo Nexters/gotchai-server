@@ -60,8 +60,8 @@ fun createExamResult(
         examId = examId,
         userId = userId,
         takeQuizIds = takeQuizIds.split(",").map { it.toLong() },
-        answerQuizIds = answerQuizIds?.split(",")?.map { it.toLong() },
-        failedQuizIds = failedQuizIds?.split(",")?.map { it.toLong() },
+        answerQuizIds = answerQuizIds?.split(",")?.map { it.toLong() } ?: emptyList(),
+        failedQuizIds = failedQuizIds?.split(",")?.map { it.toLong() } ?: emptyList(),
         createdAt = createdAt
     )
 
