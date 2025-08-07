@@ -118,26 +118,4 @@ class ExamCommandService(
             badge = badge
         )
     }
-
-    private fun resetExamHistory(
-        userId: Long,
-        examId: Long
-    ) {
-        val examHistory = examHistoryQueryPort.getExamHistoryByExamIdAndUserId(examId, userId) ?: throw ExamHistoryNotFoundException()
-        val quizIds =
-            quizQueryPort
-                .getQuizzesByExamId(examId)
-                .map { it.id }
-
-        if (examHistory.isSolved) throw ExamAlreadySolvedException()
-
-        quizHistoryQueryPort.deleteQuizHistoriesByExamHistoryId(examHistory.id)
-        examHistoryCommandPort.updateExamHistory(
-            examHistory.copy(
-                quizIds = quizIds,
-                correctAnswerCount = 0,
-                isSolved = false
-            )
-        )
-    }
 }
