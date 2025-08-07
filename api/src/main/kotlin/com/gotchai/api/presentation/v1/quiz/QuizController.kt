@@ -19,17 +19,19 @@ class QuizController(
 ) {
     @GetMapping("/quizzes/{id}")
     fun getQuizById(
-        @PathVariable(name = "id")
-        quizId: Long,
         @AuthenticationPrincipal
-        userId: Long
+        userId: Long,
+        @PathVariable("id")
+        quizId: Long
     ): QuizDetailResponse = QuizDetailResponse.from(quizQueryUseCase.getQuizById(quizId))
 
-    @PostMapping("/quizzes/grade")
+    @PostMapping("/quizzes/{id}/grade")
     fun gradeQuiz(
         @AuthenticationPrincipal
         userId: Long,
+        @PathVariable("id")
+        quizId: Long,
         @RequestBody
         request: GradeQuizRequest
-    ): GradeQuizResponse = GradeQuizResponse.from(quizCommandUseCase.gradeQuiz(userId, request.toCommand()))
+    ): GradeQuizResponse = GradeQuizResponse.from(quizCommandUseCase.gradeQuiz(userId, quizId, request.toCommand()))
 }

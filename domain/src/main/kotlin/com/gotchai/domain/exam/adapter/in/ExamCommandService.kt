@@ -19,6 +19,7 @@ import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.domain.quiz.port.out.QuizHistoryQueryPort
 import com.gotchai.domain.quiz.port.out.QuizQueryPort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ExamCommandService(
@@ -30,11 +31,12 @@ class ExamCommandService(
     private val userBadgeCommandPort: UserBadgeCommandPort,
     private val badgeQueryPort: BadgeQueryPort
 ) : ExamCommandUseCase {
+    @Transactional
     override fun startExam(
         userId: Long,
-        id: Long
+        examId: Long
     ): StartExamResult {
-        val exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
+        val exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
         val examHistory = examHistoryQueryPort.getExamHistoryByExamIdAndUserId(exam.id, userId)
         val quizIds =
             quizQueryPort
@@ -86,11 +88,12 @@ class ExamCommandService(
         return StartExamResult(quizIds = quizIds)
     }
 
+    @Transactional
     override fun submitExam(
         userId: Long,
-        id: Long
+        examId: Long
     ): SubmitExamResult {
-        val exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
+        val exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
         val examHistory =
             examHistoryQueryPort.getExamHistoryByExamIdAndUserId(exam.id, userId)
                 ?: throw ExamHistoryNotFoundException()

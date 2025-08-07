@@ -14,11 +14,11 @@ class BadgeController(
 ) {
     @GetMapping("/badges/{id}")
     fun getBadgeById(
-        @PathVariable
-        id: Long
+        @PathVariable("id")
+        badgeId: Long
     ): BadgeResponse =
         badgeQueryUseCase
-            .getBadgeById(id)
+            .getBadgeById(badgeId)
             .let { BadgeResponse.from(it) }
 
     @GetMapping("/users/me/badges")

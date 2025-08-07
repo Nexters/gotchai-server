@@ -4,7 +4,7 @@ import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 
 interface BadgeQueryUseCase {
-    fun getBadgeById(id: Long): Badge
+    fun getBadgeById(badgeId: Long): Badge
 
     fun getMyBadges(userId: Long): List<Badge>
 

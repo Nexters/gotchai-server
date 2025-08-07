@@ -2,7 +2,11 @@ package com.gotchai.storage.rdb.quiz.entity
 
 import com.gotchai.domain.quiz.entity.QuizHistory
 import com.gotchai.storage.rdb.global.entity.BaseEntity
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
 
+@Table(name = "quiz_history")
+@Entity
 class QuizHistoryEntity(
     val examHistoryId: Long,
     val quizId: Long,

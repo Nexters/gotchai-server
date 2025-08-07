@@ -14,7 +14,7 @@ class ExamQueryService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
     private val quizQueryPort: QuizQueryPort
 ) : ExamQueryUseCase {
-    override fun getExamById(id: Long): Exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
+    override fun getExamById(examId: Long): Exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
 
     override fun getExams(): List<Exam> = examQueryPort.getExams()
 
@@ -25,8 +25,8 @@ class ExamQueryService(
         return exams
     }
 
-    override fun getExamParticipantCountById(id: Long): Int =
+    override fun getExamParticipantCountById(examId: Long): Int =
         examHistoryQueryPort
-            .getExamHistoriesByExamIdAndSolvedTrue(id)
+            .getExamHistoriesByExamIdAndSolvedTrue(examId)
             .count()
 }

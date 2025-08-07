@@ -79,13 +79,13 @@ class QuizControllerTest : ControllerTest() {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, it.toCommand()) } returns createQuizPick()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } returns createQuizPick()
                         }
 
                 it("상태 코드 200과 GradeQuizResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/grade")
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -98,18 +98,17 @@ class QuizControllerTest : ControllerTest() {
                 }
             }
 
-            context("시작하지 않은 테스트에 채점을 요청하면") {
+            context("존재하지 않는 퀴즈 채점을 요청하면") {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, it.toCommand()) } throws
-                                ExamHistoryNotFoundException()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } throws QuizNotFoundException()
                         }
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/grade")
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -122,18 +121,17 @@ class QuizControllerTest : ControllerTest() {
                 }
             }
 
-            context("존재하지 않는 퀴즈 선택지를 제출하면") {
+            context("시작하지 않은 테스트에 채점을 요청하면") {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, it.toCommand()) } throws
-                                QuizPickNotFoundException()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } throws ExamHistoryNotFoundException()
                         }
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/grade")
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -146,18 +144,40 @@ class QuizControllerTest : ControllerTest() {
                 }
             }
 
+            context("존재하지 않는 퀴즈 선택지를 제출하면") {
+                val request =
+                    createGradeQuizRequest()
+                        .also {
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } throws QuizPickNotFoundException()
+                        }
+
+                it("상태 코드 404와 ErrorResponse를 반환한다.") {
+                    webClient
+                        .post()
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
+                        .bodyValue(request)
+                        .exchange()
+                        .expectStatus()
+                        .isNotFound
+                        .expectError()
+                        .document("퀴즈 채점 실패(404 - 3)") {
+                            requestBody(gradeQuizRequestFields)
+                            responseBody(errorResponseFields)
+                        }
+                }
+            }
+
             context("이미 푼 테스트에 채점을 요청하면") {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, it.toCommand()) } throws
-                                ExamAlreadySolvedException()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } throws ExamAlreadySolvedException()
                         }
 
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/grade")
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()
@@ -174,13 +194,13 @@ class QuizControllerTest : ControllerTest() {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, it.toCommand()) } throws InvalidQuizPickException()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } throws InvalidQuizPickException()
                         }
 
                 it("상태 코드 400과 ErrorResponse를 반환한다.") {
                     webClient
                         .post()
-                        .uri("/api/v1/quizzes/grade")
+                        .uri("/api/v1/quizzes/{id}/grade", ID)
                         .bodyValue(request)
                         .exchange()
                         .expectStatus()

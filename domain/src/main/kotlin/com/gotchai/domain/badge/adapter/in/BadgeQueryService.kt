@@ -13,8 +13,8 @@ class BadgeQueryService(
     private val badgeQueryPort: BadgeQueryPort,
     private val userBadgeQueryPort: UserBadgeQueryPort
 ) : BadgeQueryUseCase {
-    override fun getBadgeById(id: Long): Badge =
-        badgeQueryPort.getBadgeById(id)
+    override fun getBadgeById(badgeId: Long): Badge =
+        badgeQueryPort.getBadgeById(badgeId)
             ?: throw BadgeNotFoundException()
 
     override fun getMyBadges(userId: Long): List<Badge> {

@@ -6,11 +6,11 @@ import com.gotchai.domain.exam.dto.result.SubmitExamResult
 interface ExamCommandUseCase {
     fun startExam(
         userId: Long,
-        id: Long
+        examId: Long
     ): StartExamResult
 
     fun submitExam(
         userId: Long,
-        id: Long
+        examId: Long
     ): SubmitExamResult
 }

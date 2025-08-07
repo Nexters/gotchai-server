@@ -104,6 +104,7 @@ class AuthCommandService(
             )
         }
 
+    @Transactional
     override fun signUp(command: SignUpCommand): User =
         with(command) {
             userQueryPort

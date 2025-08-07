@@ -24,9 +24,9 @@ class ExamController(
     fun getExamById(
         @AuthenticationPrincipal
         userId: Long,
-        @PathVariable
-        id: Long
-    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(id))
+        @PathVariable("id")
+        examId: Long
+    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(examId))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
@@ -38,25 +38,25 @@ class ExamController(
             .let { ExamListResponse.from(it) }
 
     @GetMapping("/exams/{id}/participants")
-    fun getExamParticipantCount(
-        @PathVariable
-        id: Long
+    fun getExamParticipantCountById(
+        @PathVariable("id")
+        examId: Long
     ): GetExamParticipantCountResponse =
-        GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(id))
+        GetExamParticipantCountResponse(participantCount = examQueryUseCase.getExamParticipantCountById(examId))
 
     @PostMapping("/exams/{id}/start")
     fun startExam(
         @AuthenticationPrincipal
         userId: Long,
-        @PathVariable
-        id: Long
-    ): StartExamResponse = StartExamResponse.from(examCommandUseCase.startExam(userId, id))
+        @PathVariable("id")
+        examId: Long
+    ): StartExamResponse = StartExamResponse.from(examCommandUseCase.startExam(userId, examId))
 
     @PostMapping("/exams/{id}/submit")
     fun submitExam(
         @AuthenticationPrincipal
         userId: Long,
-        @PathVariable
-        id: Long
-    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submitExam(userId, id))
+        @PathVariable("id")
+        examId: Long
+    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submitExam(userId, examId))
 }
