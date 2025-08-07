@@ -37,11 +37,8 @@ class SecurityConfig {
             }
             authorizeHttpRequests {
                 it
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/ping",
-                        "/api/v1/onboarding/**"
-                    ).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/ping")
+                    .permitAll()
                     .requestMatchers(
                         HttpMethod.POST,
                         "/api/v1/auth/login/**",

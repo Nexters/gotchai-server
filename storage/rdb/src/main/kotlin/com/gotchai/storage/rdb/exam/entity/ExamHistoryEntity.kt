@@ -17,17 +17,6 @@ class ExamHistoryEntity(
     var isSolved: Boolean
 ) : BaseEntity() {
     companion object {
-        fun from(examHistory: ExamHistory): ExamHistoryEntity =
-            with(examHistory) {
-                ExamHistoryEntity(
-                    examId = examId,
-                    userId = userId,
-                    quizIds = quizIds,
-                    correctAnswerCount = correctAnswerCount,
-                    isSolved = isSolved
-                )
-            }
-
         fun from(creation: ExamHistory.Creation): ExamHistoryEntity =
             with(creation) {
                 ExamHistoryEntity(

@@ -22,9 +22,8 @@ class BadgeQueryService(
         val badges =
             badgeQueryPort
                 .getBadgesByIdIn(userBadges.map { it.badgeId })
-                .associateBy { it.id }
 
-        return userBadges.mapNotNull { badges[it.badgeId] }
+        return badges
     }
 
     override fun getBadgeByExamIdAndTier(
