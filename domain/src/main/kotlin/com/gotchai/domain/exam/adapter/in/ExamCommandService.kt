@@ -97,9 +97,9 @@ class ExamCommandService(
         val examHistory =
             examHistoryQueryPort.getExamHistoryByExamIdAndUserId(exam.id, userId)
                 ?: throw ExamHistoryNotFoundException()
-        val quizzes = quizHistoryQueryPort.getQuizHistoriesByExamHistoryId(examHistory.id)
+        val quizHistories = quizHistoryQueryPort.getQuizHistoriesByExamHistoryId(examHistory.id)
 
-        if (examHistory.quizIds.count() != quizzes.count()) throw ExamNotSolvedException()
+        if (examHistory.quizIds.count() != quizHistories.count()) throw ExamNotSolvedException()
 
         examHistoryCommandPort.updateExamHistory(examHistory.copy(isSolved = true))
 
