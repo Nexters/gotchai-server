@@ -60,8 +60,7 @@ class SecurityConfig {
         CustomAuthenticationEntryPoint(objectMapper)
 
     @Bean
-    fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler =
-        CustomAccessDeniedHandler(objectMapper)
+    fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler = CustomAccessDeniedHandler(objectMapper)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()

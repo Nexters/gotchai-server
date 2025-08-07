@@ -49,9 +49,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(ConstraintViolationException::class)
-    fun handleConstraintViolationException(
-        ex: ConstraintViolationException
-    ): ResponseEntity<ApiResponse<ErrorResponse>> {
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ApiResponse<ErrorResponse>> {
         log.error("ConstraintViolationException: {}", ex.message, ex)
         val violations =
             ex.constraintViolations.associate {
@@ -70,9 +68,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
-    fun handleMethodArgumentTypeMismatchException(
-        ex: MethodArgumentTypeMismatchException
-    ): ResponseEntity<ApiResponse<ErrorResponse>> {
+    fun handleMethodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): ResponseEntity<ApiResponse<ErrorResponse>> {
         log.error("MethodArgumentTypeMismatchException : {}", ex.message, ex)
 
         val errorResponse =

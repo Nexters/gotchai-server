@@ -4,5 +4,5 @@ import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResp
 
 const val PARTICIPANT_COUNT = 1
 
-fun createExamGetParticipantCountResponse(participantCount: Int = PARTICIPANT_COUNT): GetExamParticipantCountResponse =
+fun createGetExamParticipantCountResponse(participantCount: Int = PARTICIPANT_COUNT): GetExamParticipantCountResponse =
     GetExamParticipantCountResponse(participantCount = participantCount)

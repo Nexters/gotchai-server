@@ -13,8 +13,7 @@ fun <T : Any> RedisTemplate<String, T>.setWithExpiry(
     opsForValue().set(key, value, duration)
 }
 
-fun <T> RedisTemplate<String, T>.getOrElseThrow(key: String): T =
-    opsForValue().get(key) ?: throw NotFoundDataException()
+fun <T> RedisTemplate<String, T>.getOrElseThrow(key: String): T = opsForValue().get(key) ?: throw NotFoundDataException()
 
 fun <T> RedisTemplate<String, T>.getOrDefault(
     key: String,

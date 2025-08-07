@@ -13,6 +13,5 @@ class JwtConfig {
     fun jwtProvider(jwtProperties: JwtProperties): JwtProvider = DefaultJwtProvider(jwtProperties)
 
     @Bean
-    fun jwtAuthenticationFilter(jwtProvider: JwtProvider): JwtAuthenticationFilter =
-        JwtAuthenticationFilter(jwtProvider)
+    fun jwtAuthenticationFilter(jwtProvider: JwtProvider): JwtAuthenticationFilter = JwtAuthenticationFilter(jwtProvider)
 }

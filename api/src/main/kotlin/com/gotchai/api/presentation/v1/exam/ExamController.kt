@@ -27,9 +27,9 @@ class ExamController(
     fun getExamById(
         @AuthenticationPrincipal
         userId: Long,
-        @PathVariable(name = "id")
-        examId: Long
-    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamDetailById(examId))
+        @PathVariable
+        id: Long
+    ): ExamDetailResponse = ExamDetailResponse.from(examQueryUseCase.getExamById(id))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
@@ -49,8 +49,9 @@ class ExamController(
 
     @PostMapping("/exams/{id}/submit")
     fun submitExam(
-        @PathVariable(name = "id") examId: Long,
         @AuthenticationPrincipal
-        userId: Long
-    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submit(userId, examId))
+        userId: Long,
+        @PathVariable
+        id: Long
+    ): SubmitExamResponse = SubmitExamResponse.from(examCommandUseCase.submitExam(userId, id))
 }

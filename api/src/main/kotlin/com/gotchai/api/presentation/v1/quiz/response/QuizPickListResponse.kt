@@ -6,7 +6,6 @@ data class QuizPickListResponse(
     val list: List<QuizPickResponse>
 ) {
     companion object {
-        fun from(quizPicks: List<QuizPick>): QuizPickListResponse =
-            QuizPickListResponse(quizPicks.map { QuizPickResponse.from(it) })
+        fun from(quizPicks: List<QuizPick>): QuizPickListResponse = QuizPickListResponse(quizPicks.map { QuizPickResponse.from(it) })
     }
 }

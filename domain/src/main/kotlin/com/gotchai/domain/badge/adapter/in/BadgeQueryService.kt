@@ -1,6 +1,5 @@
 package com.gotchai.domain.badge.adapter.`in`
 
-import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
@@ -18,24 +17,20 @@ class BadgeQueryService(
         badgeQueryPort.getBadgeById(id)
             ?: throw BadgeNotFoundException()
 
-    override fun getMyBadges(userId: Long): List<GetMyBadgeResult> {
+    override fun getMyBadges(userId: Long): List<Badge> {
         val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
         val badges =
             badgeQueryPort
                 .getBadgesByIdIn(userBadges.map { it.badgeId })
                 .associateBy { it.id }
 
-        return userBadges.mapNotNull { userBadge ->
-            badges[userBadge.badgeId]?.let { badge ->
-                GetMyBadgeResult.of(badge, userBadge)
-            }
-        }
+        return userBadges.mapNotNull { badges[it.badgeId] }
     }
 
     override fun getBadgeByExamIdAndTier(
         examId: Long,
-        badgeTier: Tier
+        tier: Tier
     ): Badge =
-        badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
+        badgeQueryPort.getBadgeByExamIdAndTier(examId, tier)
             ?: throw BadgeNotFoundException()
 }

@@ -1,59 +1,59 @@
 package com.gotchai.domain.quiz.adapter.`in`
 
-import com.gotchai.domain.exam.entity.ExamHistory
+import com.gotchai.domain.exam.exception.ExamAlreadySolvedException
+import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
-import com.gotchai.domain.quiz.dto.result.QuizPickResult
+import com.gotchai.domain.quiz.dto.command.GradeQuizCommand
 import com.gotchai.domain.quiz.entity.QuizHistory
+import com.gotchai.domain.quiz.entity.QuizPick
+import com.gotchai.domain.quiz.exception.InvalidQuizPickException
 import com.gotchai.domain.quiz.exception.QuizPickNotFoundException
 import com.gotchai.domain.quiz.port.`in`.QuizCommandUseCase
+import com.gotchai.domain.quiz.port.out.QuizHistoryCommandPort
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
 import org.springframework.stereotype.Service
-import java.time.Duration
-import java.time.LocalDateTime
 
 @Service
 class QuizCommandService(
     private val quizPickQueryPort: QuizPickQueryPort,
-    private val examHistoryCommandPort: ExamHistoryCommandPort,
-    private val examHistoryQueryPort: ExamHistoryQueryPort
+    private val quizHistoryCommandPort: QuizHistoryCommandPort,
+    private val examHistoryQueryPort: ExamHistoryQueryPort,
+    private val examHistoryCommandPort: ExamHistoryCommandPort
 ) : QuizCommandUseCase {
     override fun gradeQuiz(
-        examId: Long,
-        quizPickId: Long,
-        userId: Long
-    ): QuizPickResult {
-        val quizPick =
-            quizPickQueryPort.getQuizPickById(quizPickId)
-                ?: throw QuizPickNotFoundException()
+        userId: Long,
+        command: GradeQuizCommand
+    ): QuizPick =
+        with(command) {
+            val examHistory =
+                examHistoryQueryPort.getExamHistoryByExamIdAndUserId(examId, userId)
+                    ?: throw ExamHistoryNotFoundException()
+            val quizPick = quizPickQueryPort.getQuizPickById(quizPickId) ?: throw QuizPickNotFoundException()
 
-        val examHistory = QuizHistory.from(userId, examId, quizPick)
+            if (examHistory.isSolved) throw ExamAlreadySolvedException()
+            if (quizPick.quizId !in examHistory.quizIds) throw InvalidQuizPickException()
 
-        setExamHistory(examHistory, examId, userId)
-
-        return QuizPickResult(quizPick.contents, examHistory.isAnswer)
-    }
-
-    private fun setExamHistory(
-        quizHistory: QuizHistory,
-        examId: Long,
-        userId: Long
-    ) {
-        val examHistory = examHistoryQueryPort.getHistoryById(userId, examId)
-        val updatedHistories = (examHistory?.histories ?: emptyList()) + quizHistory
-
-        if (examHistory == null) {
-            examHistoryCommandPort.create(
-                ExamHistory.Creation(
-                    quizHistory.examHistoryId,
-                    updatedHistories,
-                    examId,
-                    LocalDateTime.now(),
-                    Duration.ofDays(1)
+            if (quizPick.isAnswer) {
+                examHistoryCommandPort.updateExamHistory(
+                    examHistory.run {
+                        copy(
+                            correctAnswerCount =
+                                correctAnswerCount + 1
+                        )
+                    }
                 )
-            )
-        } else {
-            examHistoryCommandPort.updateHistory(quizHistory.examHistoryId, updatedHistories)
+            }
+
+            quizPick.apply {
+                quizHistoryCommandPort.createQuizHistory(
+                    QuizHistory.Creation(
+                        examHistoryId = examHistory.id,
+                        quizId = quizId,
+                        quizPickId = id,
+                        isAnswer = isAnswer
+                    )
+                )
+            }
         }
-    }
 }

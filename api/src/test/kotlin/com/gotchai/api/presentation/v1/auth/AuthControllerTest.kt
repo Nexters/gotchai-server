@@ -31,11 +31,14 @@ class AuthControllerTest : ControllerTest() {
 
     init {
         describe("appleLogin()은") {
-            val request = createAppleLoginRequest()
-            val result = createSocialLoginResult()
-
             context("유효한 토큰을 받은 경우") {
-                every { authCommandUseCase.socialLogin(DEVICE_ID, request.toCommand()) } returns result
+                val request =
+                    createAppleLoginRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.socialLogin(DEVICE_ID, it.toCommand())
+                            } returns createSocialLoginResult()
+                        }
 
                 it("상태 코드 200과 SocialLoginResponse를 반환한다.") {
                     webClient
@@ -55,9 +58,13 @@ class AuthControllerTest : ControllerTest() {
             }
 
             context("유효하지 않은 토큰을 받은 경우") {
-                every {
-                    authCommandUseCase.socialLogin(DEVICE_ID, request.toCommand())
-                } throws InvalidOAuthTokenException()
+                val request =
+                    createAppleLoginRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.socialLogin(DEVICE_ID, it.toCommand())
+                            } throws InvalidOAuthTokenException()
+                        }
 
                 it("상태 코드 401과 ErrorResponse를 반환한다.") {
                     webClient
@@ -78,11 +85,14 @@ class AuthControllerTest : ControllerTest() {
         }
 
         describe("kakaoLogin()은") {
-            val request = createKakaoLoginRequest()
-            val result = createSocialLoginResult()
-
             context("유효한 토큰을 받은 경우") {
-                every { authCommandUseCase.socialLogin(DEVICE_ID, request.toCommand()) } returns result
+                val request =
+                    createKakaoLoginRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.socialLogin(DEVICE_ID, it.toCommand())
+                            } returns createSocialLoginResult()
+                        }
 
                 it("상태 코드 200과 SocialLoginResponse를 반환한다.") {
                     webClient
@@ -102,9 +112,13 @@ class AuthControllerTest : ControllerTest() {
             }
 
             context("유효하지 않은 토큰을 받은 경우") {
-                every {
-                    authCommandUseCase.socialLogin(DEVICE_ID, request.toCommand())
-                } throws InvalidOAuthTokenException()
+                val request =
+                    createKakaoLoginRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.socialLogin(DEVICE_ID, it.toCommand())
+                            } throws InvalidOAuthTokenException()
+                        }
 
                 it("상태 코드 401과 ErrorResponse를 반환한다.") {
                     webClient
@@ -142,11 +156,13 @@ class AuthControllerTest : ControllerTest() {
         }
 
         describe("refresh()는") {
-            val request = createRefreshRequest()
-            val result = createRefreshResult()
-
             context("유효한 리프레시 토큰을 받으면") {
-                every { authCommandUseCase.refresh(DEVICE_ID, request.toCommand()) } returns result
+                val request =
+                    createRefreshRequest()
+                        .also {
+                            every { authCommandUseCase.refresh(DEVICE_ID, it.toCommand()) } returns
+                                createRefreshResult()
+                        }
 
                 it("상태 코드 200과 RefreshResponse를 반환한다.") {
                     webClient
@@ -166,9 +182,13 @@ class AuthControllerTest : ControllerTest() {
             }
 
             context("유효하지 않은 리프레시 토큰을 받으면") {
-                every {
-                    authCommandUseCase.refresh(DEVICE_ID, request.toCommand())
-                } throws InvalidRefreshTokenException()
+                val request =
+                    createRefreshRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.refresh(DEVICE_ID, it.toCommand())
+                            } throws InvalidRefreshTokenException()
+                        }
 
                 it("상태 코드 200과 RefreshResponse를 반환한다.") {
                     webClient
@@ -188,9 +208,13 @@ class AuthControllerTest : ControllerTest() {
             }
 
             context("존재하지 않는 리프레시 토큰을 받으면") {
-                every {
-                    authCommandUseCase.refresh(DEVICE_ID, request.toCommand())
-                } throws RefreshTokenNotFoundException()
+                val request =
+                    createRefreshRequest()
+                        .also {
+                            every {
+                                authCommandUseCase.refresh(DEVICE_ID, it.toCommand())
+                            } throws RefreshTokenNotFoundException()
+                        }
 
                 it("상태 코드 200과 RefreshResponse를 반환한다.") {
                     webClient

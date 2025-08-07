@@ -11,4 +11,7 @@ data class QuizPick(
         val contents: String,
         val answerType: AnswerType
     )
+
+    val isAnswer: Boolean
+        get() = type == AnswerType.AI
 }

@@ -15,6 +15,5 @@ class QuizPickQueryAdapter(
     override fun getQuizPickById(id: Long): QuizPick? = quizPickJpaRepository.findByIdOrNull(id)?.toQuizPick()
 
     @ReadOnlyTransactional
-    override fun getQuizPicksByQuizId(quizId: Long): List<QuizPick> =
-        quizPickJpaRepository.findAllByQuizId(quizId).map { it.toQuizPick() }
+    override fun getQuizPicksByQuizId(quizId: Long): List<QuizPick> = quizPickJpaRepository.findAllByQuizId(quizId).map { it.toQuizPick() }
 }

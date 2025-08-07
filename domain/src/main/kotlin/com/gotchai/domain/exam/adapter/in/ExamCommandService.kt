@@ -5,55 +5,39 @@ import com.gotchai.domain.badge.entity.UserBadge
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
 import com.gotchai.domain.badge.port.out.UserBadgeCommandPort
-import com.gotchai.domain.exam.dto.result.ExamSubmitResult
-import com.gotchai.domain.exam.entity.ExamResult
+import com.gotchai.domain.exam.dto.result.SubmitExamResult
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
+import com.gotchai.domain.exam.exception.ExamNotSolvedException
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
+import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
-import com.gotchai.domain.exam.port.out.ExamResultCommandPort
+import com.gotchai.domain.quiz.port.out.QuizHistoryQueryPort
 import org.springframework.stereotype.Service
 
 @Service
 class ExamCommandService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
-    private val examResultCommandPort: ExamResultCommandPort,
+    private val examHistoryCommandPort: ExamHistoryCommandPort,
+    private val quizHistoryQueryPort: QuizHistoryQueryPort,
     private val userBadgeCommandPort: UserBadgeCommandPort,
     private val badgeQueryPort: BadgeQueryPort
 ) : ExamCommandUseCase {
-    override fun submit(
+    override fun submitExam(
         userId: Long,
-        examId: Long
-    ): ExamSubmitResult {
+        id: Long
+    ): SubmitExamResult {
         val examHistory =
-            examHistoryQueryPort.getHistoryById(
-                userId = userId,
-                examId = examId
-            ) ?: throw ExamHistoryNotFoundException()
+            examHistoryQueryPort.getExamHistoryByExamIdAndUserId(id, userId)
+                ?: throw ExamHistoryNotFoundException()
+        val quizzes = quizHistoryQueryPort.getQuizHistoriesByExamHistoryId(examHistory.id)
 
-        val (takeQuizIds, answerQuizIds, failedQuizIds) =
-            examHistory.histories.run {
-                Triple(
-                    map { it.quizId },
-                    filter { it.isAnswer }.map { it.quizId },
-                    filter { !it.isAnswer }.map { it.quizId }
-                )
-            }
+        if (examHistory.quizIds.count() != quizzes.count()) throw ExamNotSolvedException()
 
-        val creation =
-            ExamResult.Creation(
-                examId = examId,
-                userId = userId,
-                takeQuizIds = takeQuizIds.joinToString(","),
-                answerQuizIds = answerQuizIds.takeIf { it.isNotEmpty() }?.joinToString(","),
-                failedQuizIds = failedQuizIds.takeIf { it.isNotEmpty() }?.joinToString(",")
-            )
+        examHistoryCommandPort.updateExamHistory(examHistory.copy(isSolved = true))
 
-        examResultCommandPort.createExamResult(creation)
+        val tier = Tier.fromCorrectAnswerCount(examHistory.correctAnswerCount)
+        val badge = badgeQueryPort.getBadgeByExamIdAndTier(id, tier) ?: throw BadgeNotFoundException()
 
-        val badgeTier = Tier.calculateTierByCorrectAnswers(answerQuizIds.size)
-        val badge =
-            badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
-                ?: throw BadgeNotFoundException()
         userBadgeCommandPort.createUserBadge(
             UserBadge.Creation(
                 userId = userId,
@@ -61,8 +45,8 @@ class ExamCommandService(
             )
         )
 
-        return ExamSubmitResult(
-            correctAnswerCount = answerQuizIds.size,
+        return SubmitExamResult(
+            correctAnswerCount = examHistory.correctAnswerCount,
             badge = badge
         )
     }
