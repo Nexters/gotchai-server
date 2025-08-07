@@ -7,14 +7,12 @@ import com.gotchai.domain.quiz.port.`in`.QuizQueryUseCase
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
 import com.gotchai.domain.quiz.port.out.QuizQueryPort
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class QuizQueryService(
     private val quizQueryPort: QuizQueryPort,
     private val quizPickQueryPort: QuizPickQueryPort
 ) : QuizQueryUseCase {
-    @Transactional
     override fun getQuizById(quizId: Long): GetQuizResult {
         val quiz = quizQueryPort.getQuizById(quizId) ?: throw QuizNotFoundException()
         val quizPicks = quizPickQueryPort.getQuizPicksByQuizId(quiz.id)
