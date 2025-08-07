@@ -6,30 +6,14 @@ import com.gotchai.domain.quiz.entity.QuizHistory
 import com.gotchai.storage.redis.exam.entity.ExamHistoryEntity
 import com.gotchai.storage.redis.exam.repository.ExamHistoryRedisRepository
 import com.gotchai.storage.redis.global.annotation.Adapter
-import java.time.Duration
-import java.time.LocalDateTime
 
 @Adapter
 class ExamHistoryCommandAdapter(
     private val examHistoryRedisRepository: ExamHistoryRedisRepository
 ) : ExamHistoryCommandPort {
-    override fun create(
-        historyId: String,
-        histories: List<QuizHistory>,
-        examId: Long,
-        createdAt: LocalDateTime,
-        expiration: Duration
-    ) {
+    override fun create(creation: ExamHistory.Creation) {
         examHistoryRedisRepository.save(
-            ExamHistoryEntity.from(
-                ExamHistory.Creation(
-                    historyId = historyId,
-                    histories = histories,
-                    examId = examId,
-                    createdAt = createdAt,
-                    expiration = expiration
-                )
-            )
+            ExamHistoryEntity.from(creation)
         )
     }
 

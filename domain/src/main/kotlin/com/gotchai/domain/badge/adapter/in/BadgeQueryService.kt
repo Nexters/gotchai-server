@@ -2,6 +2,7 @@ package com.gotchai.domain.badge.adapter.`in`
 
 import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
 import com.gotchai.domain.badge.entity.Badge
+import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
@@ -30,4 +31,11 @@ class BadgeQueryService(
             }
         }
     }
+
+    override fun getBadgeByExamIdAndTier(
+        examId: Long,
+        badgeTier: Tier
+    ): Badge =
+        badgeQueryPort.getBadgeByExamIdAndTier(examId, badgeTier)
+            ?: throw BadgeNotFoundException()
 }

@@ -1,5 +1,6 @@
 package com.gotchai.domain.quiz.adapter.`in`
 
+import com.gotchai.domain.exam.entity.ExamHistory
 import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
 import com.gotchai.domain.quiz.dto.result.QuizPickResult
@@ -28,25 +29,28 @@ class QuizCommandService(
 
         val examHistory = QuizHistory.from(userId, examId, quizPick)
 
-        setExamHistory(examHistory, examId)
+        setExamHistory(examHistory, examId, userId)
 
         return QuizPickResult(quizPick.contents, examHistory.isAnswer)
     }
 
     private fun setExamHistory(
         quizHistory: QuizHistory,
-        examId: Long
+        examId: Long,
+        userId: Long
     ) {
-        val examHistory = examHistoryQueryPort.getHistoryById(quizHistory.examHistoryId)
+        val examHistory = examHistoryQueryPort.getHistoryById(userId, examId)
         val updatedHistories = (examHistory?.histories ?: emptyList()) + quizHistory
 
         if (examHistory == null) {
             examHistoryCommandPort.create(
-                quizHistory.examHistoryId,
-                updatedHistories,
-                examId,
-                LocalDateTime.now(),
-                Duration.ofDays(1)
+                ExamHistory.Creation(
+                    quizHistory.examHistoryId,
+                    updatedHistories,
+                    examId,
+                    LocalDateTime.now(),
+                    Duration.ofDays(1)
+                )
             )
         } else {
             examHistoryCommandPort.updateHistory(quizHistory.examHistoryId, updatedHistories)

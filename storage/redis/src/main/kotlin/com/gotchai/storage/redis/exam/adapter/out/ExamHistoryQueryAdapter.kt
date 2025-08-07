@@ -9,6 +9,8 @@ import com.gotchai.storage.redis.global.annotation.Adapter
 class ExamHistoryQueryAdapter(
     private val examHistoryRedisRepository: ExamHistoryRedisRepository
 ) : ExamHistoryQueryPort {
-    override fun getHistoryById(historyId: String): ExamHistory? =
-        examHistoryRedisRepository.findByHistoryId(historyId)?.toExamHistory()
+    override fun getHistoryById(
+        userId: Long,
+        examId: Long
+    ): ExamHistory? = examHistoryRedisRepository.findByHistoryId("exam:$examId:$userId")?.toExamHistory()
 }

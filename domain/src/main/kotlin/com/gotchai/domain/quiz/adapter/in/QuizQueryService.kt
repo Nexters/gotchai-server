@@ -2,6 +2,7 @@ package com.gotchai.domain.quiz.adapter.`in`
 
 import com.gotchai.domain.quiz.dto.result.GetQuizResult
 import com.gotchai.domain.quiz.entity.AnswerType
+import com.gotchai.domain.quiz.exception.QuizNotFoundException
 import com.gotchai.domain.quiz.port.`in`.QuizQueryUseCase
 import com.gotchai.domain.quiz.port.out.QuizPickQueryPort
 import com.gotchai.domain.quiz.port.out.QuizQueryPort
@@ -13,7 +14,7 @@ class QuizQueryService(
     private val quizPickQueryPort: QuizPickQueryPort
 ) : QuizQueryUseCase {
     override fun getQuizById(quizId: Long): GetQuizResult {
-        val quiz = quizQueryPort.getQuizBy(quizId)
+        val quiz = quizQueryPort.getQuizBy(quizId) ?: throw QuizNotFoundException()
         val quizPicks = quizPickQueryPort.getQuizPicksByQuizId(quiz.id)
 
         val (aiPick, humanPick) =

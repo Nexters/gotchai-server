@@ -16,7 +16,9 @@ class ExamQueryService(
     private val examResultQueryPort: ExamResultQueryPort,
     private val quizQueryPort: QuizQueryPort
 ) : ExamQueryUseCase {
-    override fun getExamById(id: Long): GetExamResult {
+    override fun getExamById(id: Long): Exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
+
+    override fun getExamDetailById(id: Long): GetExamResult {
         val exam = examQueryPort.getExamById(id) ?: throw ExamNotFoundException()
         val quizzes = quizQueryPort.getQuizzesByExamId(id)
 
