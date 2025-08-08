@@ -8,7 +8,7 @@ data class GradeQuizResponse(
     val isTimeout: Boolean
 ) {
     companion object {
-        fun of(result: GradeQuizResult): GradeQuizResponse =
+        fun from(result: GradeQuizResult): GradeQuizResponse =
             with(result) {
                 GradeQuizResponse(
                     contents = contents,

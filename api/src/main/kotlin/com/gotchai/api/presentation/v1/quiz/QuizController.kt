@@ -33,5 +33,5 @@ class QuizController(
         quizId: Long,
         @RequestBody
         request: GradeQuizRequest
-    ): GradeQuizResponse = GradeQuizResponse.of(quizCommandUseCase.gradeQuiz(userId, quizId, request.toCommand()))
+    ): GradeQuizResponse = GradeQuizResponse.from(quizCommandUseCase.gradeQuiz(userId, quizId, request.toCommand()))
 }
