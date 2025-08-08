@@ -1,6 +1,6 @@
 package com.gotchai.api.presentation.v1.quiz.response
 
-import com.gotchai.domain.quiz.entity.QuizPick
+import com.gotchai.domain.quiz.dto.result.GradeQuizResult
 
 data class GradeQuizResponse(
     val contents: String,
@@ -8,11 +8,8 @@ data class GradeQuizResponse(
     val isTimeout: Boolean
 ) {
     companion object {
-        fun of(
-            quizPick: QuizPick,
-            isTimeout: Boolean
-        ): GradeQuizResponse =
-            with(quizPick) {
+        fun of(result: GradeQuizResult): GradeQuizResponse =
+            with(result) {
                 GradeQuizResponse(
                     contents = contents,
                     isAnswer = isAnswer,

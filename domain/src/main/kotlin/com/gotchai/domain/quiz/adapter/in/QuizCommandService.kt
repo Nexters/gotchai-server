@@ -3,8 +3,9 @@ package com.gotchai.domain.quiz.adapter.`in`
 import com.gotchai.domain.exam.exception.*
 import com.gotchai.domain.exam.port.out.*
 import com.gotchai.domain.quiz.dto.command.GradeQuizCommand
+import com.gotchai.domain.quiz.dto.result.GradeQuizResult
+import com.gotchai.domain.quiz.entity.AnswerType
 import com.gotchai.domain.quiz.entity.QuizHistory
-import com.gotchai.domain.quiz.entity.QuizPick
 import com.gotchai.domain.quiz.exception.*
 import com.gotchai.domain.quiz.port.`in`.QuizCommandUseCase
 import com.gotchai.domain.quiz.port.out.*
@@ -24,33 +25,38 @@ class QuizCommandService(
         userId: Long,
         quizId: Long,
         command: GradeQuizCommand
-    ): QuizPick {
+    ): GradeQuizResult {
         with(command) {
             val quiz = quizQueryPort.getQuizById(quizId) ?: throw QuizNotFoundException()
             val examHistory =
                 examHistoryQueryPort.getExamHistoryByExamIdAndUserId(quiz.examId, userId)
                     ?: throw ExamHistoryNotFoundException()
-            val quizPick = quizPickQueryPort.getQuizPickById(quizPickId) ?: throw QuizPickNotFoundException()
+            val quizPicks = quizPickQueryPort.getQuizPicksByQuizId(quizId)
+            val answerPick = quizPicks.first { it.type == AnswerType.AI }
+            val isAnswer = answerPick.id == quizPickId && !isTimeout
 
             if (examHistory.isSolved) throw ExamAlreadySolvedException()
-            if (quiz.id !in examHistory.quizIds) throw InvalidQuizPickException()
+            if (quiz.id !in examHistory.quizIds) throw InvalidQuizException()
 
-            if (quizPick.isAnswer) {
+            if (isAnswer) {
                 examHistoryCommandPort.updateExamHistory(
                     examHistory.copy(correctAnswerCount = examHistory.correctAnswerCount + 1)
                 )
             }
-
             val quizHistory =
                 QuizHistory.Creation(
                     examHistoryId = examHistory.id,
                     quizId = quizId,
-                    quizPickId = quizPick.id.takeUnless { isTimeout },
-                    isAnswer = !isTimeout && quizPick.isAnswer
+                    quizPickId = quizPickId.takeIf { quizPickId > 0 },
+                    isAnswer = isAnswer
                 )
             quizHistoryCommandPort.createQuizHistory(quizHistory)
 
-            return quizPick
+            return GradeQuizResult(
+                contents = answerPick.contents,
+                isAnswer = isAnswer,
+                isTimeout = isTimeout
+            )
         }
     }
 }

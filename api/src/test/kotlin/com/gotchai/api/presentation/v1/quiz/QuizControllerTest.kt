@@ -16,7 +16,7 @@ import com.gotchai.domain.exam.exception.ExamAlreadySolvedException
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createGetQuizResult
-import com.gotchai.domain.fixture.createQuizPick
+import com.gotchai.domain.fixture.createGradeQuizResult
 import com.gotchai.domain.quiz.exception.InvalidQuizPickException
 import com.gotchai.domain.quiz.exception.QuizNotFoundException
 import com.gotchai.domain.quiz.exception.QuizPickNotFoundException
@@ -79,7 +79,7 @@ class QuizControllerTest : ControllerTest() {
                 val request =
                     createGradeQuizRequest()
                         .also {
-                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } returns createQuizPick()
+                            every { quizCommandUseCase.gradeQuiz(ID, ID, it.toCommand()) } returns createGradeQuizResult()
                         }
 
                 it("상태 코드 200과 GradeQuizResponse를 반환한다.") {
