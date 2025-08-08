@@ -45,7 +45,7 @@ class QuizCommandService(
                 QuizHistory.Creation(
                     examHistoryId = examHistory.id,
                     quizId = quizId,
-                    quizPickId = if (isTimeout) null else quizPick.id,
+                    quizPickId = quizPick.id.takeUnless { isTimeout },
                     isAnswer = !isTimeout && quizPick.isAnswer
                 )
             quizHistoryCommandPort.createQuizHistory(quizHistory)
