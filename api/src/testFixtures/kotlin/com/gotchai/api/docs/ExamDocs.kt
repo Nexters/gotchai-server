@@ -18,6 +18,7 @@ val examResponseFields =
         ExamResponse::prompt bodyDesc "테스트 프롬프트",
         ExamResponse::backgroundImage bodyDesc "설명 이미지 URI",
         ExamResponse::iconImage bodyDesc "아이콘 이미지 URI",
+        ExamResponse::coverImage bodyDesc "테스트 커버 이미지 URI",
         ExamResponse::theme bodyDesc "테마",
         ExamResponse::createdAt bodyDesc "생성 날짜"
     )

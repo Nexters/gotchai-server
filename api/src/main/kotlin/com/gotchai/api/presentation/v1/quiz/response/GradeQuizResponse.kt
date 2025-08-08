@@ -4,14 +4,19 @@ import com.gotchai.domain.quiz.entity.QuizPick
 
 data class GradeQuizResponse(
     val contents: String,
-    val isAnswer: Boolean
+    val isAnswer: Boolean,
+    val isTimeout: Boolean
 ) {
     companion object {
-        fun from(quizPick: QuizPick): GradeQuizResponse =
+        fun of(
+            quizPick: QuizPick,
+            isTimeout: Boolean
+        ): GradeQuizResponse =
             with(quizPick) {
                 GradeQuizResponse(
                     contents = contents,
-                    isAnswer = isAnswer
+                    isAnswer = isAnswer,
+                    isTimeout = isTimeout
                 )
             }
     }

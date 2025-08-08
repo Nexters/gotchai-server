@@ -11,7 +11,7 @@ class UserEntity(
     @Column(length = 50)
     val email: String,
     val password: String?,
-    @ElementCollection
+    @CollectionTable(name = "user_roles")
     @Enumerated(EnumType.STRING)
     val roles: Set<Role>
 ) : BaseEntity() {

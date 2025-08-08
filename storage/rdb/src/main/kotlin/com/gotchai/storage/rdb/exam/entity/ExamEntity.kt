@@ -17,6 +17,7 @@ class ExamEntity(
     @Column(columnDefinition = "TEXT")
     val prompt: String,
     val backgroundImage: String,
+    val coverImage: String,
     val iconImage: String,
     val theme: String
 ) : BaseEntity() {
@@ -30,6 +31,7 @@ class ExamEntity(
                     prompt = prompt,
                     backgroundImage = backgroundImage,
                     iconImage = iconImage,
+                    coverImage = coverImage,
                     theme = theme
                 )
             }
@@ -44,6 +46,7 @@ class ExamEntity(
             prompt = prompt,
             backgroundImage = backgroundImage,
             iconImage = iconImage,
+            coverImage = coverImage,
             theme = theme,
             createdAt = createdAt
         )

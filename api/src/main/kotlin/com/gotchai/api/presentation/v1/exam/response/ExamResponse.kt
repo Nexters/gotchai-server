@@ -11,6 +11,7 @@ data class ExamResponse(
     val prompt: String,
     val backgroundImage: String,
     val iconImage: String,
+    val coverImage: String,
     val theme: String,
     val createdAt: LocalDateTime
 ) {
@@ -25,6 +26,7 @@ data class ExamResponse(
                     prompt = prompt,
                     backgroundImage = backgroundImage,
                     iconImage = iconImage,
+                    coverImage = coverImage,
                     theme = theme,
                     createdAt = createdAt
                 )

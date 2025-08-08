@@ -10,6 +10,7 @@ data class Exam(
     val prompt: String,
     val backgroundImage: String,
     val iconImage: String,
+    val coverImage: String,
     val theme: String,
     val createdAt: LocalDateTime
 ) {
@@ -20,6 +21,7 @@ data class Exam(
         val prompt: String,
         val backgroundImage: String,
         val iconImage: String,
+        val coverImage: String,
         val theme: String
     )
 }
