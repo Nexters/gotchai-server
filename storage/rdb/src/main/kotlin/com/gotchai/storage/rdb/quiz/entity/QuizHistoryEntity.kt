@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 class QuizHistoryEntity(
     val examHistoryId: Long,
     val quizId: Long,
-    val quizPickId: Long,
+    val quizPickId: Long?,
     val isAnswer: Boolean
 ) : BaseEntity() {
     companion object {
