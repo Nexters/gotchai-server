@@ -24,24 +24,12 @@ class QuizCommandService(
         userId: Long,
         quizId: Long,
         command: GradeQuizCommand
-    ): QuizPick =
+    ): QuizPick {
         with(command) {
             val quiz = quizQueryPort.getQuizById(quizId) ?: throw QuizNotFoundException()
             val examHistory =
                 examHistoryQueryPort.getExamHistoryByExamIdAndUserId(quiz.examId, userId)
                     ?: throw ExamHistoryNotFoundException()
-
-            if (isTimeout) {
-                quizHistoryCommandPort.createQuizHistory(
-                    QuizHistory.Creation(
-                        examHistoryId = examHistory.id,
-                        quizId = quizId,
-                        quizPickId = null,
-                        isAnswer = false
-                    )
-                )
-            }
-
             val quizPick = quizPickQueryPort.getQuizPickById(quizPickId) ?: throw QuizPickNotFoundException()
 
             if (examHistory.isSolved) throw ExamAlreadySolvedException()
@@ -53,15 +41,16 @@ class QuizCommandService(
                 )
             }
 
-            quizHistoryCommandPort.createQuizHistory(
+            val quizHistory =
                 QuizHistory.Creation(
                     examHistoryId = examHistory.id,
                     quizId = quizId,
-                    quizPickId = quizPick.id,
-                    isAnswer = quizPick.isAnswer
+                    quizPickId = if (isTimeout) null else quizPick.id,
+                    isAnswer = !isTimeout && quizPick.isAnswer
                 )
-            )
+            quizHistoryCommandPort.createQuizHistory(quizHistory)
 
-            quizPick
+            return quizPick
         }
+    }
 }
