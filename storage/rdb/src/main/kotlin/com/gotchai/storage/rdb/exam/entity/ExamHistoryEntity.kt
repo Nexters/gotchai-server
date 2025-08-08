@@ -2,7 +2,7 @@ package com.gotchai.storage.rdb.exam.entity
 
 import com.gotchai.domain.exam.entity.ExamHistory
 import com.gotchai.storage.rdb.global.entity.BaseEntity
-import jakarta.persistence.ElementCollection
+import jakarta.persistence.CollectionTable
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 
@@ -11,7 +11,7 @@ import jakarta.persistence.Table
 class ExamHistoryEntity(
     val examId: Long,
     val userId: Long,
-    @ElementCollection
+    @CollectionTable(name = "exam_history_quiz_ids")
     var quizIds: List<Long>,
     var correctAnswerCount: Int,
     var isSolved: Boolean
