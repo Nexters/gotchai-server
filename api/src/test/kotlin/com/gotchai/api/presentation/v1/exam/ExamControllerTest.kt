@@ -44,7 +44,7 @@ class ExamControllerTest : ControllerTest() {
                     .isOk
                     .expectBody<ApiResponse<ExamListResponse>>()
                     .document("테스트 리스트 조회 성공(200)") {
-                        responseBody(examResultListResponseFields)
+                        responseBody(examListResponseFields)
                     }
             }
         }
@@ -61,7 +61,7 @@ class ExamControllerTest : ControllerTest() {
                     .isOk
                     .expectBody<ApiResponse<ExamListResponse>>()
                     .document("내가 푼 테스트 리스트 조회 성공(200)") {
-                        responseBody(examResultListResponseFields)
+                        responseBody(examListResponseFields)
                     }
             }
         }
@@ -80,7 +80,7 @@ class ExamControllerTest : ControllerTest() {
                         .expectBody<ApiResponse<ExamResponse>>()
                         .document("테스트 단일 조회 성공(200)") {
                             pathParams("examId" paramDesc "테스트 식별자")
-                            responseBody(examResultResponseFields)
+                            responseBody(examResponseFields)
                         }
                 }
             }

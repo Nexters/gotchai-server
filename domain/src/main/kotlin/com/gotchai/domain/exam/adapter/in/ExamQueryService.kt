@@ -17,47 +17,15 @@ class ExamQueryService(
     override fun getExamById(
         userId: Long,
         examId: Long
-    ): ExamResult {
-        val exam = examQueryPort.getExamById(examId) ?: throw ExamNotFoundException()
-        val examHistory = examHistoryQueryPort.getExamHistoryByExamIdAndUserId(examId, userId)
-        val isSolved = examHistory?.isSolved ?: false
-
-        return ExamResult.of(
-            exam = exam,
-            isSolved = isSolved
-        )
-    }
+    ): ExamResult =
+        examQueryPort.getExamResultsByUserIdAndExamId(userId, examId)
+            ?: throw ExamNotFoundException()
 
     @Transactional(readOnly = true)
-    override fun getExams(userId: Long): List<ExamResult> {
-        val exams = examQueryPort.getExams()
-        val examHistories = examHistoryQueryPort.getExamHistoriesByUserIdAndSolvedTrue(userId)
-        val solvedExamIds = examHistories.map { it.id }
-
-        return exams.map { exam ->
-            val solved = solvedExamIds.contains(exam.id)
-            ExamResult.of(
-                exam = exam,
-                isSolved = solved
-            )
-        }
-    }
+    override fun getExams(userId: Long): List<ExamResult> = examQueryPort.getExamResultsByUserId(userId)
 
     @Transactional(readOnly = true)
-    override fun getExamsByUserId(userId: Long): List<ExamResult> {
-        val examHistories = examHistoryQueryPort.getExamHistoriesByUserIdAndSolvedTrue(userId)
-        val exams = examQueryPort.getExamsByInIn(examHistories.map { it.id })
-
-        val solvedExamIds = examHistories.map { it.id }
-
-        return exams.map { exam ->
-            val solved = solvedExamIds.contains(exam.id)
-            ExamResult.of(
-                exam = exam,
-                isSolved = solved
-            )
-        }
-    }
+    override fun getExamsByUserId(userId: Long): List<ExamResult> = examQueryPort.getExamResultsByUserIdWithSolvedStatus(userId, true)
 
     @Transactional(readOnly = true)
     override fun getExamParticipantCountById(examId: Long): Int =
