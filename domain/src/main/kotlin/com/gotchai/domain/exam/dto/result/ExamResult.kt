@@ -1,6 +1,6 @@
 package com.gotchai.domain.exam.dto.result
 
-import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamWithIsSolved
 import java.time.LocalDateTime
 
 data class ExamResult(
@@ -17,11 +17,8 @@ data class ExamResult(
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun of(
-            exam: Exam,
-            isSolved: Boolean
-        ): ExamResult =
-            with(exam) {
+        fun from(examWithIsSolved: ExamWithIsSolved): ExamResult =
+            with(examWithIsSolved) {
                 ExamResult(
                     id = id,
                     title = title,

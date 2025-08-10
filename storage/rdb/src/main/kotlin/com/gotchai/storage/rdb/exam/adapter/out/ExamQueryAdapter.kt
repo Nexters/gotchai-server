@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.exam.adapter.out
 
-import com.gotchai.domain.exam.dto.result.ExamResult
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamWithIsSolved
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.entity.ExamEntity
 import com.gotchai.storage.rdb.exam.entity.ExamHistoryEntity
@@ -28,7 +28,7 @@ class ExamQueryAdapter(
     override fun getExams(): List<Exam> = examJpaRepository.findAll().map { it.toExam() }
 
     @ReadOnlyTransactional
-    override fun getExamResultsByUserId(userId: Long): List<ExamResult> =
+    override fun getExamResultsByUserId(userId: Long): List<ExamWithIsSolved> =
         createExamResultQuery(
             userId = userId
         )
@@ -37,7 +37,7 @@ class ExamQueryAdapter(
     override fun getExamResultsByUserIdAndExamId(
         userId: Long,
         examId: Long
-    ): ExamResult? =
+    ): ExamWithIsSolved? =
         createExamResultQuery(
             userId = userId,
             examId = examId
@@ -50,7 +50,7 @@ class ExamQueryAdapter(
     override fun getExamResultsByUserIdWithSolvedStatus(
         userId: Long,
         isSolved: Boolean
-    ): List<ExamResult> =
+    ): List<ExamWithIsSolved> =
         createExamResultQuery(
             userId = userId,
             isSolved = isSolved
@@ -60,10 +60,10 @@ class ExamQueryAdapter(
         userId: Long,
         examId: Long? = null,
         isSolved: Boolean? = null
-    ): List<ExamResult> {
+    ): List<ExamWithIsSolved> {
         val query =
             jpql(JdslUtil) {
-                selectNew<ExamResult>(
+                selectNew<ExamWithIsSolved>(
                     path(ExamEntity::id),
                     path(ExamEntity::title),
                     path(ExamEntity::subTitle),

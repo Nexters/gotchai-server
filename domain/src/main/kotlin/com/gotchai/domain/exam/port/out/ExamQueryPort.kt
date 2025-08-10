@@ -1,7 +1,7 @@
 package com.gotchai.domain.exam.port.out
 
-import com.gotchai.domain.exam.dto.result.ExamResult
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamWithIsSolved
 
 interface ExamQueryPort {
     fun getExamById(id: Long): Exam?
@@ -11,14 +11,14 @@ interface ExamQueryPort {
     fun getExamResultsByUserIdAndExamId(
         userId: Long,
         examId: Long
-    ): ExamResult?
+    ): ExamWithIsSolved?
 
-    fun getExamResultsByUserId(userId: Long): List<ExamResult>
+    fun getExamResultsByUserId(userId: Long): List<ExamWithIsSolved>
 
     fun getExamsByInIn(ids: Collection<Long>): List<Exam>
 
     fun getExamResultsByUserIdWithSolvedStatus(
         userId: Long,
         isSolved: Boolean
-    ): List<ExamResult>
+    ): List<ExamWithIsSolved>
 }

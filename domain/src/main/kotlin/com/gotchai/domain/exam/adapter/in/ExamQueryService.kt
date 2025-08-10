@@ -18,14 +18,22 @@ class ExamQueryService(
         userId: Long,
         examId: Long
     ): ExamResult =
-        examQueryPort.getExamResultsByUserIdAndExamId(userId, examId)
-            ?: throw ExamNotFoundException()
+        ExamResult.from(
+            examQueryPort.getExamResultsByUserIdAndExamId(userId, examId)
+                ?: throw ExamNotFoundException()
+        )
 
     @Transactional(readOnly = true)
-    override fun getExams(userId: Long): List<ExamResult> = examQueryPort.getExamResultsByUserId(userId)
+    override fun getExams(userId: Long): List<ExamResult> =
+        examQueryPort
+            .getExamResultsByUserId(userId)
+            .map { ExamResult.from(it) }
 
     @Transactional(readOnly = true)
-    override fun getExamsByUserId(userId: Long): List<ExamResult> = examQueryPort.getExamResultsByUserIdWithSolvedStatus(userId, true)
+    override fun getExamsByUserId(userId: Long): List<ExamResult> =
+        examQueryPort
+            .getExamResultsByUserIdWithSolvedStatus(userId, true)
+            .map { ExamResult.from(it) }
 
     @Transactional(readOnly = true)
     override fun getExamParticipantCountById(examId: Long): Int =
