@@ -36,6 +36,9 @@ aws = "2.25.47"
 # OpenAPI
 restdocs-api-spec = "0.19.4"
 
+# Gemini
+genai = "1.10.0"
+
 # Jib
 jib = "3.4.0"
 
@@ -127,6 +130,8 @@ aws-sdk-s3 = { group = "software.amazon.awssdk", name = "s3", version.ref = "aws
 # OpenAPI
 restdocs-api-spec = { group = "com.epages", name = "restdocs-api-spec", version.ref = "restdocs-api-spec" }
 restdocs-api-spec-webtestclient = { group = "com.epages", name = "restdocs-api-spec-webtestclient", version.ref = "restdocs-api-spec" }
+
+google-genai = { group = "com.google.genai", name = "google-genai", version.ref = "genai"}
 
 [bundles]
 aws = ["aws-sdk-s3"]
