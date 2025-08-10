@@ -15,7 +15,7 @@ import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.fixture.ID
-import com.gotchai.domain.fixture.createExam
+import com.gotchai.domain.fixture.createExamResult
 import com.gotchai.domain.fixture.createStartExamResult
 import com.gotchai.domain.fixture.createSubmitExamResult
 import com.ninjasquad.springmockk.MockkBean
@@ -32,8 +32,8 @@ class ExamControllerTest : ControllerTest() {
     private lateinit var examCommandUseCase: ExamCommandUseCase
 
     init {
-        describe("getExams()는") {
-            every { examQueryUseCase.getExams() } returns listOf(createExam())
+        describe("getExams(userId)는") {
+            every { examQueryUseCase.getExams(ID) } returns listOf(createExamResult())
 
             it("상태 코드 200과 ExamListResponse를 반환한다.") {
                 webClient
@@ -49,8 +49,8 @@ class ExamControllerTest : ControllerTest() {
             }
         }
 
-        describe("getMyExams()는") {
-            every { examQueryUseCase.getExamsByUserId(ID) } returns listOf(createExam())
+        describe("getMyExams(userId)는") {
+            every { examQueryUseCase.getExamsByUserId(ID) } returns listOf(createExamResult())
 
             it("상태 코드 200과 ExamListResponse를 반환한다.") {
                 webClient
@@ -66,9 +66,9 @@ class ExamControllerTest : ControllerTest() {
             }
         }
 
-        describe("getExamById()는") {
+        describe("getExamById(examId, userId)는") {
             context("조회하려는 테스트가 존재하는 경우") {
-                every { examQueryUseCase.getExamById(ID) } returns createExam()
+                every { examQueryUseCase.getExamById(ID, ID) } returns createExamResult()
 
                 it("상태 코드 200과 ExamResponse를 반환한다.") {
                     webClient
@@ -86,7 +86,7 @@ class ExamControllerTest : ControllerTest() {
             }
 
             context("조회하려는 테스트가 존재하지 않는 경우") {
-                every { examQueryUseCase.getExamById(any()) } throws ExamNotFoundException()
+                every { examQueryUseCase.getExamById(any(), any()) } throws ExamNotFoundException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
@@ -104,7 +104,7 @@ class ExamControllerTest : ControllerTest() {
             }
         }
 
-        describe("getExamParticipantCount()는") {
+        describe("getExamParticipantCount(examId)는") {
             every { examQueryUseCase.getExamParticipantCountById(ID) } returns PARTICIPANT_COUNT
 
             it("상태 코드 200과 GetExamParticipantCountResponse를 반환한다.") {

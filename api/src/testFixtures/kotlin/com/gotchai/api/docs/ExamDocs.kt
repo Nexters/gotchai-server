@@ -20,6 +20,7 @@ val examResponseFields =
         ExamResponse::iconImage bodyDesc "아이콘 이미지 URI",
         ExamResponse::coverImage bodyDesc "테스트 커버 이미지 URI",
         ExamResponse::theme bodyDesc "테마",
+        ExamResponse::isSolved bodyDesc "테스트 풀이 여부",
         ExamResponse::createdAt bodyDesc "생성 날짜"
     )
 

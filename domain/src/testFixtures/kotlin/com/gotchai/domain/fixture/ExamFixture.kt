@@ -1,6 +1,7 @@
 package com.gotchai.domain.fixture
 
 import com.gotchai.domain.badge.entity.Badge
+import com.gotchai.domain.exam.dto.result.ExamResult
 import com.gotchai.domain.exam.dto.result.StartExamResult
 import com.gotchai.domain.exam.dto.result.SubmitExamResult
 import com.gotchai.domain.exam.entity.Exam
@@ -39,6 +40,33 @@ fun createExam(
         iconImage = iconImage,
         coverImage = coverImage,
         theme = theme,
+        createdAt = createdAt
+    )
+
+fun createExamResult(
+    id: Long = ID,
+    title: String = TITLE,
+    subTitle: String = SUB_TITLE,
+    description: String = DESCRIPTION,
+    prompt: String = PROMPT,
+    backgroundImage: String = BACKGROUND_IMAGE,
+    iconImage: String = ICON_IMAGE,
+    coverImage: String = COVER_IMAGE,
+    theme: String = THEME,
+    isSolved: Boolean = false,
+    createdAt: LocalDateTime = CREATED_AT
+): ExamResult =
+    ExamResult(
+        id = id,
+        title = title,
+        subTitle = subTitle,
+        description = description,
+        prompt = prompt,
+        backgroundImage = backgroundImage,
+        iconImage = iconImage,
+        coverImage = coverImage,
+        theme = theme,
+        isSolved = isSolved,
         createdAt = createdAt
     )
 
