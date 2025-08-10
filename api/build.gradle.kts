@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":common:util"))
     implementation(project(":infrastructure:oauth"))
+    implementation(project(":infrastructure:ai"))
     implementation(project(":storage:rdb"))
     implementation(project(":storage:redis"))
 

@@ -10,6 +10,7 @@ spring:
     - rdb
     - redis
     - logging
+    - ai
   web.resources.add-mappings: false
 server:
   tomcat:

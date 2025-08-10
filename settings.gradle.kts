@@ -25,5 +25,6 @@ include("storage:rdb", "storage:redis")
 include(
     "infrastructure:aws",
     "infrastructure:ncp",
-    "infrastructure:oauth"
+    "infrastructure:oauth",
+    "infrastructure:ai"
 )
