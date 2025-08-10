@@ -18,7 +18,7 @@ class ExamController(
     fun getExams(
         @AuthenticationPrincipal
         userId: Long
-    ): ExamListResponse = ExamListResponse.from(examQueryUseCase.getExams())
+    ): ExamListResponse = ExamListResponse.from(examQueryUseCase.getExams(userId))
 
     @GetMapping("/exams/{examId}")
     fun getExamById(
@@ -26,7 +26,7 @@ class ExamController(
         userId: Long,
         @PathVariable
         examId: Long
-    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(examId))
+    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(userId, examId))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
