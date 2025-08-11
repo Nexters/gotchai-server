@@ -5,7 +5,6 @@ import com.gotchai.infrastructure.aws.cloudfront.config.CloudFrontProperties
 import com.gotchai.infrastructure.aws.s3.config.S3Properties
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
@@ -18,13 +17,12 @@ class S3Provider(
     @Value("\${SPRING_PROFILES_ACTIVE}")
     private val env: String
 ) : ObjectStorageProvider {
-    override fun uploadFile(key: String, file: MultipartFile): String =
+    override fun uploadFile(key: String, file: ByteArray): String =
         s3Client.putObject(
             PutObjectRequest.builder()
                 .bucket(s3Properties.bucket)
                 .key("$env/$key")
-                .contentType(file.contentType)
                 .build(),
-            RequestBody.fromBytes(file.bytes)
+            RequestBody.fromBytes(file)
         ).run { "https://${cloudFrontProperties.domain}/$env/$key" }
 }

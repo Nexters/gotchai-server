@@ -19,9 +19,9 @@ data class CreateExamRequest(
             subTitle = subTitle,
             description = description,
             prompt = prompt,
-            backgroundImageFile = backgroundImage,
-            iconImageFile = iconImage,
-            coverImageFile = coverImage,
+            backgroundImageFile = backgroundImage.bytes,
+            iconImageFile = iconImage.bytes,
+            coverImageFile = coverImage.bytes,
             theme = theme
         )
 }
