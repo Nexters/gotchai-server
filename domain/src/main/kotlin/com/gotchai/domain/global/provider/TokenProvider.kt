@@ -1,8 +1,8 @@
-package com.gotchai.domain.global.jwt
+package com.gotchai.domain.global.provider
 
 import com.gotchai.domain.global.security.GotchaiAuthentication
 
-interface JwtProvider {
+interface TokenProvider {
     fun createAccessToken(authentication: GotchaiAuthentication): String
 
     fun createRefreshToken(authentication: GotchaiAuthentication): String

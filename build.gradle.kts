@@ -15,10 +15,6 @@ plugins {
 allprojects {
     group = "com.gotchai"
     version = "0.0.1"
-
-    repositories {
-        mavenCentral()
-    }
 }
 
 subprojects {

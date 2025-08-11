@@ -29,7 +29,7 @@ class ExamCommandService(
     private val examHistoryCommandPort: ExamHistoryCommandPort,
     private val quizHistoryQueryPort: QuizHistoryQueryPort,
     private val userBadgeCommandPort: UserBadgeCommandPort,
-    private val badgeQueryPort: BadgeQueryPort
+    private val badgeQueryPort: BadgeQueryPort,
 ) : ExamCommandUseCase {
     @Transactional
     override fun startExam(

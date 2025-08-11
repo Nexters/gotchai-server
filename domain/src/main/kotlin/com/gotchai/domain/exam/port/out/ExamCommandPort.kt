@@ -1,3 +1,7 @@
 package com.gotchai.domain.exam.port.out
 
-interface ExamCommandPort
+import com.gotchai.domain.exam.entity.Exam
+
+interface ExamCommandPort {
+    fun createExam(creation: Exam.Creation): Exam
+}
