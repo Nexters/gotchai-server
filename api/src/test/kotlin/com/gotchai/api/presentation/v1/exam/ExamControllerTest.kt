@@ -2,22 +2,18 @@ package com.gotchai.api.presentation.v1.exam
 
 import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.*
-import com.gotchai.api.fixture.PARTICIPANT_COUNT
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.exam.response.*
+import com.gotchai.api.util.desc
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
-import com.gotchai.api.util.paramDesc
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.exam.exception.ExamAlreadySolvedException
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
-import com.gotchai.domain.fixture.ID
-import com.gotchai.domain.fixture.createExamResult
-import com.gotchai.domain.fixture.createStartExamResult
-import com.gotchai.domain.fixture.createSubmitExamResult
+import com.gotchai.domain.fixture.*
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -79,7 +75,7 @@ class ExamControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<ExamResponse>>()
                         .document("테스트 단일 조회 성공(200)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(examResponseFields)
                         }
                 }
@@ -97,7 +93,7 @@ class ExamControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("테스트 단일 조회 실패(404)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -116,7 +112,7 @@ class ExamControllerTest : ControllerTest() {
                     .isOk
                     .expectBody<ApiResponse<GetExamParticipantCountResponse>>()
                     .document("테스트 참여자 수 조회 성공(200)") {
-                        pathParams("examId" paramDesc "테스트 식별자")
+                        pathParams("examId" desc "테스트 식별자")
                         responseBody(getExamParticipantCountResponseFields)
                     }
             }
@@ -135,7 +131,7 @@ class ExamControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<StartExamResponse>>()
                         .document("테스트 시작 성공(200)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(startExamResponseFields)
                         }
                 }
@@ -153,7 +149,7 @@ class ExamControllerTest : ControllerTest() {
                         .isBadRequest
                         .expectError()
                         .document("테스트 시작 실패(400)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -173,7 +169,7 @@ class ExamControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<SubmitExamResponse>>()
                         .document("테스트 제출 성공(200)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(submitExamResponseFields)
                         }
                 }
@@ -191,7 +187,7 @@ class ExamControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 1)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -209,7 +205,7 @@ class ExamControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 2)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -227,7 +223,7 @@ class ExamControllerTest : ControllerTest() {
                         .isBadRequest
                         .expectError()
                         .document("테스트 제출 실패(400)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }
@@ -245,7 +241,7 @@ class ExamControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("테스트 제출 실패(404 - 3)") {
-                            pathParams("examId" paramDesc "테스트 식별자")
+                            pathParams("examId" desc "테스트 식별자")
                             responseBody(errorResponseFields)
                         }
                 }

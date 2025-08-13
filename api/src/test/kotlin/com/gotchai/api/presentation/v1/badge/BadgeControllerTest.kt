@@ -7,9 +7,9 @@ import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.badge.response.BadgeListResponse
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
+import com.gotchai.api.util.desc
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
-import com.gotchai.api.util.paramDesc
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID
@@ -38,7 +38,7 @@ class BadgeControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<BadgeResponse>>()
                         .document("식별자 기반 뱃지 단일 조회 성공(200)") {
-                            pathParams("badgeId" paramDesc "뱃지 식별자")
+                            pathParams("badgeId" desc "뱃지 식별자")
                             responseBody(badgeResponseFields)
                         }
                 }
@@ -56,7 +56,7 @@ class BadgeControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("식별자 기반 뱃지 단일 조회 실패(404)") {
-                            pathParams("badgeId" paramDesc "뱃지 식별자")
+                            pathParams("badgeId" desc "뱃지 식별자")
                             responseBody(errorResponseFields)
                         }
                 }

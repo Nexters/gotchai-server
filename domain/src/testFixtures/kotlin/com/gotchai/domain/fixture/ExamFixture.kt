@@ -17,6 +17,7 @@ const val COVER_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exa
 const val THEME = "산타"
 const val PROMPT = "AI 산타 캐릭터를 만들거야. MBTI는 ESFP이고, 20대 초중반 정도의 젊은 산타였으면 좋겠어. 선물 고르는 센스가 남다르고, 공감을 잘하는 성격을 가진 캐릭터로 설정해줘."
 const val CORRECT_ANSWER_COUNT = 1
+const val PARTICIPANT_COUNT = 1
 
 fun createExam(
     id: Long = ID,

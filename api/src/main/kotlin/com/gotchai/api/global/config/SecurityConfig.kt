@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.api.global.jwt.JwtAuthenticationFilter
 import com.gotchai.api.global.security.CustomAccessDeniedHandler
 import com.gotchai.api.global.security.CustomAuthenticationEntryPoint
+import com.gotchai.domain.global.provider.TokenProvider
 import com.gotchai.domain.user.entity.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -59,6 +60,9 @@ class SecurityConfig {
 
     @Bean
     fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler = CustomAccessDeniedHandler(objectMapper)
+
+    @Bean
+    fun jwtAuthenticationFilter(tokenProvider: TokenProvider): JwtAuthenticationFilter = JwtAuthenticationFilter(tokenProvider)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
