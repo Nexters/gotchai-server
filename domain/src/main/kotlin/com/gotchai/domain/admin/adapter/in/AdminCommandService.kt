@@ -1,6 +1,7 @@
 package com.gotchai.domain.admin.adapter.`in`
 
 import com.gotchai.domain.admin.dto.command.CreateExamCommand
+import com.gotchai.domain.admin.exception.InvalidFileException
 import com.gotchai.domain.admin.port.`in`.AdminCommandUseCase
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.port.out.ExamCommandPort
@@ -17,9 +18,10 @@ class AdminCommandService(
     @Transactional
     override fun createExam(command: CreateExamCommand): Exam =
         with(command) {
-            val (iconImage, coverImage, backgroundImage) =
-                listOf(iconImageFile, coverImageFile, backgroundImageFile)
-                    .map { objectStorageProvider.uploadFile("exam/${UUID.randomUUID()}.png", it) }
+            val (iconImageUrl, coverImageUrl, backgroundImageUrl) =
+                listOf(iconImage, coverImage, backgroundImage)
+                    .apply { if (any { it.extension?.isImage != true }) throw InvalidFileException() }
+                    .map { objectStorageProvider.uploadObject("exam/${UUID.randomUUID()}${it.extension?.dotNotation.orEmpty()}", it) }
 
             examCommandPort.createExam(
                 Exam.Creation(
@@ -27,9 +29,9 @@ class AdminCommandService(
                     subTitle = subTitle,
                     description = description,
                     prompt = prompt,
-                    backgroundImage = backgroundImage,
-                    iconImage = iconImage,
-                    coverImage = coverImage,
+                    backgroundImage = backgroundImageUrl,
+                    iconImage = iconImageUrl,
+                    coverImage = coverImageUrl,
                     theme = theme
                 )
             )

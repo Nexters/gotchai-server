@@ -13,7 +13,8 @@ class S3Config(
 ) {
     @Bean
     fun s3Client(credentialsProvider: AwsCredentialsProvider): S3Client =
-        S3Client.builder()
+        S3Client
+            .builder()
             .credentialsProvider(credentialsProvider)
             .region(Region.of(awsProperties.region))
             .build()

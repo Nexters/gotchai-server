@@ -1,5 +1,6 @@
 package com.gotchai.api.presentation.v1.admin.request
 
+import com.gotchai.api.global.util.toStorageObject
 import com.gotchai.domain.admin.dto.command.CreateExamCommand
 import org.springframework.web.multipart.MultipartFile
 
@@ -19,9 +20,9 @@ data class CreateExamRequest(
             subTitle = subTitle,
             description = description,
             prompt = prompt,
-            backgroundImageFile = backgroundImage.bytes,
-            iconImageFile = iconImage.bytes,
-            coverImageFile = coverImage.bytes,
+            backgroundImage = backgroundImage.toStorageObject(),
+            iconImage = iconImage.toStorageObject(),
+            coverImage = coverImage.toStorageObject(),
             theme = theme
         )
 }

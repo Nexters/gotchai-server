@@ -16,6 +16,7 @@ class AdminController(
         @ModelAttribute
         request: CreateExamRequest
     ): ExamResponse =
-        adminCommandUseCase.createExam(request.toCommand())
+        adminCommandUseCase
+            .createExam(request.toCommand())
             .let { ExamResponse.from(it) }
 }

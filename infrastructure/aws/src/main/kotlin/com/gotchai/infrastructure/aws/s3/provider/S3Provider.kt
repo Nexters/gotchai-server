@@ -1,5 +1,6 @@
 package com.gotchai.infrastructure.aws.s3.provider
 
+import com.gotchai.domain.global.dto.StorageObject
 import com.gotchai.domain.global.provider.ObjectStorageProvider
 import com.gotchai.infrastructure.aws.cloudfront.config.CloudFrontProperties
 import com.gotchai.infrastructure.aws.s3.config.S3Properties
@@ -17,12 +18,19 @@ class S3Provider(
     @Value("\${SPRING_PROFILES_ACTIVE}")
     private val env: String
 ) : ObjectStorageProvider {
-    override fun uploadFile(key: String, file: ByteArray): String =
-        s3Client.putObject(
-            PutObjectRequest.builder()
-                .bucket(s3Properties.bucket)
-                .key("$env/$key")
-                .build(),
-            RequestBody.fromBytes(file)
-        ).run { "https://${cloudFrontProperties.domain}/$env/$key" }
+    override fun uploadObject(
+        path: String,
+        `object`: StorageObject
+    ): String =
+        with(`object`) {
+            s3Client
+                .putObject(
+                    PutObjectRequest
+                        .builder()
+                        .bucket(s3Properties.bucket)
+                        .key("$env/$path")
+                        .build(),
+                    RequestBody.fromInputStream(stream, size)
+                ).run { "https://${cloudFrontProperties.domain}/$env/$path" }
+        }
 }

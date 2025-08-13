@@ -11,6 +11,7 @@ class ExamCommandAdapter(
     private val examJpaRepository: ExamJpaRepository
 ) : ExamCommandPort {
     override fun createExam(creation: Exam.Creation): Exam =
-        examJpaRepository.save(ExamEntity.from(creation))
+        examJpaRepository
+            .save(ExamEntity.from(creation))
             .toExam()
 }
