@@ -1,0 +1,8 @@
+aws:
+  access-key: ${AWS_ACCESS_KEY}
+  secret-access-key: ${AWS_SECRET_ACCESS_KEY}
+  region: ${AWS_REGION}
+  s3:
+    bucket: ${S3_BUCKET}
+  cloudfront:
+    domain: ${CLOUDFRONT_DOMAIN}

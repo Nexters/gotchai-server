@@ -1,4 +1,4 @@
-package com.gotchai.api.global.jwt
+package com.gotchai.api.global.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.security.interfaces.RSAPrivateKey

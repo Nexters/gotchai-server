@@ -1,15 +1,18 @@
 package com.gotchai.api.global.jwt
 
-import com.gotchai.domain.global.jwt.JwtProvider
+import com.gotchai.api.global.config.JwtProperties
+import com.gotchai.domain.global.provider.TokenProvider
 import com.gotchai.domain.global.security.GotchaiAuthentication
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.Jwts.SIG
+import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.*
 
-class DefaultJwtProvider(
+@Component
+class JwtProvider(
     private val jwtProperties: JwtProperties
-) : JwtProvider {
+) : TokenProvider {
     override fun createAccessToken(authentication: GotchaiAuthentication) =
         createToken(jwtProperties.accessTokenExpiration, authentication.toPayload())
 
