@@ -56,6 +56,9 @@ class ExamQueryAdapter(
             isSolved = isSolved
         )
 
+    @ReadOnlyTransactional
+    override fun getExamCount(): Long = examJpaRepository.count()
+
     private fun createExamResultQuery(
         userId: Long,
         examId: Long? = null,

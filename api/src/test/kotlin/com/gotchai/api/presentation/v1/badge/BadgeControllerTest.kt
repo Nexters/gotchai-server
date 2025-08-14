@@ -3,10 +3,10 @@ package com.gotchai.api.presentation.v1.badge
 import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.badgeResponseFields
 import com.gotchai.api.docs.errorResponseFields
-import com.gotchai.api.docs.getMyBadgeListResponseFields
+import com.gotchai.api.docs.getMyBadgesResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeListResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgesResponse
 import com.gotchai.api.util.desc
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
@@ -14,7 +14,7 @@ import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createBadge
-import com.gotchai.domain.fixture.createGetMyBadgeResult
+import com.gotchai.domain.fixture.createGetMyBadgesResult
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -65,7 +65,7 @@ class BadgeControllerTest : ControllerTest() {
         }
 
         describe("getMyBadges()는") {
-            every { badgeQueryUseCase.getMyBadges(ID) } returns listOf(createGetMyBadgeResult())
+            every { badgeQueryUseCase.getMyBadges(ID) } returns createGetMyBadgesResult()
 
             it("상태 코드 200과 GetMyBadgeResponse들을 반환한다.") {
                 webClient
@@ -74,9 +74,9 @@ class BadgeControllerTest : ControllerTest() {
                     .exchange()
                     .expectStatus()
                     .isOk
-                    .expectBody<ApiResponse<GetMyBadgeListResponse>>()
+                    .expectBody<ApiResponse<GetMyBadgesResponse>>()
                     .document("내가 취득한 뱃지 리스트 조회 성공(200)") {
-                        responseBody(getMyBadgeListResponseFields)
+                        responseBody(getMyBadgesResponseFields)
                     }
             }
         }

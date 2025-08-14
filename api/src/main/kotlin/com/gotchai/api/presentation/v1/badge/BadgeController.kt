@@ -2,7 +2,7 @@ package com.gotchai.api.presentation.v1.badge
 
 import com.gotchai.api.global.annotation.ApiV1Controller
 import com.gotchai.api.presentation.v1.badge.response.BadgeResponse
-import com.gotchai.api.presentation.v1.badge.response.GetMyBadgeListResponse
+import com.gotchai.api.presentation.v1.badge.response.GetMyBadgesResponse
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,8 +25,8 @@ class BadgeController(
     fun getMyBadges(
         @AuthenticationPrincipal
         userId: Long
-    ): GetMyBadgeListResponse =
+    ): GetMyBadgesResponse =
         badgeQueryUseCase
             .getMyBadges(userId)
-            .let { GetMyBadgeListResponse.from(it) }
+            .let { GetMyBadgesResponse.from(it) }
 }

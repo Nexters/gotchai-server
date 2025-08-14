@@ -21,4 +21,6 @@ interface ExamQueryPort {
         userId: Long,
         isSolved: Boolean
     ): List<ExamWithIsSolved>
+
+    fun getExamCount(): Long
 }

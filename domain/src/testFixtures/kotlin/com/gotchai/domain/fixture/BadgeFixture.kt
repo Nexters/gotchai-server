@@ -1,6 +1,7 @@
 package com.gotchai.domain.fixture
 
-import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
+import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAt
+import com.gotchai.domain.badge.dto.result.GetMyBadgesResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.entity.UserBadge
@@ -10,6 +11,7 @@ const val NAME = "AI 산타 감별사"
 const val DESCRIPTION_BADGE = "크리스마스엔 선물보다 눈치가 중요하다는 걸 증명했어요!"
 const val IMAGE = "https://gotchai.com/image.png"
 val TIER = Tier.GOLD
+const val TOTAL_BADGE_COUNT = 5L
 
 fun createBadge(
     id: Long = ID,
@@ -43,7 +45,7 @@ fun createUserBadge(
         createdAt = createdAt
     )
 
-fun createGetMyBadgeResult(
+fun createBadgeWithAcquiredAt(
     id: Long = ID,
     examId: Long = ID,
     name: String = NAME,
@@ -52,8 +54,8 @@ fun createGetMyBadgeResult(
     tier: Tier = TIER,
     createdAt: LocalDateTime = CREATED_AT,
     acquiredAt: LocalDateTime = CREATED_AT
-): GetMyBadgeResult =
-    GetMyBadgeResult(
+): BadgeWithAcquiredAt =
+    BadgeWithAcquiredAt(
         id = id,
         examId = examId,
         name = name,
@@ -62,4 +64,13 @@ fun createGetMyBadgeResult(
         tier = tier,
         createdAt = createdAt,
         acquiredAt = acquiredAt
+    )
+
+fun createGetMyBadgesResult(
+    badges: List<BadgeWithAcquiredAt> = listOf(createBadgeWithAcquiredAt()),
+    totalBadgeCount: Long = TOTAL_BADGE_COUNT
+): GetMyBadgesResult =
+    GetMyBadgesResult(
+        badges = badges,
+        totalBadgeCount = totalBadgeCount
     )
