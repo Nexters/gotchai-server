@@ -23,7 +23,7 @@ class BadgeQueryService(
     @Transactional(readOnly = true)
     override fun getMyBadges(userId: Long): List<GetMyBadgeResult> =
         badgeQueryPort
-            .getBadgeWithAcquiredAtProjectionsByUserId(userId)
+            .getBadgesWithAcquiredAtByUserId(userId)
             .map { GetMyBadgeResult.from(it) }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,6 @@
 package com.gotchai.domain.badge.dto.result
 
-import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAtProjection
+import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAt
 import com.gotchai.domain.badge.entity.Tier
 import java.time.LocalDateTime
 
@@ -15,8 +15,8 @@ data class GetMyBadgeResult(
     val acquiredAt: LocalDateTime
 ) {
     companion object {
-        fun from(projection: BadgeWithAcquiredAtProjection): GetMyBadgeResult =
-            with(projection) {
+        fun from(badge: BadgeWithAcquiredAt): GetMyBadgeResult =
+            with(badge) {
                 GetMyBadgeResult(
                     id = id,
                     examId = examId,

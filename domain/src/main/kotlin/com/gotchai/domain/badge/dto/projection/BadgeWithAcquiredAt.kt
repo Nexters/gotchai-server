@@ -3,7 +3,7 @@ package com.gotchai.domain.badge.dto.projection
 import com.gotchai.domain.badge.entity.Tier
 import java.time.LocalDateTime
 
-data class BadgeWithAcquiredAtProjection(
+data class BadgeWithAcquiredAt(
     val id: Long,
     val examId: Long,
     val name: String,

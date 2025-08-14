@@ -1,6 +1,6 @@
 package com.gotchai.storage.rdb.badge.adapter.out
 
-import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAtProjection
+import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAt
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
@@ -37,10 +37,10 @@ class BadgeQueryAdapter(
             ?.toBadge()
 
     @ReadOnlyTransactional
-    override fun getBadgeWithAcquiredAtProjectionsByUserId(userId: Long): List<BadgeWithAcquiredAtProjection> {
+    override fun getBadgesWithAcquiredAtByUserId(userId: Long): List<BadgeWithAcquiredAt> {
         val query =
             jpql {
-                selectNew<BadgeWithAcquiredAtProjection>(
+                selectNew<BadgeWithAcquiredAt>(
                     path(BadgeEntity::id),
                     path(BadgeEntity::examId),
                     path(BadgeEntity::name),
