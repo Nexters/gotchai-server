@@ -50,6 +50,7 @@ subprojects {
         kapt(libs.spring.boot.configuration.processor)
 
         testImplementation(libs.bundles.test)
+        testFixturesImplementation(libs.kotlin.reflect)
     }
 
     configure<KtlintExtension> {

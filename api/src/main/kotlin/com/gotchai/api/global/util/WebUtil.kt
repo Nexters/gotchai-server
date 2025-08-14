@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile
 
 internal fun MultipartFile.toStorageObject(): StorageObject =
     StorageObject(
-        extension = StringUtils.getFilenameExtension(originalFilename)?.let { Extension.valueOf(it) },
+        extension = StringUtils.getFilenameExtension(originalFilename)?.let { Extension.valueOf(it.uppercase()) },
         size = size,
         stream = inputStream
     )

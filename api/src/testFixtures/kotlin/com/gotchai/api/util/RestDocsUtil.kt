@@ -4,37 +4,29 @@ import com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper
 import com.gotchai.api.docs.apiResponseFields
 import com.gotchai.api.global.dto.ApiResponse
 import org.springframework.restdocs.operation.preprocess.Preprocessors
-import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.PayloadDocumentation.*
-import org.springframework.restdocs.request.ParameterDescriptor
 import org.springframework.restdocs.request.RequestDocumentation.*
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.reactive.server.WebTestClient.BodySpec
 import kotlin.reflect.KProperty
 
-infix fun String.bodyDesc(description: String): FieldDescriptor =
-    fieldWithPath(this)
-        .description(description)
+typealias Field = Pair<String, String>
 
-infix fun <T> KProperty<T>.bodyDesc(description: String): FieldDescriptor =
-    fieldWithPath(name)
-        .description(description)
+infix fun String.desc(description: String): Field = this to description
 
-infix fun String.paramDesc(description: String): ParameterDescriptor =
-    parameterWithName(this)
-        .description(description)
+infix fun <T> KProperty<T>.desc(description: String): Field = name to description
 
-fun fieldsOf(vararg fields: FieldDescriptor): List<FieldDescriptor> = fields.asList()
+fun fieldsOf(vararg fields: Field): List<Field> = fields.asList()
 
 fun listFieldsOf(
-    listField: FieldDescriptor,
-    vararg fields: FieldDescriptor
-): List<FieldDescriptor> = fields.map { "${listField.path}[].${it.path}" bodyDesc it.description as String } + listField
+    listField: Field,
+    vararg fields: Field
+): List<Field> = fields.map { "${listField.first}[].${it.first}" desc it.second } + listField
 
 fun objectFieldsOf(
-    objectField: FieldDescriptor,
-    vararg fields: FieldDescriptor
-): List<FieldDescriptor> = fields.map { "${objectField.path}.${it.path}" bodyDesc it.description as String } + objectField
+    objectField: Field,
+    vararg fields: Field
+): List<Field> = fields.map { "${objectField.first}.${it.first}" desc it.second } + objectField
 
 fun <T> BodySpec<T, *>.document(
     identifier: String,
@@ -50,36 +42,61 @@ class DocumentDsl<T>(
 ) {
     private val snippets: MutableList<Snippet> = mutableListOf()
 
-    fun requestBody(fields: List<FieldDescriptor>) {
-        snippets.add(requestFields(fields))
+    fun requestBody(fields: List<Field>) {
+        snippets.add(
+            requestFields(
+                fields.map {
+                    fieldWithPath(it.first)
+                        .description(it.second)
+                }
+            )
+        )
     }
 
-    fun requestBody(vararg fields: FieldDescriptor) {
-        snippets.add(requestFields(*fields))
+    fun requestForm(fields: List<Field>) {
+        snippets.add(
+            requestParts(
+                fields.map {
+                    partWithName(it.first)
+                        .description(it.second)
+                }
+            )
+        )
     }
 
-    fun pathParams(fields: List<ParameterDescriptor>) {
-        snippets.add(pathParameters(fields))
+    fun pathParams(vararg fields: Field) {
+        snippets.add(
+            pathParameters(
+                fields.map {
+                    parameterWithName(it.first)
+                        .description(it.second)
+                }
+            )
+        )
     }
 
-    fun pathParams(vararg fields: ParameterDescriptor) {
-        snippets.add(pathParameters(*fields))
+    fun queryParams(vararg fields: Field) {
+        snippets.add(
+            queryParameters(
+                fields.map {
+                    parameterWithName(it.first)
+                        .description(it.second)
+                }
+            )
+        )
     }
 
-    fun queryParams(fields: List<ParameterDescriptor>) {
-        snippets.add(queryParameters(fields))
-    }
+    fun responseBody(fields: List<Field>) {
+        val mergedFields = mergeWithApiResponseFields(fields)
 
-    fun queryParams(vararg fields: ParameterDescriptor) {
-        snippets.add(queryParameters(*fields))
-    }
-
-    fun responseBody(fields: List<FieldDescriptor>) {
-        snippets.add(responseFields(mergeWithApiResponseFields(fields)))
-    }
-
-    fun responseBody(vararg fields: FieldDescriptor) {
-        snippets.add(responseFields(mergeWithApiResponseFields(fields.toList())))
+        snippets.add(
+            responseFields(
+                mergedFields.map {
+                    fieldWithPath(it.first)
+                        .description(it.second)
+                }
+            )
+        )
     }
 
     fun build(): BodySpec<T, *> =
@@ -92,12 +109,6 @@ class DocumentDsl<T>(
             )
         )
 
-    private fun mergeWithApiResponseFields(fields: List<FieldDescriptor>): List<FieldDescriptor> =
-        apiResponseFields +
-            fields.map {
-                val path = "${ApiResponse<*>::data.name}.${it.path}"
-                val description = it.description as String
-
-                path bodyDesc description
-            }
+    private fun mergeWithApiResponseFields(fields: List<Field>): List<Field> =
+        fields.map { "${ApiResponse<*>::data.name}.${it.first}" to it.second } + apiResponseFields
 }

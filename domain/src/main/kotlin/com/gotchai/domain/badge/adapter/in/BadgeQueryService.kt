@@ -22,9 +22,7 @@ class BadgeQueryService(
     @Transactional(readOnly = true)
     override fun getMyBadges(userId: Long): List<Badge> {
         val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
-        val badges =
-            badgeQueryPort
-                .getBadgesByIdIn(userBadges.map { it.badgeId })
+        val badges = badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId })
 
         return badges
     }
