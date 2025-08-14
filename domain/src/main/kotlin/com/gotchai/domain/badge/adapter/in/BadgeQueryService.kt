@@ -1,5 +1,6 @@
 package com.gotchai.domain.badge.adapter.`in`
 
+import com.gotchai.domain.badge.dto.result.GetMyBadgeResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
@@ -20,12 +21,10 @@ class BadgeQueryService(
             ?: throw BadgeNotFoundException()
 
     @Transactional(readOnly = true)
-    override fun getMyBadges(userId: Long): List<Badge> {
-        val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
-        val badges = badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId })
-
-        return badges
-    }
+    override fun getMyBadges(userId: Long): List<GetMyBadgeResult> =
+        badgeQueryPort
+            .getBadgeWithAcquiredAtProjectionsByUserId(userId)
+            .map { GetMyBadgeResult.from(it) }
 
     @Transactional(readOnly = true)
     override fun getBadgeByExamIdAndTier(

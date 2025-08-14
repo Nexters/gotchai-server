@@ -1,4 +1,4 @@
-package com.gotchai.domain.exam.entity
+package com.gotchai.domain.exam.dto.projection
 
 import java.time.LocalDateTime
 

@@ -1,7 +1,7 @@
 package com.gotchai.domain.exam.port.out
 
+import com.gotchai.domain.exam.dto.projection.ExamWithIsSolved
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.domain.exam.entity.ExamWithIsSolved
 
 interface ExamQueryPort {
     fun getExamById(id: Long): Exam?

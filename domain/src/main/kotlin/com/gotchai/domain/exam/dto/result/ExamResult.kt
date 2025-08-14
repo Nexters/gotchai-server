@@ -1,6 +1,6 @@
 package com.gotchai.domain.exam.dto.result
 
-import com.gotchai.domain.exam.entity.ExamWithIsSolved
+import com.gotchai.domain.exam.dto.projection.ExamWithIsSolved
 import java.time.LocalDateTime
 
 data class ExamResult(

@@ -21,3 +21,15 @@ val badgeListResponseFields =
         "list" desc "뱃지 리스트",
         *badgeResponseFields.toTypedArray()
     )
+
+val getMyBadgeResponseFields =
+    fieldsOf(
+        *badgeResponseFields.toTypedArray(),
+        "acquiredAt" desc "취득 날짜"
+    )
+
+val getMyBadgeListResponseFields =
+    listFieldsOf(
+        "list" desc "내가 취득한 뱃지 리스트",
+        *getMyBadgeResponseFields.toTypedArray()
+    )
