@@ -21,6 +21,7 @@ const val CORRECT_ANSWER_RATE = 50
 const val TOTAL_QUIZ_COUNT = 2
 const val CORRECT_ANSWER_COUNT = 1
 const val PARTICIPANT_COUNT = 1
+const val IS_SOLVED = true
 
 fun createExam(
     id: Long = ID,
@@ -47,22 +48,34 @@ fun createExam(
         createdAt = createdAt
     )
 
-fun createGetExamsResult(
+fun createGetExamResult(
     id: Long = ID,
     title: String = TITLE,
     subTitle: String = SUB_TITLE,
+    description: String = DESCRIPTION,
+    prompt: String = PROMPT,
+    backgroundImage: String = BACKGROUND_IMAGE,
     iconImage: String = ICON_IMAGE,
-    isSolved: Boolean = false
+    coverImage: String = COVER_IMAGE,
+    theme: String = THEME,
+    isSolved: Boolean = IS_SOLVED,
+    createdAt: LocalDateTime = CREATED_AT
 ): GetExamResult =
     GetExamResult(
         id = id,
         title = title,
         subTitle = subTitle,
+        description = description,
+        prompt = prompt,
+        backgroundImage = backgroundImage,
         iconImage = iconImage,
-        isSolved = isSolved
+        coverImage = coverImage,
+        theme = theme,
+        isSolved = isSolved,
+        createdAt = createdAt
     )
 
-fun createGetMyExamsResult(
+fun createGetMyExamResult(
     id: Long = ID,
     title: String = TITLE,
     iconImage: String = ICON_IMAGE,

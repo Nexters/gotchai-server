@@ -1,13 +1,20 @@
 package com.gotchai.api.presentation.v1.exam.response
 
 import com.gotchai.domain.exam.dto.result.GetExamResult
+import java.time.LocalDateTime
 
 data class GetExamResponse(
     val id: Long,
     val title: String,
     val subTitle: String,
+    val description: String,
+    val prompt: String,
+    val backgroundImage: String,
     val iconImage: String,
-    val isSolved: Boolean
+    val coverImage: String,
+    val theme: String,
+    val isSolved: Boolean,
+    val createdAt: LocalDateTime
 ) {
     companion object {
         fun from(result: GetExamResult): GetExamResponse =
@@ -16,8 +23,14 @@ data class GetExamResponse(
                     id = id,
                     title = title,
                     subTitle = subTitle,
+                    description = description,
+                    prompt = prompt,
+                    backgroundImage = backgroundImage,
                     iconImage = iconImage,
-                    isSolved = isSolved
+                    coverImage = coverImage,
+                    theme = theme,
+                    isSolved = isSolved,
+                    createdAt = createdAt
                 )
             }
     }

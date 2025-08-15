@@ -28,10 +28,7 @@ val examListResponseFields =
 
 val getExamResponseFields =
     fieldsOf(
-        GetExamResponse::id desc "식별자",
-        GetExamResponse::title desc "제목",
-        GetExamResponse::subTitle desc "부제목",
-        GetExamResponse::iconImage desc "아이콘 이미지 URI",
+        *examResponseFields.toTypedArray(),
         GetExamResponse::isSolved desc "테스트 완료 여부"
     )
 

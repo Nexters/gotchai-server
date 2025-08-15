@@ -29,7 +29,7 @@ class ExamControllerTest : ControllerTest() {
 
     init {
         describe("getExams()는") {
-            every { examQueryUseCase.getExams(ID) } returns listOf(createGetExamsResult())
+            every { examQueryUseCase.getExams(ID) } returns listOf(createGetExamResult())
 
             it("상태 코드 200과 GetExamsListResponse를 반환한다.") {
                 webClient
@@ -46,7 +46,7 @@ class ExamControllerTest : ControllerTest() {
         }
 
         describe("getMyExams()는") {
-            every { examQueryUseCase.getMyExams(ID) } returns listOf(createGetMyExamsResult())
+            every { examQueryUseCase.getMyExams(ID) } returns listOf(createGetMyExamResult())
 
             it("상태 코드 200과 GetMyExamsListResponse를 반환한다.") {
                 webClient
