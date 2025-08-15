@@ -1,18 +1,19 @@
 package com.gotchai.domain.badge.adapter.`in`
 
+import com.gotchai.domain.badge.dto.result.GetMyBadgesResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.exception.BadgeNotFoundException
 import com.gotchai.domain.badge.port.`in`.BadgeQueryUseCase
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
-import com.gotchai.domain.badge.port.out.UserBadgeQueryPort
+import com.gotchai.domain.exam.port.out.ExamQueryPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class BadgeQueryService(
     private val badgeQueryPort: BadgeQueryPort,
-    private val userBadgeQueryPort: UserBadgeQueryPort
+    private val examQueryPort: ExamQueryPort
 ) : BadgeQueryUseCase {
     @Transactional(readOnly = true)
     override fun getBadgeById(badgeId: Long): Badge =
@@ -20,11 +21,14 @@ class BadgeQueryService(
             ?: throw BadgeNotFoundException()
 
     @Transactional(readOnly = true)
-    override fun getMyBadges(userId: Long): List<Badge> {
-        val userBadges = userBadgeQueryPort.getUserBadgesByUserId(userId)
-        val badges = badgeQueryPort.getBadgesByIdIn(userBadges.map { it.badgeId })
+    override fun getMyBadges(userId: Long): GetMyBadgesResult {
+        val badges = badgeQueryPort.getBadgesWithAcquiredAtByUserId(userId)
+        val examCount = examQueryPort.getExamCount()
 
-        return badges
+        return GetMyBadgesResult(
+            badges = badges,
+            totalBadgeCount = examCount
+        )
     }
 
     @Transactional(readOnly = true)

@@ -1,7 +1,7 @@
 package com.gotchai.storage.rdb.exam.adapter.out
 
+import com.gotchai.domain.exam.dto.projection.ExamWithIsSolved
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.domain.exam.entity.ExamWithIsSolved
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.entity.ExamEntity
 import com.gotchai.storage.rdb.exam.entity.ExamHistoryEntity
@@ -55,6 +55,9 @@ class ExamQueryAdapter(
             userId = userId,
             isSolved = isSolved
         )
+
+    @ReadOnlyTransactional
+    override fun getExamCount(): Long = examJpaRepository.count()
 
     private fun createExamResultQuery(
         userId: Long,
