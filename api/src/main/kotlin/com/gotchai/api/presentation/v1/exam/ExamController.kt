@@ -18,7 +18,7 @@ class ExamController(
     fun getExams(
         @AuthenticationPrincipal
         userId: Long
-    ): GetExamsListResponse = GetExamsListResponse.from(examQueryUseCase.getExams(userId))
+    ): GetExamListResponse = GetExamListResponse.from(examQueryUseCase.getExams(userId))
 
     @GetMapping("/exams/{examId}")
     fun getExamById(
@@ -30,10 +30,10 @@ class ExamController(
     fun getMyExams(
         @AuthenticationPrincipal
         userId: Long
-    ): GetMyExamsListResponse =
+    ): GetMyExamListResponse =
         examQueryUseCase
             .getMyExams(userId)
-            .let { GetMyExamsListResponse.from(it) }
+            .let { GetMyExamListResponse.from(it) }
 
     @GetMapping("/exams/{examId}/participants")
     fun getExamParticipantCountById(

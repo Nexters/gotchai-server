@@ -1,7 +1,7 @@
 package com.gotchai.domain.exam.adapter.`in`
 
-import com.gotchai.domain.exam.dto.result.GetExamsResult
-import com.gotchai.domain.exam.dto.result.GetMyExamsResult
+import com.gotchai.domain.exam.dto.result.GetExamResult
+import com.gotchai.domain.exam.dto.result.GetMyExamResult
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
@@ -21,16 +21,16 @@ class ExamQueryService(
             ?: throw ExamNotFoundException()
 
     @Transactional(readOnly = true)
-    override fun getExams(userId: Long): List<GetExamsResult> =
+    override fun getExams(userId: Long): List<GetExamResult> =
         examQueryPort
             .getExamsWithExamHistoryByUserIdAndIsSolved(userId, null)
-            .map { GetExamsResult.of(it.exam, it.examHistory) }
+            .map { GetExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
-    override fun getMyExams(userId: Long): List<GetMyExamsResult> =
+    override fun getMyExams(userId: Long): List<GetMyExamResult> =
         examQueryPort
             .getExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
-            .map { GetMyExamsResult.of(it.exam, it.examHistory) }
+            .map { GetMyExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
     override fun getExamParticipantCountById(examId: Long): Int =

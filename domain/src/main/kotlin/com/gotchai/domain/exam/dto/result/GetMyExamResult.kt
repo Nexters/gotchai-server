@@ -4,7 +4,7 @@ import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.entity.ExamHistory
 import java.time.LocalDateTime
 
-data class GetMyExamsResult(
+data class GetMyExamResult(
     val id: Long,
     val title: String,
     val iconImage: String,
@@ -17,8 +17,8 @@ data class GetMyExamsResult(
         fun of(
             exam: Exam,
             examHistory: ExamHistory
-        ): GetMyExamsResult =
-            GetMyExamsResult(
+        ): GetMyExamResult =
+            GetMyExamResult(
                 id = exam.id,
                 title = exam.title,
                 iconImage = exam.iconImage,

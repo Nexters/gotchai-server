@@ -1,8 +1,8 @@
 package com.gotchai.domain.fixture
 
 import com.gotchai.domain.badge.entity.Badge
-import com.gotchai.domain.exam.dto.result.GetExamsResult
-import com.gotchai.domain.exam.dto.result.GetMyExamsResult
+import com.gotchai.domain.exam.dto.result.GetExamResult
+import com.gotchai.domain.exam.dto.result.GetMyExamResult
 import com.gotchai.domain.exam.dto.result.StartExamResult
 import com.gotchai.domain.exam.dto.result.SubmitExamResult
 import com.gotchai.domain.exam.entity.Exam
@@ -53,8 +53,8 @@ fun createGetExamsResult(
     subTitle: String = SUB_TITLE,
     iconImage: String = ICON_IMAGE,
     isSolved: Boolean = false
-): GetExamsResult =
-    GetExamsResult(
+): GetExamResult =
+    GetExamResult(
         id = id,
         title = title,
         subTitle = subTitle,
@@ -70,8 +70,8 @@ fun createGetMyExamsResult(
     totalQuizCount: Int = TOTAL_QUIZ_COUNT,
     correctAnswerCount: Int = CORRECT_ANSWER_COUNT,
     solvedAt: LocalDateTime = CREATED_AT
-): GetMyExamsResult =
-    GetMyExamsResult(
+): GetMyExamResult =
+    GetMyExamResult(
         id = id,
         title = title,
         iconImage = iconImage,

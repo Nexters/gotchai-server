@@ -3,7 +3,7 @@ package com.gotchai.domain.exam.dto.result
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.entity.ExamHistory
 
-data class GetExamsResult(
+data class GetExamResult(
     val id: Long,
     val title: String,
     val subTitle: String,
@@ -14,8 +14,8 @@ data class GetExamsResult(
         fun of(
             exam: Exam,
             examHistory: ExamHistory
-        ): GetExamsResult =
-            GetExamsResult(
+        ): GetExamResult =
+            GetExamResult(
                 id = exam.id,
                 title = exam.title,
                 subTitle = exam.subTitle,

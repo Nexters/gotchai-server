@@ -38,9 +38,9 @@ class ExamControllerTest : ControllerTest() {
                     .exchange()
                     .expectStatus()
                     .isOk
-                    .expectBody<ApiResponse<GetExamsListResponse>>()
+                    .expectBody<ApiResponse<GetExamListResponse>>()
                     .document("테스트 리스트 조회 성공(200)") {
-                        responseBody(getExamsListResponseFields)
+                        responseBody(getExamListResponseFields)
                     }
             }
         }
@@ -55,9 +55,9 @@ class ExamControllerTest : ControllerTest() {
                     .exchange()
                     .expectStatus()
                     .isOk
-                    .expectBody<ApiResponse<GetMyExamsListResponse>>()
+                    .expectBody<ApiResponse<GetMyExamListResponse>>()
                     .document("내가 푼 테스트 리스트 조회 성공(200)") {
-                        responseBody(getMyExamsListResponseFields)
+                        responseBody(getMyExamListResponseFields)
                     }
             }
         }

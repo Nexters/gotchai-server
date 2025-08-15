@@ -26,36 +26,36 @@ val examListResponseFields =
         *examResponseFields.toTypedArray()
     )
 
-val getExamsResponseFields =
+val getExamResponseFields =
     fieldsOf(
-        GetExamsResponse::id desc "식별자",
-        GetExamsResponse::title desc "제목",
-        GetExamsResponse::subTitle desc "부제목",
-        GetExamsResponse::iconImage desc "아이콘 이미지 URI",
-        GetExamsResponse::isSolved desc "테스트 완료 여부"
+        GetExamResponse::id desc "식별자",
+        GetExamResponse::title desc "제목",
+        GetExamResponse::subTitle desc "부제목",
+        GetExamResponse::iconImage desc "아이콘 이미지 URI",
+        GetExamResponse::isSolved desc "테스트 완료 여부"
     )
 
-val getExamsListResponseFields =
+val getExamListResponseFields =
     listFieldsOf(
-        GetExamsListResponse::list desc "테스트 리스트",
-        *getExamsResponseFields.toTypedArray()
+        GetExamListResponse::list desc "테스트 리스트",
+        *getExamResponseFields.toTypedArray()
     )
 
-val getMyExamsResponseFields =
+val getMyExamResponseFields =
     fieldsOf(
-        GetMyExamsResponse::id desc "식별자",
-        GetMyExamsResponse::title desc "제목",
-        GetMyExamsResponse::iconImage desc "아이콘 이미지 URI",
-        GetMyExamsResponse::correctAnswerRate desc "정답률",
-        GetMyExamsResponse::totalQuizCount desc "전체 퀴즈 개수",
-        GetMyExamsResponse::correctAnswerCount desc "맞춘 퀴즈 개수",
-        GetMyExamsResponse::solvedAt desc "테스트를 완료한 날짜"
+        GetMyExamResponse::id desc "식별자",
+        GetMyExamResponse::title desc "제목",
+        GetMyExamResponse::iconImage desc "아이콘 이미지 URI",
+        GetMyExamResponse::correctAnswerRate desc "정답률",
+        GetMyExamResponse::totalQuizCount desc "전체 퀴즈 개수",
+        GetMyExamResponse::correctAnswerCount desc "맞춘 퀴즈 개수",
+        GetMyExamResponse::solvedAt desc "테스트를 완료한 날짜"
     )
 
-val getMyExamsListResponseFields =
+val getMyExamListResponseFields =
     listFieldsOf(
-        GetMyExamsListResponse::list desc "테스트 리스트",
-        *getMyExamsResponseFields.toTypedArray()
+        GetMyExamListResponse::list desc "테스트 리스트",
+        *getMyExamResponseFields.toTypedArray()
     )
 
 val getExamParticipantCountResponseFields =

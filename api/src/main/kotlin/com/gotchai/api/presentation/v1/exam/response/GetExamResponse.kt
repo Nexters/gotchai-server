@@ -1,8 +1,8 @@
 package com.gotchai.api.presentation.v1.exam.response
 
-import com.gotchai.domain.exam.dto.result.GetExamsResult
+import com.gotchai.domain.exam.dto.result.GetExamResult
 
-data class GetExamsResponse(
+data class GetExamResponse(
     val id: Long,
     val title: String,
     val subTitle: String,
@@ -10,9 +10,9 @@ data class GetExamsResponse(
     val isSolved: Boolean
 ) {
     companion object {
-        fun from(result: GetExamsResult): GetExamsResponse =
+        fun from(result: GetExamResult): GetExamResponse =
             with(result) {
-                GetExamsResponse(
+                GetExamResponse(
                     id = id,
                     title = title,
                     subTitle = subTitle,
