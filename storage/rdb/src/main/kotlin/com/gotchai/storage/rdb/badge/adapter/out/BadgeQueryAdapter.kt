@@ -1,6 +1,6 @@
 package com.gotchai.storage.rdb.badge.adapter.out
 
-import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAt
+import com.gotchai.domain.badge.dto.projection.BadgeWithUserBadge
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
 import com.gotchai.domain.badge.port.out.BadgeQueryPort
@@ -37,18 +37,12 @@ class BadgeQueryAdapter(
             ?.toBadge()
 
     @ReadOnlyTransactional
-    override fun getBadgesWithAcquiredAtByUserId(userId: Long): List<BadgeWithAcquiredAt> {
+    override fun getBadgesWithUserBadgeByUserId(userId: Long): List<BadgeWithUserBadge> {
         val query =
             jpql {
-                selectNew<BadgeWithAcquiredAt>(
-                    path(BadgeEntity::id),
-                    path(BadgeEntity::examId),
-                    path(BadgeEntity::name),
-                    path(BadgeEntity::description),
-                    path(BadgeEntity::image),
-                    path(BadgeEntity::tier),
-                    path(BadgeEntity::createdAt),
-                    path(UserBadgeEntity::createdAt)
+                selectNew<Pair<BadgeEntity, UserBadgeEntity>>(
+                    entity(BadgeEntity::class),
+                    entity(UserBadgeEntity::class)
                 ).from(
                     entity(BadgeEntity::class),
                     innerJoin(UserBadgeEntity::class)
@@ -59,9 +53,16 @@ class BadgeQueryAdapter(
                     path(UserBadgeEntity::createdAt).desc()
                 )
             }
+        val pairs =
+            entityManager
+                .createQuery(query, renderContext)
+                .resultList
 
-        return entityManager
-            .createQuery(query, renderContext)
-            .resultList
+        return pairs.map { (badgeEntity, userBadgeEntity) ->
+            BadgeWithUserBadge(
+                badge = badgeEntity.toBadge(),
+                userBadge = userBadgeEntity.toUserBadge()
+            )
+        }
     }
 }
