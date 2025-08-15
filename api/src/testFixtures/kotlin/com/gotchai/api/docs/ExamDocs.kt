@@ -1,9 +1,6 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.exam.response.ExamResponse
-import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
-import com.gotchai.api.presentation.v1.exam.response.StartExamResponse
-import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
+import com.gotchai.api.presentation.v1.exam.response.*
 import com.gotchai.api.util.desc
 import com.gotchai.api.util.fieldsOf
 import com.gotchai.api.util.listFieldsOf
@@ -20,14 +17,45 @@ val examResponseFields =
         ExamResponse::iconImage desc "아이콘 이미지 URI",
         ExamResponse::coverImage desc "커버 이미지 URI",
         ExamResponse::theme desc "테마",
-        ExamResponse::isSolved desc "테스트 풀이 여부",
         ExamResponse::createdAt desc "생성 날짜"
     )
 
 val examListResponseFields =
     listFieldsOf(
-        "list" desc "테스트 리스트",
+        ExamListResponse::list desc "테스트 리스트",
         *examResponseFields.toTypedArray()
+    )
+
+val getExamsResponseFields =
+    fieldsOf(
+        GetExamsResponse::id desc "식별자",
+        GetExamsResponse::title desc "제목",
+        GetExamsResponse::subTitle desc "부제목",
+        GetExamsResponse::iconImage desc "아이콘 이미지 URI",
+        GetExamsResponse::isSolved desc "테스트 완료 여부"
+    )
+
+val getExamsListResponseFields =
+    listFieldsOf(
+        GetExamsListResponse::list desc "테스트 리스트",
+        *getExamsResponseFields.toTypedArray()
+    )
+
+val getMyExamsResponseFields =
+    fieldsOf(
+        GetMyExamsResponse::id desc "식별자",
+        GetMyExamsResponse::title desc "제목",
+        GetMyExamsResponse::iconImage desc "아이콘 이미지 URI",
+        GetMyExamsResponse::correctAnswerRate desc "정답률",
+        GetMyExamsResponse::totalQuizCount desc "전체 퀴즈 개수",
+        GetMyExamsResponse::correctAnswerCount desc "맞춘 퀴즈 개수",
+        GetMyExamsResponse::solvedAt desc "테스트를 완료한 날짜"
+    )
+
+val getMyExamsListResponseFields =
+    listFieldsOf(
+        GetMyExamsListResponse::list desc "테스트 리스트",
+        *getMyExamsResponseFields.toTypedArray()
     )
 
 val getExamParticipantCountResponseFields =

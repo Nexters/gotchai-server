@@ -20,14 +20,11 @@ class ExamHistoryQueryAdapter(
             ?.toExamHistory()
 
     @ReadOnlyTransactional
-    override fun getExamHistoriesByExamIdAndSolvedTrue(examId: Long): List<ExamHistory> =
+    override fun getExamHistoriesByExamIdAndIsSolved(
+        examId: Long,
+        isSolved: Boolean
+    ): List<ExamHistory> =
         examHistoryJpaRepository
-            .findAllByExamIdAndIsSolvedTrue(examId)
-            .map { it.toExamHistory() }
-
-    @ReadOnlyTransactional
-    override fun getExamHistoriesByUserIdAndSolvedTrue(userId: Long): List<ExamHistory> =
-        examHistoryJpaRepository
-            .findAllByUserIdAndIsSolvedTrue(userId)
+            .findAllByExamIdAndIsSolved(examId, isSolved)
             .map { it.toExamHistory() }
 }

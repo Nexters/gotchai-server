@@ -8,7 +8,8 @@ interface ExamHistoryQueryPort {
         userId: Long
     ): ExamHistory?
 
-    fun getExamHistoriesByExamIdAndSolvedTrue(examId: Long): List<ExamHistory>
-
-    fun getExamHistoriesByUserIdAndSolvedTrue(userId: Long): List<ExamHistory>
+    fun getExamHistoriesByExamIdAndIsSolved(
+        examId: Long,
+        isSolved: Boolean
+    ): List<ExamHistory>
 }
