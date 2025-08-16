@@ -28,4 +28,6 @@ interface AuthCommandUseCase {
     ): RefreshResult
 
     fun logout(userId: Long)
+
+    fun withdrawal(userId: Long)
 }

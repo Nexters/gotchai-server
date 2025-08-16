@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 class UserController(
     private val userQueryUseCase: UserQueryUseCase
 ) {
-    @GetMapping("/users/ranking")
+    @GetMapping("/users/me/ranking")
     fun getUserRanking(
         @AuthenticationPrincipal
         userId: Long

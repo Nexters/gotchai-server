@@ -123,13 +123,12 @@ class AuthCommandService(
                     )
                 )
 
-            val profile =
-                profileCommandPort.createProfile(
-                    Profile.Creation(
-                        userId = user.id,
-                        nickname = nickname
-                    )
+            profileCommandPort.createProfile(
+                Profile.Creation(
+                    userId = user.id,
+                    nickname = nickname
                 )
+            )
 
             return user
         }
@@ -160,6 +159,14 @@ class AuthCommandService(
     }
 
     override fun logout(userId: Long) {
+        refreshTokenCommandPort.deleteRefreshTokenByUserId(userId)
+    }
+
+    @Transactional
+    override fun withdrawal(userId: Long) {
+        userCommandPort.withdrawal(userId)
+        userSocialCommandPort.withdrawal(userId)
+        profileCommandPort.withdrawal(userId)
         refreshTokenCommandPort.deleteRefreshTokenByUserId(userId)
     }
 
