@@ -3,7 +3,6 @@ package com.gotchai.domain.exam.adapter.`in`
 import com.gotchai.domain.exam.dto.result.GetExamResult
 import com.gotchai.domain.exam.dto.result.GetMyExamResult
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
@@ -30,8 +29,8 @@ class ExamQueryService(
     @Transactional(readOnly = true)
     override fun getMyExams(userId: Long): List<GetMyExamResult> =
         examQueryPort
-            .getExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
-            .map { GetMyExamResult.of(it.exam, it.examHistory ?: throw ExamHistoryNotFoundException()) }
+            .getSolvedExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
+            .map { GetMyExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
     override fun getExamParticipantCountById(examId: Long): Int =
