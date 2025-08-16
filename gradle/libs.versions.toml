@@ -79,6 +79,7 @@ spring-boot-starter-actuator = { group = "org.springframework.boot", name = "spr
 spring-boot-starter-aop = { group = "org.springframework.boot", name = "spring-boot-starter-aop", version.ref = "spring-boot" }
 spring-boot-starter-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
 spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+spring-boot-starter-log4j2 = { group = "org.springframework.boot", name = "spring-boot-starter-log4j2" }
 spring-boot-configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor", version.ref = "spring-boot" }
 spring-restdocs-webtestclient = { group = "org.springframework.restdocs", name = "spring-restdocs-webtestclient" }
 
@@ -103,10 +104,10 @@ kotest-extensions-spring = { group = "io.kotest.extensions", name = "kotest-exte
 
 # Logging
 slf4j = { group = "org.slf4j", name = "slf4j-api", version = "2.0.9" }
-micrometer_tracing_bridge_brave = { module = "io.micrometer:micrometer-tracing-bridge-brave" }
 
 # Jackson
 jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
+jackson-yaml = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-yaml" }
 
 # JDSL
 line-kotlin-jdsl-jpql-dsl = { group = "com.linecorp.kotlin-jdsl", name = "jpql-dsl", version.ref = "line-kotlin-jdsl" }

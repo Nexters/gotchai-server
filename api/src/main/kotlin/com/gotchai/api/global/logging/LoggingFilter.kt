@@ -7,19 +7,21 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.WebUtils
 import java.io.IOException
 import java.io.UnsupportedEncodingException
+import java.util.*
 
 @Component
 class LoggingFilter(
     private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
     companion object {
-        private val log by lazy { LoggerFactory.getLogger(this::class.java) }
+        private val logger by lazy { LoggerFactory.getLogger(LoggingFilter::class.java) }
     }
 
     override fun doFilterInternal(
@@ -27,6 +29,7 @@ class LoggingFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        MDC.put("traceId", UUID.randomUUID().toString().substring(0..7))
         val isFirstRequest = !this.isAsyncDispatch(request)
         var wrapper = request
         if (isFirstRequest && request !is ContentCachingRequestWrapper) {
@@ -49,7 +52,7 @@ class LoggingFilter(
         setParameters(request, logData)
         setPayload(request, logData)
         val json = objectMapper.writeValueAsString(logData)
-        log.info("REQUEST : $json")
+        logger.info("REQUEST : $json")
     }
 
     private fun setParameters(
