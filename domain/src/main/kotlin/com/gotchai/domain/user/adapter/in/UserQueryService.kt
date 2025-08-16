@@ -7,6 +7,7 @@ import com.gotchai.domain.user.exception.ProfileNotFoundException
 import com.gotchai.domain.user.port.`in`.UserQueryUseCase
 import com.gotchai.domain.user.port.out.ProfileQueryPort
 import org.springframework.stereotype.Service
+import kotlin.math.ceil
 
 @Service
 class UserQueryService(
@@ -24,8 +25,8 @@ class UserQueryService(
     private fun calculateUserRating(
         userId: Long,
         allHistories: List<ExamHistory>
-    ): Double {
-        if (allHistories.isEmpty() || !allHistories.any { it.userId == userId }) return 100.0
+    ): Int {
+        if (allHistories.isEmpty() || !allHistories.any { it.userId == userId }) return 100
 
         val userScores =
             allHistories
@@ -36,10 +37,11 @@ class UserQueryService(
                     if (totalQuizzes == 0) 0.0 else totalCorrect.toDouble() / totalQuizzes.toDouble()
                 }
 
-        val userScore = userScores[userId] ?: return 100.0
-        if (userScores.size == 1) return 0.0
+        val userScore = userScores[userId] ?: return 100
+        if (userScores.size == 1) return 0
 
         val usersWithHigherScore = userScores.values.count { it > userScore }
-        return (usersWithHigherScore.toDouble() / userScores.size.toDouble()) * 100
+        val rating = (usersWithHigherScore.toDouble() / userScores.size.toDouble()) * 100
+        return ceil(rating).toInt()
     }
 }

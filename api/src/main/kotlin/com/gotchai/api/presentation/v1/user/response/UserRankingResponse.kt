@@ -4,7 +4,7 @@ import com.gotchai.domain.user.dto.result.GetUserRankingResult
 
 data class UserRankingResponse(
     val name: String,
-    val rating: Double
+    val rating: Int
 ) {
     companion object {
         fun from(result: GetUserRankingResult) =
