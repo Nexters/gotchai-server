@@ -18,24 +18,22 @@ class ExamController(
     fun getExams(
         @AuthenticationPrincipal
         userId: Long
-    ): ExamListResponse = ExamListResponse.from(examQueryUseCase.getExams(userId))
+    ): GetExamListResponse = GetExamListResponse.from(examQueryUseCase.getExams(userId))
 
     @GetMapping("/exams/{examId}")
     fun getExamById(
-        @AuthenticationPrincipal
-        userId: Long,
         @PathVariable
         examId: Long
-    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(userId, examId))
+    ): ExamResponse = ExamResponse.from(examQueryUseCase.getExamById(examId))
 
     @GetMapping("/users/me/exams/solved")
     fun getMyExams(
         @AuthenticationPrincipal
         userId: Long
-    ): ExamListResponse =
+    ): GetMyExamListResponse =
         examQueryUseCase
-            .getExamsByUserId(userId)
-            .let { ExamListResponse.from(it) }
+            .getMyExams(userId)
+            .let { GetMyExamListResponse.from(it) }
 
     @GetMapping("/exams/{examId}/participants")
     fun getExamParticipantCountById(

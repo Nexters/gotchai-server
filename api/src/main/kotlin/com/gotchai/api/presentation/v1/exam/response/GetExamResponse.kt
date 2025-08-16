@@ -1,9 +1,9 @@
 package com.gotchai.api.presentation.v1.exam.response
 
-import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.dto.result.GetExamResult
 import java.time.LocalDateTime
 
-data class ExamResponse(
+data class GetExamResponse(
     val id: Long,
     val title: String,
     val subTitle: String,
@@ -13,12 +13,13 @@ data class ExamResponse(
     val iconImage: String,
     val coverImage: String,
     val theme: String,
+    val isSolved: Boolean,
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun from(exam: Exam): ExamResponse =
-            with(exam) {
-                ExamResponse(
+        fun from(result: GetExamResult): GetExamResponse =
+            with(result) {
+                GetExamResponse(
                     id = id,
                     title = title,
                     subTitle = subTitle,
@@ -28,6 +29,7 @@ data class ExamResponse(
                     iconImage = iconImage,
                     coverImage = coverImage,
                     theme = theme,
+                    isSolved = isSolved,
                     createdAt = createdAt
                 )
             }

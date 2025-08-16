@@ -1,5 +1,6 @@
 package com.gotchai.domain.badge.adapter.`in`
 
+import com.gotchai.domain.badge.dto.projection.BadgeWithAcquiredAt
 import com.gotchai.domain.badge.dto.result.GetMyBadgesResult
 import com.gotchai.domain.badge.entity.Badge
 import com.gotchai.domain.badge.entity.Tier
@@ -22,11 +23,11 @@ class BadgeQueryService(
 
     @Transactional(readOnly = true)
     override fun getMyBadges(userId: Long): GetMyBadgesResult {
-        val badges = badgeQueryPort.getBadgesWithAcquiredAtByUserId(userId)
+        val badges = badgeQueryPort.getBadgesWithUserBadgeByUserId(userId)
         val examCount = examQueryPort.getExamCount()
 
         return GetMyBadgesResult(
-            badges = badges,
+            badges = badges.map { BadgeWithAcquiredAt.of(it.badge, it.userBadge) },
             totalBadgeCount = examCount
         )
     }

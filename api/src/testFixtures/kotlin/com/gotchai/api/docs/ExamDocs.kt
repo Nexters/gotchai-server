@@ -1,9 +1,6 @@
 package com.gotchai.api.docs
 
-import com.gotchai.api.presentation.v1.exam.response.ExamResponse
-import com.gotchai.api.presentation.v1.exam.response.GetExamParticipantCountResponse
-import com.gotchai.api.presentation.v1.exam.response.StartExamResponse
-import com.gotchai.api.presentation.v1.exam.response.SubmitExamResponse
+import com.gotchai.api.presentation.v1.exam.response.*
 import com.gotchai.api.util.desc
 import com.gotchai.api.util.fieldsOf
 import com.gotchai.api.util.listFieldsOf
@@ -20,14 +17,42 @@ val examResponseFields =
         ExamResponse::iconImage desc "아이콘 이미지 URI",
         ExamResponse::coverImage desc "커버 이미지 URI",
         ExamResponse::theme desc "테마",
-        ExamResponse::isSolved desc "테스트 풀이 여부",
         ExamResponse::createdAt desc "생성 날짜"
     )
 
 val examListResponseFields =
     listFieldsOf(
-        "list" desc "테스트 리스트",
+        ExamListResponse::list desc "테스트 리스트",
         *examResponseFields.toTypedArray()
+    )
+
+val getExamResponseFields =
+    fieldsOf(
+        *examResponseFields.toTypedArray(),
+        GetExamResponse::isSolved desc "테스트 완료 여부"
+    )
+
+val getExamListResponseFields =
+    listFieldsOf(
+        GetExamListResponse::list desc "테스트 리스트",
+        *getExamResponseFields.toTypedArray()
+    )
+
+val getMyExamResponseFields =
+    fieldsOf(
+        GetMyExamResponse::id desc "식별자",
+        GetMyExamResponse::title desc "제목",
+        GetMyExamResponse::iconImage desc "아이콘 이미지 URI",
+        GetMyExamResponse::correctAnswerRate desc "정답률",
+        GetMyExamResponse::totalQuizCount desc "전체 퀴즈 개수",
+        GetMyExamResponse::correctAnswerCount desc "맞춘 퀴즈 개수",
+        GetMyExamResponse::solvedAt desc "테스트를 완료한 날짜"
+    )
+
+val getMyExamListResponseFields =
+    listFieldsOf(
+        GetMyExamListResponse::list desc "테스트 리스트",
+        *getMyExamResponseFields.toTypedArray()
     )
 
 val getExamParticipantCountResponseFields =

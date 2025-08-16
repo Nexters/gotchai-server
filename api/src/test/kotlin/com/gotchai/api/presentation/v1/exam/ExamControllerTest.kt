@@ -28,43 +28,43 @@ class ExamControllerTest : ControllerTest() {
     private lateinit var examCommandUseCase: ExamCommandUseCase
 
     init {
-        describe("getExams(userId)는") {
-            every { examQueryUseCase.getExams(ID) } returns listOf(createExamResult())
+        describe("getExams()는") {
+            every { examQueryUseCase.getExams(ID) } returns listOf(createGetExamResult())
 
-            it("상태 코드 200과 ExamListResponse를 반환한다.") {
+            it("상태 코드 200과 GetExamsListResponse를 반환한다.") {
                 webClient
                     .get()
                     .uri("/api/v1/exams")
                     .exchange()
                     .expectStatus()
                     .isOk
-                    .expectBody<ApiResponse<ExamListResponse>>()
+                    .expectBody<ApiResponse<GetExamListResponse>>()
                     .document("테스트 리스트 조회 성공(200)") {
-                        responseBody(examListResponseFields)
+                        responseBody(getExamListResponseFields)
                     }
             }
         }
 
-        describe("getMyExams(userId)는") {
-            every { examQueryUseCase.getExamsByUserId(ID) } returns listOf(createExamResult())
+        describe("getMyExams()는") {
+            every { examQueryUseCase.getMyExams(ID) } returns listOf(createGetMyExamResult())
 
-            it("상태 코드 200과 ExamListResponse를 반환한다.") {
+            it("상태 코드 200과 GetMyExamsListResponse를 반환한다.") {
                 webClient
                     .get()
                     .uri("/api/v1/users/me/exams/solved")
                     .exchange()
                     .expectStatus()
                     .isOk
-                    .expectBody<ApiResponse<ExamListResponse>>()
+                    .expectBody<ApiResponse<GetMyExamListResponse>>()
                     .document("내가 푼 테스트 리스트 조회 성공(200)") {
-                        responseBody(examListResponseFields)
+                        responseBody(getMyExamListResponseFields)
                     }
             }
         }
 
-        describe("getExamById(examId, userId)는") {
+        describe("getExamById()는") {
             context("조회하려는 테스트가 존재하는 경우") {
-                every { examQueryUseCase.getExamById(ID, ID) } returns createExamResult()
+                every { examQueryUseCase.getExamById(ID) } returns createExam()
 
                 it("상태 코드 200과 ExamResponse를 반환한다.") {
                     webClient
@@ -82,7 +82,7 @@ class ExamControllerTest : ControllerTest() {
             }
 
             context("조회하려는 테스트가 존재하지 않는 경우") {
-                every { examQueryUseCase.getExamById(any(), any()) } throws ExamNotFoundException()
+                every { examQueryUseCase.getExamById(any()) } throws ExamNotFoundException()
 
                 it("상태 코드 404와 ErrorResponse를 반환한다.") {
                     webClient
@@ -100,7 +100,7 @@ class ExamControllerTest : ControllerTest() {
             }
         }
 
-        describe("getExamParticipantCount(examId)는") {
+        describe("getExamParticipantCount()는") {
             every { examQueryUseCase.getExamParticipantCountById(ID) } returns PARTICIPANT_COUNT
 
             it("상태 코드 200과 GetExamParticipantCountResponse를 반환한다.") {
@@ -171,24 +171,6 @@ class ExamControllerTest : ControllerTest() {
                         .document("테스트 제출 성공(200)") {
                             pathParams("examId" desc "테스트 식별자")
                             responseBody(submitExamResponseFields)
-                        }
-                }
-            }
-
-            context("시작하지 않은 테스트를 제출하는 경우") {
-                every { examCommandUseCase.submitExam(ID, ID) } throws ExamNotFoundException()
-
-                it("상태 코드 404와 ErrorResponse를 반환한다.") {
-                    webClient
-                        .post()
-                        .uri("/api/v1/exams/{examId}/submit", ID)
-                        .exchange()
-                        .expectStatus()
-                        .isNotFound
-                        .expectError()
-                        .document("테스트 제출 실패(404 - 1)") {
-                            pathParams("examId" desc "테스트 식별자")
-                            responseBody(errorResponseFields)
                         }
                 }
             }

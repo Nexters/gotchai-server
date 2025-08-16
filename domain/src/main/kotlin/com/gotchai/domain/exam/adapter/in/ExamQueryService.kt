@@ -1,6 +1,8 @@
 package com.gotchai.domain.exam.adapter.`in`
 
-import com.gotchai.domain.exam.dto.result.ExamResult
+import com.gotchai.domain.exam.dto.result.GetExamResult
+import com.gotchai.domain.exam.dto.result.GetMyExamResult
+import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.exception.ExamNotFoundException
 import com.gotchai.domain.exam.port.`in`.ExamQueryUseCase
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
@@ -14,30 +16,25 @@ class ExamQueryService(
     private val examHistoryQueryPort: ExamHistoryQueryPort
 ) : ExamQueryUseCase {
     @Transactional(readOnly = true)
-    override fun getExamById(
-        userId: Long,
-        examId: Long
-    ): ExamResult =
-        ExamResult.from(
-            examQueryPort.getExamResultsByUserIdAndExamId(userId, examId)
-                ?: throw ExamNotFoundException()
-        )
+    override fun getExamById(examId: Long): Exam =
+        examQueryPort.getExamById(examId)
+            ?: throw ExamNotFoundException()
 
     @Transactional(readOnly = true)
-    override fun getExams(userId: Long): List<ExamResult> =
+    override fun getExams(userId: Long): List<GetExamResult> =
         examQueryPort
-            .getExamResultsByUserId(userId)
-            .map { ExamResult.from(it) }
+            .getExamsWithExamHistoryByUserIdAndIsSolved(userId, null)
+            .map { GetExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
-    override fun getExamsByUserId(userId: Long): List<ExamResult> =
+    override fun getMyExams(userId: Long): List<GetMyExamResult> =
         examQueryPort
-            .getExamResultsByUserIdWithSolvedStatus(userId, true)
-            .map { ExamResult.from(it) }
+            .getExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
+            .map { GetMyExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
     override fun getExamParticipantCountById(examId: Long): Int =
         examHistoryQueryPort
-            .getExamHistoriesByExamIdAndSolvedTrue(examId)
+            .getExamHistoriesByExamIdAndIsSolved(examId, true)
             .count()
 }

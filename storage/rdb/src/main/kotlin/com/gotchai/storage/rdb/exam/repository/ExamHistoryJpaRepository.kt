@@ -9,7 +9,8 @@ interface ExamHistoryJpaRepository : JpaRepository<ExamHistoryEntity, Long> {
         userId: Long
     ): ExamHistoryEntity?
 
-    fun findAllByExamIdAndIsSolvedTrue(examId: Long): List<ExamHistoryEntity>
-
-    fun findAllByUserIdAndIsSolvedTrue(userId: Long): List<ExamHistoryEntity>
+    fun findAllByExamIdAndIsSolved(
+        examId: Long,
+        isSolved: Boolean
+    ): List<ExamHistoryEntity>
 }

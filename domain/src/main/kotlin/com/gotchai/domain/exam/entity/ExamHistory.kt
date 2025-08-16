@@ -1,6 +1,7 @@
 package com.gotchai.domain.exam.entity
 
 import java.time.LocalDateTime
+import kotlin.math.roundToInt
 
 data class ExamHistory(
     val id: Long,
@@ -18,4 +19,7 @@ data class ExamHistory(
         val correctAnswerCount: Int = 0,
         val isSolved: Boolean = false
     )
+
+    val correctAnswerRate: Int
+        get() = ((correctAnswerCount.toDouble() / quizIds.size) * 100).roundToInt()
 }

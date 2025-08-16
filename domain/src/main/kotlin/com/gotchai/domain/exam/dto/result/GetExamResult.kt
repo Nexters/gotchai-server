@@ -1,9 +1,10 @@
 package com.gotchai.domain.exam.dto.result
 
-import com.gotchai.domain.exam.dto.projection.ExamWithIsSolved
+import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.entity.ExamHistory
 import java.time.LocalDateTime
 
-data class ExamResult(
+data class GetExamResult(
     val id: Long,
     val title: String,
     val subTitle: String,
@@ -17,9 +18,12 @@ data class ExamResult(
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun from(examWithIsSolved: ExamWithIsSolved): ExamResult =
-            with(examWithIsSolved) {
-                ExamResult(
+        fun of(
+            exam: Exam,
+            examHistory: ExamHistory
+        ): GetExamResult =
+            with(exam) {
+                GetExamResult(
                     id = id,
                     title = title,
                     subTitle = subTitle,
@@ -29,7 +33,7 @@ data class ExamResult(
                     iconImage = iconImage,
                     coverImage = coverImage,
                     theme = theme,
-                    isSolved = isSolved,
+                    isSolved = examHistory.isSolved,
                     createdAt = createdAt
                 )
             }
