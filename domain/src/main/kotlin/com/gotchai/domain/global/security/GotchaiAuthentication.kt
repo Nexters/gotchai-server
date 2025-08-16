@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
-class GotchaiAuthentication(
+data class GotchaiAuthentication(
     val userId: Long,
     val roles: Set<Role>
 ) : Authentication {

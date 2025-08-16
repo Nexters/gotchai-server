@@ -10,6 +10,7 @@ plugins {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":common:util"))
+    implementation(project(":infrastructure:aws"))
     implementation(project(":infrastructure:oauth"))
     implementation(project(":infrastructure:ai"))
     implementation(project(":storage:rdb"))

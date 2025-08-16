@@ -1,7 +1,8 @@
 package com.gotchai.domain.fixture
 
 import com.gotchai.domain.badge.entity.Badge
-import com.gotchai.domain.exam.dto.result.ExamResult
+import com.gotchai.domain.exam.dto.result.GetExamResult
+import com.gotchai.domain.exam.dto.result.GetMyExamResult
 import com.gotchai.domain.exam.dto.result.StartExamResult
 import com.gotchai.domain.exam.dto.result.SubmitExamResult
 import com.gotchai.domain.exam.entity.Exam
@@ -16,7 +17,11 @@ const val ICON_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam
 const val COVER_IMAGE = "https://gotchai-dev.s3.ap-northeast-2.amazonaws.com/exam/description/cover_image"
 const val THEME = "산타"
 const val PROMPT = "AI 산타 캐릭터를 만들거야. MBTI는 ESFP이고, 20대 초중반 정도의 젊은 산타였으면 좋겠어. 선물 고르는 센스가 남다르고, 공감을 잘하는 성격을 가진 캐릭터로 설정해줘."
+const val CORRECT_ANSWER_RATE = 50
+const val TOTAL_QUIZ_COUNT = 2
 const val CORRECT_ANSWER_COUNT = 1
+const val PARTICIPANT_COUNT = 1
+const val IS_SOLVED = true
 
 fun createExam(
     id: Long = ID,
@@ -43,7 +48,7 @@ fun createExam(
         createdAt = createdAt
     )
 
-fun createExamResult(
+fun createGetExamResult(
     id: Long = ID,
     title: String = TITLE,
     subTitle: String = SUB_TITLE,
@@ -53,10 +58,10 @@ fun createExamResult(
     iconImage: String = ICON_IMAGE,
     coverImage: String = COVER_IMAGE,
     theme: String = THEME,
-    isSolved: Boolean = false,
+    isSolved: Boolean = IS_SOLVED,
     createdAt: LocalDateTime = CREATED_AT
-): ExamResult =
-    ExamResult(
+): GetExamResult =
+    GetExamResult(
         id = id,
         title = title,
         subTitle = subTitle,
@@ -68,6 +73,25 @@ fun createExamResult(
         theme = theme,
         isSolved = isSolved,
         createdAt = createdAt
+    )
+
+fun createGetMyExamResult(
+    id: Long = ID,
+    title: String = TITLE,
+    iconImage: String = ICON_IMAGE,
+    correctAnswerRate: Int = CORRECT_ANSWER_RATE,
+    totalQuizCount: Int = TOTAL_QUIZ_COUNT,
+    correctAnswerCount: Int = CORRECT_ANSWER_COUNT,
+    solvedAt: LocalDateTime = CREATED_AT
+): GetMyExamResult =
+    GetMyExamResult(
+        id = id,
+        title = title,
+        iconImage = iconImage,
+        correctAnswerRate = correctAnswerRate,
+        totalQuizCount = totalQuizCount,
+        correctAnswerCount = correctAnswerCount,
+        solvedAt = solvedAt
     )
 
 fun createStartExamResult(quizIds: List<Long> = listOf(ID)): StartExamResult = StartExamResult(quizIds = quizIds)

@@ -1,6 +1,6 @@
 package com.gotchai.api.global.jwt
 
-import com.gotchai.domain.global.jwt.JwtProvider
+import com.gotchai.domain.global.provider.TokenProvider
 import io.jsonwebtoken.JwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtAuthenticationFilter(
-    private val jwtProvider: JwtProvider
+    private val tokenProvider: TokenProvider
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -20,7 +20,7 @@ class JwtAuthenticationFilter(
         request
             .getHeader(HttpHeaders.AUTHORIZATION)
             ?.run {
-                runCatching { jwtProvider.getAuthentication(getBearerToken()) }
+                runCatching { tokenProvider.getAuthentication(getBearerToken()) }
                     .onSuccess { SecurityContextHolder.getContext().authentication = it }
                     .onFailure { if (it !is JwtException) throw it }
             }

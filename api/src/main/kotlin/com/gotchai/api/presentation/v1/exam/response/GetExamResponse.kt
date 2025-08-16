@@ -1,9 +1,9 @@
-package com.gotchai.domain.exam.dto.result
+package com.gotchai.api.presentation.v1.exam.response
 
-import com.gotchai.domain.exam.entity.ExamWithIsSolved
+import com.gotchai.domain.exam.dto.result.GetExamResult
 import java.time.LocalDateTime
 
-data class ExamResult(
+data class GetExamResponse(
     val id: Long,
     val title: String,
     val subTitle: String,
@@ -17,9 +17,9 @@ data class ExamResult(
     val createdAt: LocalDateTime
 ) {
     companion object {
-        fun from(examWithIsSolved: ExamWithIsSolved): ExamResult =
-            with(examWithIsSolved) {
-                ExamResult(
+        fun from(result: GetExamResult): GetExamResponse =
+            with(result) {
+                GetExamResponse(
                     id = id,
                     title = title,
                     subTitle = subTitle,

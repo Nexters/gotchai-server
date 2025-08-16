@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.gotchai.api.global.jwt.JwtAuthenticationFilter
 import com.gotchai.api.global.security.CustomAccessDeniedHandler
 import com.gotchai.api.global.security.CustomAuthenticationEntryPoint
+import com.gotchai.domain.global.provider.TokenProvider
+import com.gotchai.domain.user.entity.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -37,14 +38,15 @@ class SecurityConfig {
             }
             authorizeHttpRequests {
                 it
-                    .requestMatchers(HttpMethod.GET, "/ping")
+                    .requestMatchers("/ping")
                     .permitAll()
                     .requestMatchers(
-                        HttpMethod.POST,
                         "/api/v1/auth/login/**",
                         "/api/v1/auth/refresh",
                         "/api/v1/auth/test/**"
                     ).permitAll()
+                    .requestMatchers("/api/v1/admin/**")
+                    .hasAuthority(Role.ADMIN.name)
                     .anyRequest()
                     .authenticated()
             }
@@ -58,6 +60,9 @@ class SecurityConfig {
 
     @Bean
     fun customAccessDeniedHandler(objectMapper: ObjectMapper): CustomAccessDeniedHandler = CustomAccessDeniedHandler(objectMapper)
+
+    @Bean
+    fun jwtAuthenticationFilter(tokenProvider: TokenProvider): JwtAuthenticationFilter = JwtAuthenticationFilter(tokenProvider)
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()

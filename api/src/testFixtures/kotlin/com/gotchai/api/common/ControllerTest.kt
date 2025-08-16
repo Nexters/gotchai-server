@@ -19,13 +19,13 @@ import org.springframework.web.context.WebApplicationContext
 
 @AutoConfigureRestDocs
 abstract class ControllerTest : DescribeSpec() {
-    override fun extensions(): List<Extension> = listOf(SpringExtension)
-
     @Autowired
     private lateinit var webApplicationContext: WebApplicationContext
 
     @Autowired
     private lateinit var restDocumentationContextProvider: RestDocumentationContextProvider
+
+    override fun extensions(): List<Extension> = listOf(SpringExtension)
 
     override suspend fun beforeSpec(spec: Spec) {
         SecurityContextHolder.getContext().authentication = GotchaiAuthentication.from(createUser())

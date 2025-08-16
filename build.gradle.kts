@@ -15,10 +15,6 @@ plugins {
 allprojects {
     group = "com.gotchai"
     version = "0.0.1"
-
-    repositories {
-        mavenCentral()
-    }
 }
 
 subprojects {
@@ -54,6 +50,7 @@ subprojects {
         kapt(libs.spring.boot.configuration.processor)
 
         testImplementation(libs.bundles.test)
+        testFixturesImplementation(libs.kotlin.reflect)
     }
 
     configure<KtlintExtension> {

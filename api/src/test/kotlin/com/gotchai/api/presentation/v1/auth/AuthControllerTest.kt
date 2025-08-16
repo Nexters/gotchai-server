@@ -8,6 +8,7 @@ import com.gotchai.api.fixture.createRefreshRequest
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.auth.response.RefreshResponse
 import com.gotchai.api.presentation.v1.auth.response.SocialLoginResponse
+import com.gotchai.api.presentation.v1.auth.response.WithdrawalResponse
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.domain.auth.exception.InvalidOAuthTokenException
@@ -229,6 +230,25 @@ class AuthControllerTest : ControllerTest() {
                         .document("토큰 리프레시 실패(404)") {
                             requestBody(refreshRequestFields)
                             responseBody(errorResponseFields)
+                        }
+                }
+            }
+        }
+
+        describe("withdrawal()은") {
+            context("로그인한 유저인 경우") {
+                every { authCommandUseCase.withdrawal(any()) } just runs
+
+                it("상태 코드 200과 WithdrawalResponse를 반환한다.") {
+                    webClient
+                        .delete()
+                        .uri("/api/v1/auth/withdrawal")
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<ApiResponse<WithdrawalResponse>>()
+                        .document("회원탈퇴 성공(200)") {
+                            responseBody(withdrawalResponseFields)
                         }
                 }
             }

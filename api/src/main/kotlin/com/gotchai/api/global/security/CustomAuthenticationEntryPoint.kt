@@ -19,7 +19,7 @@ class CustomAuthenticationEntryPoint(
         authenticationException: AuthenticationException
     ) {
         with(response) {
-            status = HttpStatus.FORBIDDEN.value()
+            status = HttpStatus.UNAUTHORIZED.value()
             contentType = MediaType.APPLICATION_JSON_VALUE
             writer.write(
                 objectMapper.writeValueAsString(

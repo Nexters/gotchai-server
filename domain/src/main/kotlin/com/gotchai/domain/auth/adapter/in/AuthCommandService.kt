@@ -14,7 +14,7 @@ import com.gotchai.domain.auth.port.`in`.AuthCommandUseCase
 import com.gotchai.domain.auth.port.out.OAuthQueryPort
 import com.gotchai.domain.auth.port.out.RefreshTokenCommandPort
 import com.gotchai.domain.auth.port.out.RefreshTokenQueryPort
-import com.gotchai.domain.global.jwt.JwtProvider
+import com.gotchai.domain.global.provider.TokenProvider
 import com.gotchai.domain.global.security.GotchaiAuthentication
 import com.gotchai.domain.user.entity.Profile
 import com.gotchai.domain.user.entity.Role
@@ -39,7 +39,7 @@ class AuthCommandService(
     private val refreshTokenQueryPort: RefreshTokenQueryPort,
     private val refreshTokenCommandPort: RefreshTokenCommandPort,
     private val oAuthQueryPort: OAuthQueryPort,
-    private val jwtProvider: JwtProvider,
+    private val tokenProvider: TokenProvider,
     private val passwordEncoder: PasswordEncoder,
     @Value("\${jwt.refresh-token-expiration}")
     private val refreshTokenExpiration: Duration
@@ -123,13 +123,12 @@ class AuthCommandService(
                     )
                 )
 
-            val profile =
-                profileCommandPort.createProfile(
-                    Profile.Creation(
-                        userId = user.id,
-                        nickname = nickname
-                    )
+            profileCommandPort.createProfile(
+                Profile.Creation(
+                    userId = user.id,
+                    nickname = nickname
                 )
+            )
 
             return user
         }
@@ -138,7 +137,7 @@ class AuthCommandService(
         deviceId: String?,
         command: RefreshCommand
     ): RefreshResult {
-        val authentication = jwtProvider.getAuthentication(command.refreshToken)
+        val authentication = tokenProvider.getAuthentication(command.refreshToken)
 
         refreshTokenQueryPort
             .getRefreshTokenByUserId(authentication.userId)
@@ -163,13 +162,21 @@ class AuthCommandService(
         refreshTokenCommandPort.deleteRefreshTokenByUserId(userId)
     }
 
+    @Transactional
+    override fun withdrawal(userId: Long) {
+        userCommandPort.deleteByUserId(userId)
+        userSocialCommandPort.deleteByUserId(userId)
+        profileCommandPort.deleteByUserId(userId)
+        refreshTokenCommandPort.deleteRefreshTokenByUserId(userId)
+    }
+
     private fun createAccessAndRefreshToken(
         deviceId: String?,
         authentication: GotchaiAuthentication
     ): Pair<String, String> {
-        val accessToken = jwtProvider.createAccessToken(authentication)
+        val accessToken = tokenProvider.createAccessToken(authentication)
         val refreshToken =
-            jwtProvider
+            tokenProvider
                 .createRefreshToken(authentication)
                 .also {
                     refreshTokenCommandPort.createRefreshToken(

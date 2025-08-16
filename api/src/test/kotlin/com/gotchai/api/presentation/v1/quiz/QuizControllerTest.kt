@@ -9,9 +9,9 @@ import com.gotchai.api.fixture.createGradeQuizRequest
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.presentation.v1.quiz.response.GradeQuizResponse
 import com.gotchai.api.presentation.v1.quiz.response.QuizDetailResponse
+import com.gotchai.api.util.desc
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
-import com.gotchai.api.util.paramDesc
 import com.gotchai.domain.exam.exception.ExamAlreadySolvedException
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.fixture.ID
@@ -49,7 +49,7 @@ class QuizControllerTest : ControllerTest() {
                         .isOk
                         .expectBody<ApiResponse<QuizDetailResponse>>()
                         .document("퀴즈 단일 조회 성공(200)") {
-                            pathParams("quizId" paramDesc "퀴즈 식별자")
+                            pathParams("quizId" desc "퀴즈 식별자")
                             responseBody(quizDetailResponseFields)
                         }
                 }
@@ -67,7 +67,7 @@ class QuizControllerTest : ControllerTest() {
                         .isNotFound
                         .expectError()
                         .document("퀴즈 단일 조회 실패(404)") {
-                            pathParams("quizId" paramDesc "퀴즈 식별자")
+                            pathParams("quizId" desc "퀴즈 식별자")
                             responseBody(errorResponseFields)
                         }
                 }

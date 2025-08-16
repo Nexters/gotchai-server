@@ -1,3 +1,7 @@
 package com.gotchai.domain.user.port.`in`
 
-interface UserQueryUseCase
+import com.gotchai.domain.user.dto.result.GetUserRankingResult
+
+interface UserQueryUseCase {
+    fun getUserRanking(userId: Long): GetUserRankingResult
+}
