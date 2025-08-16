@@ -1,5 +1,6 @@
 package com.gotchai.domain.fixture
 
+import com.gotchai.domain.user.dto.result.GetUserRankingResult
 import com.gotchai.domain.user.entity.*
 import java.time.LocalDateTime
 
@@ -51,4 +52,13 @@ fun createUserSocial(
         socialId = socialId,
         provider = provider,
         createdAt = createdAt
+    )
+
+fun createGetUserRankingResult(
+    name: String = NICKNAME,
+    rating: Double = 25.0
+): GetUserRankingResult =
+    GetUserRankingResult(
+        name = name,
+        rating = rating
     )
