@@ -1,6 +1,7 @@
 package com.gotchai.storage.rdb.exam.adapter.out
 
 import com.gotchai.domain.exam.dto.projection.ExamWithExamHistory
+import com.gotchai.domain.exam.dto.projection.SolvedExamWithExamHistory
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.port.out.ExamQueryPort
 import com.gotchai.storage.rdb.exam.entity.ExamEntity
@@ -27,10 +28,10 @@ class ExamQueryAdapter(
     override fun getExams(): List<Exam> = examJpaRepository.findAll().map { it.toExam() }
 
     @ReadOnlyTransactional
-    override fun getExamsWithExamHistoryByUserIdAndIsSolved(
+    override fun getSolvedExamsWithExamHistoryByUserIdAndIsSolved(
         userId: Long,
         isSolved: Boolean?
-    ): List<ExamWithExamHistory> {
+    ): List<SolvedExamWithExamHistory> {
         val query =
             jpql {
                 selectNew<Pair<ExamEntity, ExamHistoryEntity>>(
@@ -38,12 +39,44 @@ class ExamQueryAdapter(
                     entity(ExamHistoryEntity::class)
                 ).from(
                     entity(ExamEntity::class),
-                    leftJoin(ExamHistoryEntity::class).on(
-                        path(ExamHistoryEntity::examId)
-                            .eq(path(ExamEntity::id))
-                            .and(path(ExamHistoryEntity::userId).eq(userId))
-                            .apply { if (isSolved != null) and(path(ExamHistoryEntity::isSolved).eq(isSolved)) }
-                    )
+                    innerJoin(ExamHistoryEntity::class)
+                        .on(
+                            path(ExamHistoryEntity::examId)
+                                .eq(path(ExamEntity::id))
+                                .and(path(ExamHistoryEntity::userId).eq(userId))
+                                .apply { if (isSolved != null) and(path(ExamHistoryEntity::isSolved).eq(isSolved)) }
+                        )
+                )
+            }
+        val pairs = entityManager.createQuery(query, jdslRenderContext).resultList
+
+        return pairs.map { (examEntity, examHistoryEntity) ->
+            SolvedExamWithExamHistory(
+                exam = examEntity.toExam(),
+                examHistory = examHistoryEntity.toExamHistory()
+            )
+        }
+    }
+
+    @ReadOnlyTransactional
+    override fun getExamsWithExamHistoryByUserIdAndIsSolved(
+        userId: Long,
+        isSolved: Boolean?
+    ): List<ExamWithExamHistory> {
+        val query =
+            jpql {
+                selectNew<Pair<ExamEntity, ExamHistoryEntity?>>(
+                    entity(ExamEntity::class),
+                    entity(ExamHistoryEntity::class)
+                ).from(
+                    entity(ExamEntity::class),
+                    leftJoin(ExamHistoryEntity::class)
+                        .on(
+                            path(ExamHistoryEntity::examId)
+                                .eq(path(ExamEntity::id))
+                                .and(path(ExamHistoryEntity::userId).eq(userId))
+                                .apply { if (isSolved != null) and(path(ExamHistoryEntity::isSolved).eq(isSolved)) }
+                        )
                 )
             }
         val pairs = entityManager.createQuery(query, jdslRenderContext).resultList
@@ -51,7 +84,7 @@ class ExamQueryAdapter(
         return pairs.map { (examEntity, examHistoryEntity) ->
             ExamWithExamHistory(
                 exam = examEntity.toExam(),
-                examHistory = examHistoryEntity.toExamHistory()
+                examHistory = examHistoryEntity?.toExamHistory()
             )
         }
     }

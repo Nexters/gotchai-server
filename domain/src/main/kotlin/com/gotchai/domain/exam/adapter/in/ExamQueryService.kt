@@ -24,12 +24,12 @@ class ExamQueryService(
     override fun getExams(userId: Long): List<GetExamResult> =
         examQueryPort
             .getExamsWithExamHistoryByUserIdAndIsSolved(userId, null)
-            .map { GetExamResult.of(it.exam, it.examHistory) }
+            .map { GetExamResult.of(it.exam, isSolved = it.examHistory?.isSolved ?: false) }
 
     @Transactional(readOnly = true)
     override fun getMyExams(userId: Long): List<GetMyExamResult> =
         examQueryPort
-            .getExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
+            .getSolvedExamsWithExamHistoryByUserIdAndIsSolved(userId, true)
             .map { GetMyExamResult.of(it.exam, it.examHistory) }
 
     @Transactional(readOnly = true)
