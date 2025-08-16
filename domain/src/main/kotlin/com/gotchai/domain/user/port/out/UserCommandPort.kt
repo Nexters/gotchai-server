@@ -4,4 +4,6 @@ import com.gotchai.domain.user.entity.User
 
 interface UserCommandPort {
     fun createUser(creation: User.Creation): User
+
+    fun deleteByUserId(userId: Long)
 }

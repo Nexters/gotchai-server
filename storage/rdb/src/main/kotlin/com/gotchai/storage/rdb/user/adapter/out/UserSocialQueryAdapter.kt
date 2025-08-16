@@ -8,11 +8,11 @@ import com.gotchai.storage.rdb.user.repository.UserSocialJpaRepository
 
 @Adapter
 class UserSocialQueryAdapter(
-    private val userSocialRepository: UserSocialJpaRepository
+    private val userSocialJpaRepository: UserSocialJpaRepository
 ) : UserSocialQueryPort {
     @ReadOnlyTransactional
     override fun getUserSocialBySocialId(socialId: String): UserSocial? =
-        userSocialRepository
-            .findBySocialId(socialId)
+        userSocialJpaRepository
+            .findBySocialIdAndDeletedAtIsNull(socialId)
             ?.toUserSocial()
 }

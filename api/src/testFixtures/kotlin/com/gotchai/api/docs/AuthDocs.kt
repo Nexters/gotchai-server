@@ -5,6 +5,7 @@ import com.gotchai.api.presentation.v1.auth.request.KakaoLoginRequest
 import com.gotchai.api.presentation.v1.auth.request.RefreshRequest
 import com.gotchai.api.presentation.v1.auth.response.RefreshResponse
 import com.gotchai.api.presentation.v1.auth.response.SocialLoginResponse
+import com.gotchai.api.presentation.v1.auth.response.WithdrawalResponse
 import com.gotchai.api.util.desc
 import com.gotchai.api.util.fieldsOf
 
@@ -28,3 +29,6 @@ val socialLoginResponseFields =
         SocialLoginResponse::accessToken desc "액세스 토큰",
         SocialLoginResponse::refreshToken desc "리프레시 토큰"
     )
+
+val withdrawalResponseFields =
+    fieldsOf(WithdrawalResponse::message desc "회원탈퇴 메시지")
