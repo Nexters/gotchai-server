@@ -11,6 +11,13 @@ class ExamHistoryQueryAdapter(
     private val examHistoryJpaRepository: ExamHistoryJpaRepository
 ) : ExamHistoryQueryPort {
     @ReadOnlyTransactional
+    override fun getExamHistories(): List<ExamHistory> = examHistoryJpaRepository.findAll().map { it.toExamHistory() }
+
+    @ReadOnlyTransactional
+    override fun getAllExamHistoriesWithQuizIds(): List<ExamHistory> =
+        examHistoryJpaRepository.findAllWithQuizIds().map { it.toExamHistory() }
+
+    @ReadOnlyTransactional
     override fun getExamHistoryByExamIdAndUserId(
         examId: Long,
         userId: Long
