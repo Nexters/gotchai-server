@@ -38,6 +38,8 @@ spring:
     properties:
       hibernate:
         show_log: true
+        format_sql: true
+    show-sql: true
 datasource:
   rdb:
     driver-class-name: com.mysql.cj.jdbc.Driver
