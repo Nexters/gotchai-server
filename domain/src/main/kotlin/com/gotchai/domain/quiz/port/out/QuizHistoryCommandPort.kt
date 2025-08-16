@@ -4,4 +4,6 @@ import com.gotchai.domain.quiz.entity.QuizHistory
 
 interface QuizHistoryCommandPort {
     fun createQuizHistory(creation: QuizHistory.Creation): QuizHistory
+
+    fun deleteQuizHistoriesByExamHistoryId(examHistoryId: Long)
 }

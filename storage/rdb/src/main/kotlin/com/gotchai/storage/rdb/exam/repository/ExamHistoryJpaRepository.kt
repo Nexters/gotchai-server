@@ -13,16 +13,25 @@ interface ExamHistoryJpaRepository : JpaRepository<ExamHistoryEntity, Long> {
 
     @Query("SELECT e FROM ExamHistoryEntity e WHERE e.examId = :examId AND e.isSolved = :isSolved")
     fun findAllByExamIdAndIsSolved(
-        @Param("examId") examId: Long,
-        @Param("isSolved") isSolved: Boolean
+        @Param("examId")
+        examId: Long,
+        @Param("isSolved")
+        isSolved: Boolean
     ): List<ExamHistoryEntity>
 
     @Query("SELECT e FROM ExamHistoryEntity e WHERE e.userId = :userId AND e.isSolved = :isSolved")
     fun findAllByUserIdAndIsSolved(
-        @Param("userId") userId: Long,
-        @Param("isSolved") isSolved: Boolean
+        @Param("userId")
+        userId: Long,
+        @Param("isSolved")
+        isSolved: Boolean
     ): List<ExamHistoryEntity>
 
     @Query("SELECT e FROM ExamHistoryEntity e JOIN FETCH e.quizIds")
     fun findAllWithQuizIds(): List<ExamHistoryEntity>
+
+    fun deleteByExamIdAndUserId(
+        examId: Long,
+        userId: Long
+    ): List<ExamHistoryEntity>
 }

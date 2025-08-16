@@ -14,4 +14,8 @@ class QuizHistoryCommandAdapter(
         quizHistoryJpaRepository
             .save(QuizHistoryEntity.from(creation))
             .toQuizHistory()
+
+    override fun deleteQuizHistoriesByExamHistoryId(examHistoryId: Long) {
+        quizHistoryJpaRepository.deleteAllByExamHistoryId(examHistoryId)
+    }
 }
