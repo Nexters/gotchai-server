@@ -14,5 +14,5 @@ class UserController(
     fun getUserRanking(
         @AuthenticationPrincipal
         userId: Long
-    ): UserRankingResponse = UserRankingResponse(userQueryUseCase.getUserRanking(userId))
+    ): UserRankingResponse = UserRankingResponse.from(userQueryUseCase.getUserRanking(userId))
 }
