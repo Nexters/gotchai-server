@@ -16,7 +16,7 @@ class UserCommandAdapter(
             .save(UserEntity.from(creation))
             .toUser()
 
-    override fun withdrawal(userId: Long) {
+    override fun deleteByUserId(userId: Long) {
         userJpaRepository
             .findByIdOrElseThrow(userId)
             .softDelete()

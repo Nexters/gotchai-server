@@ -16,7 +16,7 @@ class UserSocialCommandAdapter(
             .save(UserSocialEntity.from(creation))
             .toUserSocial()
 
-    override fun withdrawal(userId: Long) {
+    override fun deleteByUserId(userId: Long) {
         userSocialJpaRepository
             .findByIdOrElseThrow(userId)
             .softDelete()

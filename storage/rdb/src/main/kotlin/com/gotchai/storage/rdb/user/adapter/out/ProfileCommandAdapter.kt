@@ -16,7 +16,7 @@ class ProfileCommandAdapter(
             .save(ProfileEntity.from(creation))
             .toProfile()
 
-    override fun withdrawal(userId: Long) {
+    override fun deleteByUserId(userId: Long) {
         profileJpaRepository
             .findByIdOrElseThrow(userId)
             .softDelete()

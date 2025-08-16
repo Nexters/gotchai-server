@@ -164,9 +164,9 @@ class AuthCommandService(
 
     @Transactional
     override fun withdrawal(userId: Long) {
-        userCommandPort.withdrawal(userId)
-        userSocialCommandPort.withdrawal(userId)
-        profileCommandPort.withdrawal(userId)
+        userCommandPort.deleteByUserId(userId)
+        userSocialCommandPort.deleteByUserId(userId)
+        profileCommandPort.deleteByUserId(userId)
         refreshTokenCommandPort.deleteRefreshTokenByUserId(userId)
     }
 
