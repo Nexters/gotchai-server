@@ -1,7 +1,6 @@
 package com.gotchai.domain.exam.dto.result
 
 import com.gotchai.domain.exam.entity.Exam
-import com.gotchai.domain.exam.entity.ExamHistory
 import java.time.LocalDateTime
 
 data class GetExamResult(
@@ -20,7 +19,7 @@ data class GetExamResult(
     companion object {
         fun of(
             exam: Exam,
-            examHistory: ExamHistory
+            isSolved: Boolean
         ): GetExamResult =
             with(exam) {
                 GetExamResult(
@@ -33,7 +32,7 @@ data class GetExamResult(
                     iconImage = iconImage,
                     coverImage = coverImage,
                     theme = theme,
-                    isSolved = examHistory.isSolved,
+                    isSolved = isSolved,
                     createdAt = createdAt
                 )
             }

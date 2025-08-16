@@ -5,5 +5,5 @@ import com.gotchai.domain.exam.entity.ExamHistory
 
 data class ExamWithExamHistory(
     val exam: Exam,
-    val examHistory: ExamHistory
+    val examHistory: ExamHistory?
 )

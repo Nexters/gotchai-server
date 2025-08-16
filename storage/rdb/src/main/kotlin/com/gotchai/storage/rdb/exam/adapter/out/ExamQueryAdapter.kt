@@ -33,7 +33,7 @@ class ExamQueryAdapter(
     ): List<ExamWithExamHistory> {
         val query =
             jpql {
-                selectNew<Pair<ExamEntity, ExamHistoryEntity>>(
+                selectNew<Pair<ExamEntity, ExamHistoryEntity?>>(
                     entity(ExamEntity::class),
                     entity(ExamHistoryEntity::class)
                 ).from(
@@ -51,7 +51,7 @@ class ExamQueryAdapter(
         return pairs.map { (examEntity, examHistoryEntity) ->
             ExamWithExamHistory(
                 exam = examEntity.toExam(),
-                examHistory = examHistoryEntity.toExamHistory()
+                examHistory = examHistoryEntity?.toExamHistory()
             )
         }
     }
