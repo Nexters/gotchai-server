@@ -14,7 +14,8 @@ class ExamHistoryQueryAdapter(
     override fun getExamHistories(): List<ExamHistory> = examHistoryJpaRepository.findAll().map { it.toExamHistory() }
 
     @ReadOnlyTransactional
-    override fun getAllExamHistories(): List<ExamHistory> = examHistoryJpaRepository.findAllWithQuizIds().map { it.toExamHistory() }
+    override fun getAllExamHistoriesWithQuizIds(): List<ExamHistory> =
+        examHistoryJpaRepository.findAllWithQuizIds().map { it.toExamHistory() }
 
     @ReadOnlyTransactional
     override fun getExamHistoryByExamIdAndUserId(

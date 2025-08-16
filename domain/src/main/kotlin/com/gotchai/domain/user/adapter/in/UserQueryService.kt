@@ -15,7 +15,7 @@ class UserQueryService(
 ) : UserQueryUseCase {
     override fun getUserRanking(userId: Long): GetUserRankingResult {
         val profile = profileQueryPort.getProfileByUserId(userId) ?: throw ProfileNotFoundException()
-        val allHistories = examHistoryQueryPort.getAllExamHistories()
+        val allHistories = examHistoryQueryPort.getAllExamHistoriesWithQuizIds()
 
         val rating = calculateUserRating(userId, allHistories)
         return GetUserRankingResult.of(profile, rating)
