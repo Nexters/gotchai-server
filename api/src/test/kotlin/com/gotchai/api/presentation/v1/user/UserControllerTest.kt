@@ -25,7 +25,7 @@ class UserControllerTest : ControllerTest() {
             it("상태 코드 200과 UserRankingResponse를 반환한다.") {
                 webClient
                     .get()
-                    .uri("/api/v1/users/ranking")
+                    .uri("/api/v1/users/me/ranking")
                     .exchange()
                     .expectStatus()
                     .isOk
