@@ -56,7 +56,7 @@ fun createUserSocial(
 
 fun createGetUserRankingResult(
     name: String = NICKNAME,
-    rating: Double = 25.0
+    rating: Int = 25
 ): GetUserRankingResult =
     GetUserRankingResult(
         name = name,

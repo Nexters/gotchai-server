@@ -4,12 +4,12 @@ import com.gotchai.domain.user.entity.Profile
 
 data class GetUserRankingResult(
     val name: String,
-    val rating: Double
+    val rating: Int
 ) {
     companion object {
         fun of(
             profile: Profile,
-            rating: Double
+            rating: Int
         ) = GetUserRankingResult(
             name = profile.nickname,
             rating = rating
