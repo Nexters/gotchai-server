@@ -2,7 +2,7 @@ package com.gotchai.api.global.exception
 
 import com.gotchai.api.global.dto.ApiResponse
 import com.gotchai.api.global.dto.ErrorResponse
-import com.gotchai.common.util.logger
+import com.gotchai.common.util.getLogger
 import com.gotchai.domain.global.exception.ServerException
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpHeaders
@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice(basePackages = ["com.gotchai"])
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     companion object {
-        private val log by logger()
+        private val log = getLogger()
     }
 
     override fun handleMethodArgumentNotValid(
@@ -29,7 +29,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest
     ): ResponseEntity<Any> {
-        log.error("MethodArgumentNotValidException : {}", ex.message, ex)
+        log.error(ex) { "MethodArgumentNotValidException : ${ex.message}" }
 
         val message =
             ex.bindingResult.allErrors
@@ -50,7 +50,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<ApiResponse<ErrorResponse>> {
-        log.error("ConstraintViolationException: {}", ex.message, ex)
+        log.error(ex) { "ConstraintViolationException: ${ex.message}" }
         val violations =
             ex.constraintViolations.associate {
                 it.propertyPath.toString().substringAfterLast(".", "unknown") to it.message
@@ -69,7 +69,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun handleMethodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): ResponseEntity<ApiResponse<ErrorResponse>> {
-        log.error("MethodArgumentTypeMismatchException : {}", ex.message, ex)
+        log.error(ex) { "MethodArgumentTypeMismatchException : ${ex.message}" }
 
         val errorResponse =
             ErrorResponse(
@@ -89,7 +89,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
         status: HttpStatusCode,
         request: WebRequest
     ): ResponseEntity<Any> {
-        log.error("HttpRequestMethodNotSupportedException : {}", ex.message, ex)
+        log.error(ex) { "HttpRequestMethodNotSupportedException : ${ex.message}" }
 
         val errorResponse =
             ErrorResponse(
@@ -105,7 +105,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(ServerException::class)
     fun handleServerException(ex: ServerException): ResponseEntity<ApiResponse<ErrorResponse>> {
-        log.error("gotchai CustomException : {}", ex.message, ex)
+        log.error(ex) { "gotchai CustomException : ${ex.message}" }
 
         val errorResponse =
             ErrorResponse(
@@ -121,7 +121,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(Exception::class)
     protected fun handleException(ex: Exception): ResponseEntity<ApiResponse<ErrorResponse>> {
-        log.error("Internal Server Error : {}", ex.message, ex)
+        log.error(ex) { "Internal Server Error : ${ex.message}" }
 
         val errorResponse =
             ErrorResponse(

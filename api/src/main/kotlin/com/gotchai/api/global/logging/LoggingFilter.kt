@@ -3,10 +3,10 @@ package com.gotchai.api.global.logging
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.gotchai.common.util.getLogger
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -21,7 +21,7 @@ class LoggingFilter(
     private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
     companion object {
-        private val logger by lazy { LoggerFactory.getLogger(LoggingFilter::class.java) }
+        private val log = getLogger()
     }
 
     override fun doFilterInternal(
@@ -52,7 +52,7 @@ class LoggingFilter(
         setParameters(request, logData)
         setPayload(request, logData)
         val json = objectMapper.writeValueAsString(logData)
-        logger.info("REQUEST : $json")
+        log.info { "REQUEST : $json" }
     }
 
     private fun setParameters(
