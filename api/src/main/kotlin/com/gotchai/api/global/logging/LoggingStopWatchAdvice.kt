@@ -1,10 +1,9 @@
 package com.gotchai.api.global.logging
 
+import com.gotchai.common.util.getLogger
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
@@ -13,8 +12,8 @@ import org.springframework.web.context.request.ServletRequestAttributes
 @Component
 class LoggingStopWatchAdvice {
     companion object {
-        val log: Logger = LoggerFactory.getLogger(this::class.java)
-        const val MAX_AFFORDABLE_TIME: Long = 3000
+        private val log = getLogger()
+        const val MAX_AFFORDABLE_TIME = 3000
     }
 
     @Around("execution(* com.gotchai.api.presentation..*Controller.*(..))")
@@ -28,15 +27,12 @@ class LoggingStopWatchAdvice {
         val methodName = joinPoint.signature.name
 
         if (timeMs > MAX_AFFORDABLE_TIME) {
-            log.warn(
-                "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms"
-            )
+            log.warn { "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms" }
+
             return proceed
         }
 
-        log.info(
-            "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms"
-        )
+        log.info { "method=${getMethod()}, url=${getRequestURI()}, call: $className - $methodName - timeMs:${timeMs}ms" }
 
         return proceed
     }

@@ -1,17 +1,19 @@
 package com.gotchai.api.global.exception
 
-import com.gotchai.common.util.logger
+import com.gotchai.common.util.getLogger
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler
 import java.lang.reflect.Method
 
 class AsyncExceptionHandler : AsyncUncaughtExceptionHandler {
-    private val log by logger()
+    companion object {
+        private val log = getLogger()
+    }
 
     override fun handleUncaughtException(
-        e: Throwable,
+        ex: Throwable,
         method: Method,
         vararg params: Any?
     ) {
-        log.error("Exception : {}", e.message, e)
+        log.error(ex) { "Exception : ${ex.message}" }
     }
 }

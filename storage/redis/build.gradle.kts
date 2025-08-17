@@ -1,5 +1,5 @@
 dependencies {
-    api(libs.spring.boot.starter.redis)
-
     implementation(project(":domain"))
+
+    implementation(libs.spring.boot.starter.redis)
 }
