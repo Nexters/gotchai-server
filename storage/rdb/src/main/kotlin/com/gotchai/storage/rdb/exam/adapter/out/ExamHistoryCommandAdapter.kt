@@ -6,7 +6,6 @@ import com.gotchai.storage.rdb.exam.entity.ExamHistoryEntity
 import com.gotchai.storage.rdb.exam.repository.ExamHistoryJpaRepository
 import com.gotchai.storage.rdb.global.annotation.Adapter
 import com.gotchai.storage.rdb.global.util.findByIdOrElseThrow
-import org.springframework.transaction.annotation.Transactional
 
 @Adapter
 class ExamHistoryCommandAdapter(
@@ -17,7 +16,6 @@ class ExamHistoryCommandAdapter(
             .save(ExamHistoryEntity.from(creation))
             .toExamHistory()
 
-    @Transactional
     override fun updateExamHistory(examHistory: ExamHistory): ExamHistory =
         with(examHistory) {
             val examHistoryEntity = examHistoryJpaRepository.findByIdOrElseThrow(id)
@@ -32,4 +30,11 @@ class ExamHistoryCommandAdapter(
                 .save(examHistoryEntity)
                 .toExamHistory()
         }
+
+    override fun deleteExamHistoryByExamIdAndUserId(
+        examId: Long,
+        userId: Long
+    ) {
+        examHistoryJpaRepository.deleteByExamIdAndUserId(examId, userId)
+    }
 }

@@ -15,9 +15,4 @@ class QuizHistoryQueryAdapter(
         quizHistoryJpaRepository
             .findAllByExamHistoryId(examHistoryId)
             .map { it.toQuizHistory() }
-
-    @ReadOnlyTransactional
-    override fun deleteQuizHistoriesByExamHistoryId(examHistoryId: Long) {
-        quizHistoryJpaRepository.deleteAllByExamHistoryId(examHistoryId)
-    }
 }

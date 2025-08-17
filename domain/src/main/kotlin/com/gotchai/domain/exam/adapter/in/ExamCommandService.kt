@@ -16,6 +16,7 @@ import com.gotchai.domain.exam.port.`in`.ExamCommandUseCase
 import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
 import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
 import com.gotchai.domain.exam.port.out.ExamQueryPort
+import com.gotchai.domain.quiz.port.out.QuizHistoryCommandPort
 import com.gotchai.domain.quiz.port.out.QuizHistoryQueryPort
 import com.gotchai.domain.quiz.port.out.QuizQueryPort
 import org.springframework.stereotype.Service
@@ -28,6 +29,7 @@ class ExamCommandService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
     private val examHistoryCommandPort: ExamHistoryCommandPort,
     private val quizHistoryQueryPort: QuizHistoryQueryPort,
+    private val quizHistoryCommandPort: QuizHistoryCommandPort,
     private val userBadgeCommandPort: UserBadgeCommandPort,
     private val badgeQueryPort: BadgeQueryPort
 ) : ExamCommandUseCase {
@@ -54,7 +56,7 @@ class ExamCommandService(
         } else {
             if (examHistory.isSolved) throw ExamAlreadySolvedException()
 
-            quizHistoryQueryPort.deleteQuizHistoriesByExamHistoryId(examHistory.id)
+            quizHistoryCommandPort.deleteQuizHistoriesByExamHistoryId(examHistory.id)
             examHistoryCommandPort.updateExamHistory(
                 examHistory.copy(
                     quizIds = quizIds,
