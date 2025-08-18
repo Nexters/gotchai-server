@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ProfileJpaRepository : JpaRepository<ProfileEntity, Long> {
     fun findByUserId(userId: Long): ProfileEntity?
+
+    fun findByUserIdAndDeletedAtIsNull(userId: Long): ProfileEntity?
 }
