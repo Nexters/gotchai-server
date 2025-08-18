@@ -5,7 +5,6 @@ import com.gotchai.domain.user.port.out.UserQueryPort
 import com.gotchai.storage.rdb.global.annotation.Adapter
 import com.gotchai.storage.rdb.global.annotation.ReadOnlyTransactional
 import com.gotchai.storage.rdb.user.repository.UserJpaRepository
-import org.springframework.data.repository.findByIdOrNull
 
 @Adapter
 class UserQueryAdapter(
@@ -14,12 +13,12 @@ class UserQueryAdapter(
     @ReadOnlyTransactional
     override fun getUserById(id: Long): User? =
         userRepository
-            .findByIdOrNull(id)
+            .findByIdAndDeletedAtIsNull(id)
             ?.toUser()
 
     @ReadOnlyTransactional
     override fun getUserByEmail(email: String): User? =
         userRepository
-            .findByEmail(email)
+            .findByEmailAndDeletedAtIsNull(email)
             ?.toUser()
 }

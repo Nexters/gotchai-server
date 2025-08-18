@@ -13,7 +13,7 @@ class ProfileQueryAdapter(
     @ReadOnlyTransactional
     override fun getProfileByUserId(userId: Long): Profile? =
         profileRepository
-            .findByUserId(userId)
+            .findByUserIdAndDeletedAtIsNull(userId)
             ?.toProfile()
 
     @ReadOnlyTransactional
