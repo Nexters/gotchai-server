@@ -5,4 +5,9 @@ import com.gotchai.domain.exam.entity.Exam
 
 interface AdminCommandUseCase {
     fun createExam(command: CreateExamCommand): Exam
+
+    fun deleteExamHistoryByExamIdAndUserId(
+        examId: Long,
+        userId: Long
+    )
 }
