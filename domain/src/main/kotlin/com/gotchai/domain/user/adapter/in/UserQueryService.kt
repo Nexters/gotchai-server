@@ -16,9 +16,12 @@ class UserQueryService(
 ) : UserQueryUseCase {
     override fun getUserRanking(userId: Long): GetUserRankingResult {
         val profile = profileQueryPort.getProfileByUserId(userId) ?: throw ProfileNotFoundException()
-        val allHistories = examHistoryQueryPort.getAllExamHistoriesWithQuizIds()
+        val allSolvedHistories =
+            examHistoryQueryPort
+                .getAllExamHistoriesWithQuizIds()
+                .filter { it.isSolved }
 
-        val rating = calculateUserRating(userId, allHistories)
+        val rating = calculateUserRating(userId, allSolvedHistories)
         return GetUserRankingResult.of(profile, rating)
     }
 
@@ -38,10 +41,17 @@ class UserQueryService(
                 }
 
         val userScore = userScores[userId] ?: return 100
-        if (userScores.size == 1) return 0
+        if (userScores.size == 1) return 1
 
         val usersWithHigherScore = userScores.values.count { it > userScore }
-        val rating = (usersWithHigherScore.toDouble() / userScores.size.toDouble()) * 100
-        return ceil(rating).toInt()
+
+        return when {
+            usersWithHigherScore == 0 && userScores.values.all { it == userScore } -> 50
+            usersWithHigherScore == 0 -> 1
+            else -> {
+                val rating = (usersWithHigherScore.toDouble() / userScores.size.toDouble()) * 100
+                ceil(rating).toInt().coerceAtLeast(1) // 최소 1% 보장
+            }
+        }
     }
 }
