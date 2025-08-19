@@ -12,4 +12,8 @@ class UserBadgeCommandAdapter(
 ) : UserBadgeCommandPort {
     override fun createUserBadge(creation: UserBadge.Creation): UserBadge =
         userBadgeJpaRepository.save(UserBadgeEntity.from(creation)).toUserBadge()
+
+    override fun deleteUserBadgeById(id: Long) {
+        userBadgeJpaRepository.deleteById(id)
+    }
 }
