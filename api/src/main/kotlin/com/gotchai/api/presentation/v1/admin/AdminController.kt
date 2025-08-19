@@ -31,4 +31,14 @@ class AdminController(
     ) {
         adminCommandUseCase.deleteExamHistoryByExamIdAndUserId(examId, userId)
     }
+
+    @DeleteMapping("/admin/users/{userId}/badges/{badgeId}")
+    fun deleteUserBadge(
+        @PathVariable
+        userId: Long,
+        @PathVariable
+        badgeId: Long
+    ) {
+        adminCommandUseCase.deleteUserBadgeByBadgeIdAndUserId(userId, badgeId)
+    }
 }

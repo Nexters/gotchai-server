@@ -10,4 +10,9 @@ interface AdminCommandUseCase {
         examId: Long,
         userId: Long
     )
+
+    fun deleteUserBadgeByBadgeIdAndUserId(
+        badgeId: Long,
+        userId: Long
+    )
 }
