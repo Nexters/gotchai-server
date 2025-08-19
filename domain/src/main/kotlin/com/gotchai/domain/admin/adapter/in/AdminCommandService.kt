@@ -3,6 +3,9 @@ package com.gotchai.domain.admin.adapter.`in`
 import com.gotchai.domain.admin.dto.command.CreateExamCommand
 import com.gotchai.domain.admin.exception.InvalidFileException
 import com.gotchai.domain.admin.port.`in`.AdminCommandUseCase
+import com.gotchai.domain.badge.exception.UserBadgeNotFoundException
+import com.gotchai.domain.badge.port.out.UserBadgeCommandPort
+import com.gotchai.domain.badge.port.out.UserBadgeQueryPort
 import com.gotchai.domain.exam.entity.Exam
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.port.out.ExamCommandPort
@@ -20,6 +23,8 @@ class AdminCommandService(
     private val examHistoryQueryPort: ExamHistoryQueryPort,
     private val examHistoryCommandPort: ExamHistoryCommandPort,
     private val quizHistoryCommandPort: QuizHistoryCommandPort,
+    private val userBadgeQueryPort: UserBadgeQueryPort,
+    private val userBadgeCommandPort: UserBadgeCommandPort,
     private val objectStorageProvider: ObjectStorageProvider
 ) : AdminCommandUseCase {
     @Transactional
@@ -54,5 +59,15 @@ class AdminCommandService(
 
         quizHistoryCommandPort.deleteQuizHistoriesByExamHistoryId(examHistory.id)
         examHistoryCommandPort.deleteExamHistoryByExamIdAndUserId(examId, userId)
+    }
+
+    @Transactional
+    override fun deleteUserBadgeByBadgeIdAndUserId(
+        badgeId: Long,
+        userId: Long
+    ) {
+        val userBadge = userBadgeQueryPort.getUserBadgeByBadgeIdAndUserId(badgeId, userId) ?: throw UserBadgeNotFoundException()
+
+        userBadgeCommandPort.deleteUserBadgeById(userBadge.id)
     }
 }

@@ -2,6 +2,7 @@ package com.gotchai.api.presentation.v1.admin
 
 import com.gotchai.api.common.ControllerTest
 import com.gotchai.api.docs.createExamRequestFields
+import com.gotchai.api.docs.errorResponseFields
 import com.gotchai.api.docs.examResponseFields
 import com.gotchai.api.fixture.createCreateExamRequest
 import com.gotchai.api.global.dto.ApiResponse
@@ -11,6 +12,7 @@ import com.gotchai.api.util.desc
 import com.gotchai.api.util.document
 import com.gotchai.api.util.expectError
 import com.gotchai.domain.admin.port.`in`.AdminCommandUseCase
+import com.gotchai.domain.badge.exception.UserBadgeNotFoundException
 import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.fixture.ID
 import com.gotchai.domain.fixture.createExam
@@ -87,6 +89,50 @@ class AdminControllerTest : ControllerTest() {
                                 "userId" desc "유저 식별자",
                                 "examId" desc "테스트 식별자"
                             )
+                            responseBody(errorResponseFields)
+                        }
+                }
+            }
+        }
+
+        describe("deleteUserBadge()는") {
+            context("유저가 취득한 뱃지가 존재하는 경우") {
+                every { adminCommandUseCase.deleteUserBadgeByBadgeIdAndUserId(ID, ID) } just runs
+
+                it("상태 코드 200을 반환한다.") {
+                    webClient
+                        .delete()
+                        .uri("/api/v1/admin/users/{userId}/badges/{badgeId}", ID, ID)
+                        .exchange()
+                        .expectStatus()
+                        .isOk
+                        .expectBody<Void>()
+                        .document("유저가 취득한 뱃지 삭제 성공(200)") {
+                            pathParams(
+                                "userId" desc "유저 식별자",
+                                "badgeId" desc "뱃지 식별자"
+                            )
+                        }
+                }
+            }
+
+            context("유저가 취득한 뱃지가 존재하지 않는 경우") {
+                every { adminCommandUseCase.deleteUserBadgeByBadgeIdAndUserId(ID, ID) } throws UserBadgeNotFoundException()
+
+                it("상태 코드 404를 반환한다.") {
+                    webClient
+                        .delete()
+                        .uri("/api/v1/admin/users/{userId}/badges/{badgeId}", ID, ID)
+                        .exchange()
+                        .expectStatus()
+                        .isNotFound
+                        .expectError()
+                        .document("유저가 취득한 뱃지 삭제 실패(404)") {
+                            pathParams(
+                                "userId" desc "유저 식별자",
+                                "badgeId" desc "뱃지 식별자"
+                            )
+                            responseBody(errorResponseFields)
                         }
                 }
             }
