@@ -12,6 +12,7 @@ jobs:
   build:
     name: Deploy API specification
     runs-on: ubuntu-latest
+    if: github.ref_name == 'dev'
     environment: ${{ github.ref_name }}
     steps:
     - name: Checkout repository
@@ -95,7 +96,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
-        source: docker/docker-compose.yml
+        source: docker/docker-compose-${{ github.ref_name }}.yml
         target: "~"
         strip_components: 1
     - name: Build and deploy container to AWS EC2
@@ -106,9 +107,12 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
           aws secretsmanager get-secret-value --secret-id ${{ github.ref_name }}-env --region ap-northeast-2 --query SecretString --output text | jq -r '. | to_entries | map("\(.key)=\(.value)") | .[]' > .env
-          aws s3 cp s3://${{ secrets.API_SPECIFICATION_BUCKET }}/api.yml .
           export IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
-          docker-compose --env-file .env up -d --build
+          docker-compose -f docker-compose-${{ github.ref_name }}.yml --env-file .env up -d --build
+          if [ "${{ github.ref_name }}" = "dev" ]; then
+            aws s3 cp s3://${{ secrets.API_SPECIFICATION_BUCKET }}/api.yml .
+            docker restart swagger
+          fi
   notify-discord:
     name: Notify Discord
     runs-on: ubuntu-latest
@@ -127,7 +131,7 @@ jobs:
           "embeds": [
             {
               "title": "**${{ github.ref_name == 'prod' && '프로덕션' || '개발' }} 환경 배포 성공**",
-              "description": "프로젝트가 성공적으로 배포되었습니다.",
+              "description": "서버가 성공적으로 배포되었습니다.",
               "color": 3066993,
               "fields": [
                 {
