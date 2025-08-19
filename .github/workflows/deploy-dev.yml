@@ -94,7 +94,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
-        source: docker/docker-compose-${{ env.ENVIRONMENT }}.yml
+        source: docker/docker-compose-dev.yml
         target: "~"
         strip_components: 1
     - name: Build and deploy container to AWS EC2
@@ -104,11 +104,11 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         script: |
-          aws secretsmanager get-secret-value --secret-id ${{ env.ENVIRONMENT }}-env --region ap-northeast-2 --query SecretString --output text | jq -r '. | to_entries | map("\(.key)=\(.value)") | .[]' > .env
+          aws secretsmanager get-secret-value --secret-id dev-env --region ap-northeast-2 --query SecretString --output text | jq -r '. | to_entries | map("\(.key)=\(.value)") | .[]' > .env
           aws s3 cp s3://${{ secrets.API_SPECIFICATION_BUCKET }}/api.yml .
 
           export IMAGE_URI=${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ github.sha }}
-          docker-compose -f docker-compose-${{ env.ENVIRONMENT }}.yml --env-file .env up -d --build
+          docker-compose -f docker-compose-dev.yml --env-file .env up -d --build
           docker restart swagger
   notify-discord:
     name: Notify Discord
