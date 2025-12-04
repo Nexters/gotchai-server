@@ -3,7 +3,6 @@ package com.gotchai.storage.rdb.user.adapter.out
 import com.gotchai.domain.user.entity.Profile
 import com.gotchai.domain.user.port.out.ProfileCommandPort
 import com.gotchai.storage.rdb.global.annotation.Adapter
-import com.gotchai.storage.rdb.global.util.findByIdOrElseThrow
 import com.gotchai.storage.rdb.user.entity.ProfileEntity
 import com.gotchai.storage.rdb.user.repository.ProfileJpaRepository
 
@@ -18,7 +17,7 @@ class ProfileCommandAdapter(
 
     override fun deleteByUserId(userId: Long) {
         profileJpaRepository
-            .findByIdOrElseThrow(userId)
-            .softDelete()
+            .findByUserId(userId)
+            ?.softDelete()
     }
 }

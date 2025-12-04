@@ -7,6 +7,12 @@ plugins {
     alias(libs.plugins.jib)
 }
 
+configurations {
+    all {
+        exclude("org.springframework.boot", "spring-boot-starter-logging")
+    }
+}
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":common:util"))
@@ -15,16 +21,18 @@ dependencies {
     implementation(project(":infrastructure:ai"))
     implementation(project(":storage:rdb"))
     implementation(project(":storage:redis"))
+    implementation(project(":common:logging"))
 
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.aop)
     implementation(libs.spring.boot.starter.validation)
     implementation(libs.spring.boot.starter.security)
+    implementation(libs.spring.boot.starter.log4j2)
+    implementation(libs.jackson.yaml)
     implementation(libs.jakarta.validation)
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.jackson)
     runtimeOnly(libs.jjwt.impl)
-    runtimeOnly(project(":common:logging"))
 
     testImplementation(testFixtures(project(":domain")))
     testImplementation(libs.bundles.spring.test)

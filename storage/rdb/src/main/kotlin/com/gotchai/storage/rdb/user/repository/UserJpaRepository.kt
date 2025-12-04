@@ -4,5 +4,7 @@ import com.gotchai.storage.rdb.user.entity.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserJpaRepository : JpaRepository<UserEntity, Long> {
-    fun findByEmail(email: String): UserEntity?
+    fun findByIdAndDeletedAtIsNull(id: Long): UserEntity?
+
+    fun findByEmailAndDeletedAtIsNull(email: String): UserEntity?
 }

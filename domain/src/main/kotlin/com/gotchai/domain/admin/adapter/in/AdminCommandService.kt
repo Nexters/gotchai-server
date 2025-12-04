@@ -3,9 +3,16 @@ package com.gotchai.domain.admin.adapter.`in`
 import com.gotchai.domain.admin.dto.command.CreateExamCommand
 import com.gotchai.domain.admin.exception.InvalidFileException
 import com.gotchai.domain.admin.port.`in`.AdminCommandUseCase
+import com.gotchai.domain.badge.exception.UserBadgeNotFoundException
+import com.gotchai.domain.badge.port.out.UserBadgeCommandPort
+import com.gotchai.domain.badge.port.out.UserBadgeQueryPort
 import com.gotchai.domain.exam.entity.Exam
+import com.gotchai.domain.exam.exception.ExamHistoryNotFoundException
 import com.gotchai.domain.exam.port.out.ExamCommandPort
+import com.gotchai.domain.exam.port.out.ExamHistoryCommandPort
+import com.gotchai.domain.exam.port.out.ExamHistoryQueryPort
 import com.gotchai.domain.global.provider.ObjectStorageProvider
+import com.gotchai.domain.quiz.port.out.QuizHistoryCommandPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -13,6 +20,11 @@ import java.util.*
 @Service
 class AdminCommandService(
     private val examCommandPort: ExamCommandPort,
+    private val examHistoryQueryPort: ExamHistoryQueryPort,
+    private val examHistoryCommandPort: ExamHistoryCommandPort,
+    private val quizHistoryCommandPort: QuizHistoryCommandPort,
+    private val userBadgeQueryPort: UserBadgeQueryPort,
+    private val userBadgeCommandPort: UserBadgeCommandPort,
     private val objectStorageProvider: ObjectStorageProvider
 ) : AdminCommandUseCase {
     @Transactional
@@ -36,4 +48,26 @@ class AdminCommandService(
                 )
             )
         }
+
+    @Transactional
+    override fun deleteExamHistoryByExamIdAndUserId(
+        examId: Long,
+        userId: Long
+    ) {
+        val examHistory =
+            examHistoryQueryPort.getExamHistoryByExamIdAndUserId(examId, userId) ?: throw ExamHistoryNotFoundException()
+
+        quizHistoryCommandPort.deleteQuizHistoriesByExamHistoryId(examHistory.id)
+        examHistoryCommandPort.deleteExamHistoryByExamIdAndUserId(examId, userId)
+    }
+
+    @Transactional
+    override fun deleteUserBadgeByBadgeIdAndUserId(
+        badgeId: Long,
+        userId: Long
+    ) {
+        val userBadge = userBadgeQueryPort.getUserBadgeByBadgeIdAndUserId(badgeId, userId) ?: throw UserBadgeNotFoundException()
+
+        userBadgeCommandPort.deleteUserBadgeById(userBadge.id)
+    }
 }

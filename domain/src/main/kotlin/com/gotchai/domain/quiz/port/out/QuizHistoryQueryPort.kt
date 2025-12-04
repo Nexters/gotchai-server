@@ -4,6 +4,4 @@ import com.gotchai.domain.quiz.entity.QuizHistory
 
 interface QuizHistoryQueryPort {
     fun getQuizHistoriesByExamHistoryId(examHistoryId: Long): List<QuizHistory>
-
-    fun deleteQuizHistoriesByExamHistoryId(examHistoryId: Long)
 }

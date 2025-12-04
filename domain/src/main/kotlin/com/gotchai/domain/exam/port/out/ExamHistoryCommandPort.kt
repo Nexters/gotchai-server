@@ -6,4 +6,9 @@ interface ExamHistoryCommandPort {
     fun createExamHistory(creation: ExamHistory.Creation): ExamHistory
 
     fun updateExamHistory(examHistory: ExamHistory): ExamHistory
+
+    fun deleteExamHistoryByExamIdAndUserId(
+        examId: Long,
+        userId: Long
+    )
 }
